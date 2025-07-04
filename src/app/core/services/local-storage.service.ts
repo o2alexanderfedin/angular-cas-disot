@@ -26,4 +26,20 @@ export class LocalStorageService implements IStorageProvider {
   async delete(path: string): Promise<void> {
     this.storage.delete(path);
   }
+
+  async list(): Promise<string[]> {
+    return Array.from(this.storage.keys());
+  }
+
+  async clear(): Promise<void> {
+    this.storage.clear();
+  }
+
+  async getSize(): Promise<number> {
+    let totalSize = 0;
+    for (const data of this.storage.values()) {
+      totalSize += data.length;
+    }
+    return totalSize;
+  }
 }

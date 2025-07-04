@@ -1,29 +1,30 @@
 import { TestBed } from '@angular/core/testing';
 import { CasService } from './cas.service';
 import { HashService } from './hash.service';
-import { LocalStorageService } from './local-storage.service';
+import { IStorageProvider } from '../domain/interfaces/storage.interface';
 import { ContentHash } from '../domain/interfaces/content.interface';
+import { STORAGE_PROVIDER } from './storage-provider.factory';
 
 describe('CasService', () => {
   let service: CasService;
   let hashService: jasmine.SpyObj<HashService>;
-  let storageService: jasmine.SpyObj<LocalStorageService>;
+  let storageService: jasmine.SpyObj<IStorageProvider>;
 
   beforeEach(() => {
     const hashSpy = jasmine.createSpyObj('HashService', ['hash', 'verify']);
-    const storageSpy = jasmine.createSpyObj('LocalStorageService', ['write', 'read', 'exists', 'delete']);
+    const storageSpy = jasmine.createSpyObj('StorageProvider', ['write', 'read', 'exists', 'delete', 'list']);
 
     TestBed.configureTestingModule({
       providers: [
         CasService,
         { provide: HashService, useValue: hashSpy },
-        { provide: LocalStorageService, useValue: storageSpy }
+        { provide: STORAGE_PROVIDER, useValue: storageSpy }
       ]
     });
 
     service = TestBed.inject(CasService);
     hashService = TestBed.inject(HashService) as jasmine.SpyObj<HashService>;
-    storageService = TestBed.inject(LocalStorageService) as jasmine.SpyObj<LocalStorageService>;
+    storageService = TestBed.inject(STORAGE_PROVIDER) as jasmine.SpyObj<IStorageProvider>;
   });
 
   it('should create', () => {
@@ -116,6 +117,65 @@ describe('CasService', () => {
       expect(result.hash).toEqual(hash);
       expect(result.size).toBe(testData.length);
       expect(result.createdAt).toBeInstanceOf(Date);
+    });
+  });
+
+  describe('getAllContent', () => {
+    it('should return all stored content', async () => {
+      const paths = [
+        'cas/sha256/hash1',
+        'cas/sha256/hash2',
+        'other/path',  // Should be filtered out
+        'cas/sha512/hash3'  // Different algorithm
+      ];
+      const data1 = new TextEncoder().encode('Content 1');
+      const data2 = new TextEncoder().encode('Content 2');
+      const data3 = new TextEncoder().encode('Content 3');
+      
+      storageService.list.and.returnValue(Promise.resolve(paths));
+      storageService.read.and.callFake((path: string) => {
+        switch (path) {
+          case 'cas/sha256/hash1': return Promise.resolve(data1);
+          case 'cas/sha256/hash2': return Promise.resolve(data2);
+          case 'cas/sha512/hash3': return Promise.resolve(data3);
+          default: return Promise.reject(new Error('Not found'));
+        }
+      });
+
+      const result = await service.getAllContent();
+
+      expect(storageService.list).toHaveBeenCalled();
+      expect(result.length).toBe(3);
+      expect(result[0].hash).toEqual({ algorithm: 'sha256', value: 'hash1' });
+      expect(result[0].content.data).toEqual(data1);
+      expect(result[1].hash).toEqual({ algorithm: 'sha256', value: 'hash2' });
+      expect(result[1].content.data).toEqual(data2);
+      expect(result[2].hash).toEqual({ algorithm: 'sha512', value: 'hash3' });
+      expect(result[2].content.data).toEqual(data3);
+    });
+
+    it('should handle read errors gracefully', async () => {
+      const paths = ['cas/sha256/hash1', 'cas/sha256/corrupt'];
+      const data1 = new TextEncoder().encode('Good content');
+      
+      storageService.list.and.returnValue(Promise.resolve(paths));
+      storageService.read.and.callFake((path: string) => {
+        if (path === 'cas/sha256/hash1') {
+          return Promise.resolve(data1);
+        }
+        return Promise.reject(new Error('Read error'));
+      });
+      
+      spyOn(console, 'error');
+
+      const result = await service.getAllContent();
+
+      expect(result.length).toBe(1);
+      expect(result[0].hash.value).toBe('hash1');
+      expect(console.error).toHaveBeenCalledWith(
+        'Error reading path cas/sha256/corrupt:',
+        jasmine.any(Error)
+      );
     });
   });
 });

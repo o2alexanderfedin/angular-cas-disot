@@ -6,6 +6,7 @@ import { HashService } from './hash.service';
 import { LocalStorageService } from './local-storage.service';
 import { DisotEntry, DisotEntryType } from '../domain/interfaces/disot.interface';
 import { ContentHash } from '../domain/interfaces/content.interface';
+import { STORAGE_PROVIDER } from './storage-provider.factory';
 
 describe('DisotService', () => {
   let service: DisotService;
@@ -19,7 +20,8 @@ describe('DisotService', () => {
         CasService,
         SignatureService,
         HashService,
-        LocalStorageService
+        LocalStorageService,
+        { provide: STORAGE_PROVIDER, useClass: LocalStorageService }
       ]
     });
 

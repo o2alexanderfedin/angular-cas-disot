@@ -1,12 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 import { provideRouter } from '@angular/router';
+import { STORAGE_PROVIDER, storageProviderFactory, STORAGE_TYPE, StorageType } from './core/services/storage-provider.factory';
+import { LocalStorageService } from './core/services/local-storage.service';
+import { IndexedDbStorageService } from './core/services/indexed-db-storage.service';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([])]
+      providers: [
+        provideRouter([]),
+        LocalStorageService,
+        IndexedDbStorageService,
+        { provide: STORAGE_TYPE, useValue: StorageType.IN_MEMORY },
+        {
+          provide: STORAGE_PROVIDER,
+          useFactory: storageProviderFactory,
+          deps: [LocalStorageService, IndexedDbStorageService, STORAGE_TYPE]
+        }
+      ]
     }).compileComponents();
   });
 
