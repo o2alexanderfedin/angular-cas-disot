@@ -11,6 +11,7 @@
 7. [API Reference](./api/README.md)
 8. [Component Reference](./components/README.md)
 9. [Service Reference](./services/README.md)
+10. [Testing Guide](./testing/testing-guide.md)
 
 ## Quick Start
 
