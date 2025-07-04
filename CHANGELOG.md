@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-01-04
+
+### Added
+- Comprehensive testing guide documenting co-located test structure
+- Project structure documentation explaining design decisions
+- GitHub Actions workflow for automated testing
+- TESTING.md quick reference guide
+- Testing section in main documentation
+
+### Documentation
+- Explained why tests are co-located with source files (Angular best practice)
+- Added testing best practices and examples
+- Documented test coverage goals and checklist
+- Created project structure guide with rationale
+
 ## [1.0.1] - 2025-01-04
 
 ### Changed
@@ -60,5 +75,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Web Crypto API for cryptography
 - Standalone components architecture
 
+[1.0.2]: https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.0.2
 [1.0.1]: https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.0.1
 [1.0.0]: https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.0.0
