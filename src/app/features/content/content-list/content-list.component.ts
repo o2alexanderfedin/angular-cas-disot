@@ -9,6 +9,8 @@ interface ContentItem {
   hash: ContentHash;
   metadata: ContentMetadata;
   previewData: string | null;
+  previewType: 'text' | 'json' | 'hex' | 'base64' | 'image' | null;
+  detectedType?: string;
 }
 
 @Component({
@@ -41,7 +43,7 @@ interface ContentItem {
         <div *ngFor="let item of filteredItems" class="content-card">
           <div class="card-header">
             <h3>{{ item.hash.algorithm | uppercase }}</h3>
-            <span class="file-size">{{ formatFileSize(item.metadata.size) }}</span>
+            <span class="file-size">{{ formatFileSize(item.metadata.size || 0) }}</span>
           </div>
           
           <div class="hash-value">
@@ -53,16 +55,32 @@ interface ContentItem {
             <p *ngIf="item.metadata.contentType">Type: {{ item.metadata.contentType }}</p>
           </div>
 
-          <div *ngIf="item.previewData" class="preview">
-            <p>{{ item.previewData }}</p>
+          <div *ngIf="item.previewData" class="preview-section">
+            <div class="preview-controls">
+              <label>Preview as: </label>
+              <select [(ngModel)]="item.previewType" (change)="updatePreview(item)" class="preview-type-select">
+                <option value="text">Text</option>
+                <option value="json">JSON</option>
+                <option value="hex">Hex</option>
+                <option value="base64">Base64</option>
+                <option value="image">Image</option>
+              </select>
+              <span *ngIf="item.detectedType" class="detected-type">(Detected: {{ item.detectedType }})</span>
+            </div>
+            <div class="preview" [ngClass]="'preview-' + item.previewType">
+              <pre *ngIf="item.previewType === 'json'">{{ item.previewData }}</pre>
+              <code *ngIf="item.previewType === 'hex' || item.previewType === 'base64'">{{ item.previewData }}</code>
+              <p *ngIf="item.previewType === 'text'">{{ item.previewData }}</p>
+              <img *ngIf="item.previewType === 'image'" [src]="item.previewData" alt="Preview" />
+            </div>
           </div>
 
           <div class="actions">
             <button (click)="selectContent(item.hash)" class="action-button">
               Select
             </button>
-            <button (click)="previewContent(item.hash)" class="action-button">
-              Preview
+            <button (click)="previewContent(item)" class="action-button" [disabled]="item.previewData !== null">
+              {{ item.previewData !== null ? 'Preview Loaded' : 'Load Preview' }}
             </button>
             <button (click)="downloadContent(item.hash)" class="action-button">
               Download
@@ -150,15 +168,61 @@ interface ContentItem {
       margin: 5px 0;
     }
 
-    .preview {
+    .preview-section {
       margin-bottom: 15px;
+    }
+
+    .preview-controls {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .preview-type-select {
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .detected-type {
+      color: #666;
+      font-style: italic;
+      font-size: 12px;
+    }
+
+    .preview {
       padding: 10px;
       background-color: #fff;
       border: 1px solid #e0e0e0;
       border-radius: 4px;
-      max-height: 100px;
+      max-height: 200px;
       overflow-y: auto;
       font-size: 14px;
+    }
+
+    .preview pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .preview code {
+      display: block;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .preview img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .preview-hex code, .preview-base64 code {
+      font-size: 12px;
+      line-height: 1.4;
     }
 
     .actions {
@@ -198,17 +262,38 @@ export class ContentListComponent implements OnInit {
     this.loadContentItems();
   }
 
-  loadContentItems(): void {
-    // In a real implementation, this would load from storage
-    // For now, we'll use the items added via addContentItem
-    this.filterContent();
+  async loadContentItems(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const allContent = await this.casService.getAllContent();
+      
+      // Clear existing items and load from storage
+      this.contentItems = [];
+      
+      for (const item of allContent) {
+        const metadata = await this.casService.getMetadata(item.hash);
+        this.contentItems.push({
+          hash: item.hash,
+          metadata,
+          previewData: null,
+          previewType: null
+        });
+      }
+      
+      this.filterContent();
+    } catch (error) {
+      console.error('Failed to load content items:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   addContentItem(hash: ContentHash, metadata: ContentMetadata): void {
     const item: ContentItem = {
       hash,
       metadata,
-      previewData: null
+      previewData: null,
+      previewType: null
     };
     this.contentItems.push(item);
     this.filterContent();
@@ -229,19 +314,136 @@ export class ContentListComponent implements OnInit {
     this.contentSelected.emit(hash);
   }
 
-  async previewContent(hash: ContentHash): Promise<void> {
+  async previewContent(item: ContentItem): Promise<void> {
+    if (item.previewData !== null) return;
+    
     try {
-      const content = await this.casService.retrieve(hash);
-      const text = new TextDecoder().decode(content.data);
+      const content = await this.casService.retrieve(item.hash);
       
-      const item = this.contentItems.find(i => i.hash.value === hash.value);
-      if (item) {
-        item.previewData = text.length > 1000 
-          ? text.substring(0, 1000) + '...' 
-          : text;
+      // Detect content type
+      const detectedType = this.detectContentType(content.data);
+      item.detectedType = detectedType;
+      
+      // Set initial preview type based on detection
+      if (!item.previewType) {
+        item.previewType = this.getInitialPreviewType(detectedType, content.data);
       }
+      
+      // Generate preview based on type
+      this.updatePreviewData(item, content.data);
     } catch (error) {
       console.error('Failed to preview content:', error);
+    }
+  }
+
+  private detectContentType(data: Uint8Array): string {
+    // Check for common file signatures
+    if (data.length >= 4) {
+      const header = Array.from(data.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join('');
+      
+      // PNG
+      if (header === '89504e47') return 'image/png';
+      // JPEG
+      if (header.startsWith('ffd8ff')) return 'image/jpeg';
+      // GIF
+      if (header.startsWith('47494638')) return 'image/gif';
+      // PDF
+      if (header === '25504446') return 'application/pdf';
+    }
+    
+    // Try to decode as text
+    try {
+      const text = new TextDecoder('utf-8', { fatal: true }).decode(data.slice(0, 1000));
+      
+      // Check if it's JSON
+      try {
+        JSON.parse(text);
+        return 'application/json';
+      } catch {
+        // Not JSON, but is text
+        return 'text/plain';
+      }
+    } catch {
+      // Not valid UTF-8, treat as binary
+      return 'application/octet-stream';
+    }
+  }
+
+  private getInitialPreviewType(detectedType: string, data: Uint8Array): 'text' | 'json' | 'hex' | 'base64' | 'image' {
+    if (detectedType.startsWith('image/')) return 'image';
+    if (detectedType === 'application/json') return 'json';
+    if (detectedType === 'text/plain') return 'text';
+    
+    // For binary data, default to hex if small, base64 if larger
+    return data.length <= 256 ? 'hex' : 'base64';
+  }
+
+  updatePreview(item: ContentItem): void {
+    if (!item.previewData) return;
+    
+    this.casService.retrieve(item.hash).then(content => {
+      this.updatePreviewData(item, content.data);
+    }).catch(error => {
+      console.error('Failed to update preview:', error);
+    });
+  }
+
+  private updatePreviewData(item: ContentItem, data: Uint8Array): void {
+    const maxSize = 1000;
+    
+    switch (item.previewType) {
+      case 'text':
+        try {
+          const text = new TextDecoder().decode(data);
+          item.previewData = text.length > maxSize 
+            ? text.substring(0, maxSize) + '...' 
+            : text;
+        } catch {
+          item.previewData = 'Unable to decode as text';
+        }
+        break;
+        
+      case 'json':
+        try {
+          const text = new TextDecoder().decode(data);
+          const json = JSON.parse(text);
+          item.previewData = JSON.stringify(json, null, 2);
+          if (item.previewData.length > maxSize) {
+            item.previewData = item.previewData.substring(0, maxSize) + '...';
+          }
+        } catch {
+          item.previewData = 'Invalid JSON';
+        }
+        break;
+        
+      case 'hex':
+        const hexBytes = Math.min(data.length, 256);
+        item.previewData = Array.from(data.slice(0, hexBytes))
+          .map(b => b.toString(16).padStart(2, '0'))
+          .join(' ')
+          .toUpperCase();
+        if (data.length > hexBytes) {
+          item.previewData += ' ...';
+        }
+        break;
+        
+      case 'base64':
+        const base64Bytes = Math.min(data.length, 1000);
+        item.previewData = btoa(String.fromCharCode(...data.slice(0, base64Bytes)));
+        if (data.length > base64Bytes) {
+          item.previewData += '...';
+        }
+        break;
+        
+      case 'image':
+        // Create data URL for image
+        const blob = new Blob([data]);
+        const reader = new FileReader();
+        reader.onload = () => {
+          item.previewData = reader.result as string;
+        };
+        reader.readAsDataURL(blob);
+        break;
     }
   }
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared-module';
 import { CasService } from '../../../core/services/cas.service';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-upload',
@@ -43,6 +44,9 @@ import { ContentHash } from '../../../core/domain/interfaces/content.interface';
           <h3>Content Stored Successfully!</h3>
           <p>Algorithm: {{ uploadedHash.algorithm }}</p>
           <p>Hash: <code>{{ uploadedHash.value }}</code></p>
+          <button (click)="navigateToContentList()" class="view-content-button">
+            View All Content
+          </button>
         </div>
       </div>
     </div>
@@ -117,6 +121,21 @@ import { ContentHash } from '../../../core/domain/interfaces/content.interface';
       font-family: monospace;
       word-break: break-all;
     }
+
+    .view-content-button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    .view-content-button:hover {
+      background-color: #218838;
+    }
   `]
 })
 export class ContentUploadComponent {
@@ -127,7 +146,10 @@ export class ContentUploadComponent {
   isUploading = false;
   errorMessage = '';
 
-  constructor(private casService: CasService) {}
+  constructor(
+    private casService: CasService,
+    private router: Router
+  ) {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -175,5 +197,9 @@ export class ContentUploadComponent {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  navigateToContentList(): void {
+    this.router.navigate(['/content']);
   }
 }
