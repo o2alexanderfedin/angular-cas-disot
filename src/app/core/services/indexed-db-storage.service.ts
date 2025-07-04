@@ -9,17 +9,23 @@ export class IndexedDbStorageService implements IStorageProvider {
   private storeName = 'content';
   private version = 1;
   private db: IDBDatabase | null = null;
+  private initializationError: Error | null = null;
+  private initializationPromise: Promise<void>;
 
   constructor() {
-    this.initializeDb();
+    this.initializationPromise = this.initializeDb().catch(() => {
+      // Silently catch initialization errors - they will be handled in ensureDb
+    });
   }
 
   private async initializeDb(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.version);
 
       request.onerror = () => {
-        reject(new Error('Failed to open IndexedDB'));
+        const error = new Error('Failed to open IndexedDB');
+        this.initializationError = error;
+        reject(error);
       };
 
       request.onsuccess = (event) => {
@@ -34,13 +40,25 @@ export class IndexedDbStorageService implements IStorageProvider {
           db.createObjectStore(this.storeName);
         }
       };
+    }).catch((error) => {
+      this.initializationError = error;
+      throw error;
     });
   }
 
   private async ensureDb(): Promise<IDBDatabase> {
-    if (!this.db) {
-      await this.initializeDb();
+    if (this.initializationError) {
+      throw new Error('IndexedDB not available');
     }
+    
+    if (!this.db) {
+      try {
+        await this.initializationPromise;
+      } catch (error) {
+        throw new Error('IndexedDB not available');
+      }
+    }
+    
     if (!this.db) {
       throw new Error('IndexedDB not available');
     }
