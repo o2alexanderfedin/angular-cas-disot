@@ -83,17 +83,41 @@ describe('ContentUploadComponent', () => {
     expect(component.contentStored.emit).toHaveBeenCalledWith(mockHash);
   });
 
-  it('should handle upload errors', async () => {
+  it('should handle upload errors', (done) => {
     const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
     component.selectedFile = mockFile;
     
-    casService.store.and.returnValue(Promise.reject(new Error('Upload failed')));
+    // Mock FileReader
+    const mockArrayBuffer = new ArrayBuffer(8);
+    const mockFileReader = {
+      readAsArrayBuffer: jasmine.createSpy('readAsArrayBuffer'),
+      onload: null as any,
+      onerror: null as any,
+      result: mockArrayBuffer
+    };
+    spyOn(window, 'FileReader').and.returnValue(mockFileReader as any);
+    
+    // Create a rejected promise but catch it to prevent unhandled rejection
+    const rejectedPromise = Promise.reject(new Error('Upload failed'));
+    rejectedPromise.catch(() => {}); // Catch to prevent unhandled rejection
+    casService.store.and.returnValue(rejectedPromise);
 
-    await component.uploadFile();
+    component.uploadFile().then(() => {
+      expect(component.errorMessage).toBe('Upload failed: Upload failed');
+      expect(component.isUploading).toBe(false);
+      expect(component.uploadedHash).toBeNull();
+      done();
+    }).catch((error) => {
+      // This shouldn't happen as component.uploadFile() catches all errors
+      fail('uploadFile should not reject: ' + error);
+    });
 
-    expect(component.errorMessage).toBe('Upload failed: Upload failed');
-    expect(component.isUploading).toBe(false);
-    expect(component.uploadedHash).toBeNull();
+    // Trigger FileReader onload
+    setTimeout(() => {
+      if (mockFileReader.onload) {
+        mockFileReader.onload();
+      }
+    }, 0);
   });
 
   it('should not upload without selected file', async () => {

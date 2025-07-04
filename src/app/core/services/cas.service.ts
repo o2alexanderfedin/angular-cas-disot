@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { IContentStorage } from '../domain/interfaces/storage.interface';
-import { Content, ContentHash, ContentMetadata } from '../domain/interfaces/content.interface';
+import { Injectable, Inject } from '@angular/core';
+import { IContentStorage, IStorageProvider } from '../domain/interfaces/storage.interface';
+import { Content, ContentHash, ContentMetadata, ContentWithHash } from '../domain/interfaces/content.interface';
 import { HashService } from './hash.service';
-import { LocalStorageService } from './local-storage.service';
+import { STORAGE_PROVIDER } from './storage-provider.factory';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { LocalStorageService } from './local-storage.service';
 export class CasService implements IContentStorage {
   constructor(
     private hashService: HashService,
-    private storageService: LocalStorageService
+    @Inject(STORAGE_PROVIDER) private storageService: IStorageProvider
   ) {}
 
   async store(content: Content): Promise<ContentHash> {
@@ -57,6 +57,37 @@ export class CasService implements IContentStorage {
       size: content.data.length,
       createdAt: new Date()
     };
+  }
+
+  async getAllContent(): Promise<ContentWithHash[]> {
+    const paths = await this.storageService.list();
+    const casPrefix = 'cas/';
+    
+    const contentPromises = paths
+      .filter((path: string) => path.startsWith(casPrefix))
+      .map(async (path: string) => {
+        try {
+          const data = await this.storageService.read(path);
+          const parts = path.split('/');
+          if (parts.length >= 3) {
+            const algorithm = parts[1];
+            const value = parts[2];
+            const hash: ContentHash = { algorithm, value };
+            
+            return {
+              content: { data },
+              hash
+            };
+          }
+          return null;
+        } catch (error) {
+          console.error(`Error reading path ${path}:`, error);
+          return null;
+        }
+      });
+    
+    const results = await Promise.all(contentPromises);
+    return results.filter((item: ContentWithHash | null): item is ContentWithHash => item !== null);
   }
 
   private getPath(hash: ContentHash): string {
