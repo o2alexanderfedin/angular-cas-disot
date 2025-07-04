@@ -1,0 +1,127 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ContentUploadComponent } from './content-upload.component';
+import { CasService } from '../../../core/services/cas.service';
+import { SharedModule } from '../../../shared/shared-module';
+import { ContentHash } from '../../../core/domain/interfaces/content.interface';
+
+describe('ContentUploadComponent', () => {
+  let component: ContentUploadComponent;
+  let fixture: ComponentFixture<ContentUploadComponent>;
+  let casService: jasmine.SpyObj<CasService>;
+
+  beforeEach(async () => {
+    const casSpy = jasmine.createSpyObj('CasService', ['store', 'exists']);
+
+    await TestBed.configureTestingModule({
+      imports: [ContentUploadComponent, SharedModule],
+      providers: [
+        { provide: CasService, useValue: casSpy }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ContentUploadComponent);
+    component = fixture.componentInstance;
+    casService = TestBed.inject(CasService) as jasmine.SpyObj<CasService>;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should initialize with empty state', () => {
+    expect(component.selectedFile).toBeNull();
+    expect(component.uploadedHash).toBeNull();
+    expect(component.isUploading).toBe(false);
+    expect(component.errorMessage).toBe('');
+  });
+
+  it('should handle file selection', () => {
+    const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    const event = { target: { files: [mockFile] } } as any;
+
+    component.onFileSelected(event);
+
+    expect(component.selectedFile).toBe(mockFile);
+    expect(component.errorMessage).toBe('');
+  });
+
+  it('should clear error when selecting new file', () => {
+    component.errorMessage = 'Previous error';
+    const mockFile = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const event = { target: { files: [mockFile] } } as any;
+
+    component.onFileSelected(event);
+
+    expect(component.errorMessage).toBe('');
+  });
+
+  it('should upload file to CAS', async () => {
+    const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    const mockHash: ContentHash = { algorithm: 'sha256', value: 'testhash123' };
+    
+    component.selectedFile = mockFile;
+    casService.store.and.returnValue(Promise.resolve(mockHash));
+
+    await component.uploadFile();
+
+    expect(casService.store).toHaveBeenCalled();
+    expect(component.uploadedHash).toEqual(mockHash);
+    expect(component.isUploading).toBe(false);
+  });
+
+  it('should emit contentStored event after upload', async () => {
+    const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    const mockHash: ContentHash = { algorithm: 'sha256', value: 'testhash123' };
+    
+    component.selectedFile = mockFile;
+    casService.store.and.returnValue(Promise.resolve(mockHash));
+    
+    spyOn(component.contentStored, 'emit');
+
+    await component.uploadFile();
+
+    expect(component.contentStored.emit).toHaveBeenCalledWith(mockHash);
+  });
+
+  it('should handle upload errors', async () => {
+    const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    component.selectedFile = mockFile;
+    
+    casService.store.and.returnValue(Promise.reject(new Error('Upload failed')));
+
+    await component.uploadFile();
+
+    expect(component.errorMessage).toBe('Upload failed: Upload failed');
+    expect(component.isUploading).toBe(false);
+    expect(component.uploadedHash).toBeNull();
+  });
+
+  it('should not upload without selected file', async () => {
+    component.selectedFile = null;
+
+    await component.uploadFile();
+
+    expect(casService.store).not.toHaveBeenCalled();
+    expect(component.errorMessage).toBe('Please select a file');
+  });
+
+  it('should show uploading state', async () => {
+    const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    component.selectedFile = mockFile;
+    
+    let resolveUpload: (value: ContentHash) => void;
+    const uploadPromise = new Promise<ContentHash>((resolve) => {
+      resolveUpload = resolve;
+    });
+    
+    casService.store.and.returnValue(uploadPromise);
+
+    const uploadCall = component.uploadFile();
+    expect(component.isUploading).toBe(true);
+
+    resolveUpload!({ algorithm: 'sha256', value: 'test' });
+    await uploadCall;
+
+    expect(component.isUploading).toBe(false);
+  });
+});
