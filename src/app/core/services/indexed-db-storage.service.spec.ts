@@ -387,45 +387,68 @@ describe('IndexedDbStorageService', () => {
   });
 
   describe('error handling', () => {
-    xit('should handle database initialization errors', (done) => {
-      // Create a new service instance that will fail to initialize
+    it('should handle database initialization errors', async () => {
+      // Save original indexedDB and create a failing mock
+      const originalIndexedDB = window.indexedDB;
+      
+      // Create a promise to track when the error handler is called
+      let errorHandlerCalled: Promise<void>;
+      let resolveErrorHandler: () => void;
+      
+      errorHandlerCalled = new Promise((resolve) => {
+        resolveErrorHandler = resolve;
+      });
+      
       const failingIndexedDB = {
-        open: jasmine.createSpy('open').and.returnValue({
-          onsuccess: null as ((e: any) => void) | null,
-          onerror: null as ((e: any) => void) | null,
-          onupgradeneeded: null as ((e: any) => void) | null,
-          result: null
+        open: jasmine.createSpy('open').and.callFake(() => {
+          const request = {
+            onsuccess: null as ((e: any) => void) | null,
+            onerror: null as ((e: any) => void) | null,
+            onupgradeneeded: null as ((e: any) => void) | null,
+            result: null,
+            error: new Error('Failed to open IndexedDB')
+          };
+          
+          // Simulate async error
+          setTimeout(() => {
+            if (request.onerror) {
+              request.onerror({ target: request } as any);
+              resolveErrorHandler();
+            }
+          }, 0);
+          
+          return request;
         })
       };
       
-      Object.defineProperty(window, 'indexedDB', {
-        value: failingIndexedDB,
-        writable: true,
-        configurable: true
-      });
-      
-      const failingService = new IndexedDbStorageService();
-      
-      const openRequest = failingIndexedDB.open.calls.mostRecent().returnValue;
-      
-      // Simulate error
-      setTimeout(async () => {
-        if (openRequest.onerror) {
-          openRequest.onerror({} as any);
-        }
+      try {
+        // Replace indexedDB
+        Object.defineProperty(window, 'indexedDB', {
+          value: failingIndexedDB,
+          writable: true,
+          configurable: true
+        });
         
-        // Wait a bit for the error to propagate
+        // Create service which will trigger initialization
+        const failingService = new IndexedDbStorageService();
+        
+        // Wait for the error handler to be called
+        await errorHandlerCalled;
+        
+        // Give the service time to process the error
         await new Promise(resolve => setTimeout(resolve, 10));
         
-        // Try to use the service
-        try {
-          await failingService.read('test');
-          fail('Expected read to fail');
-        } catch (error: any) {
-          expect(error.message).toBe('IndexedDB not available');
-          done();
-        }
-      }, 0);
+        // Try to use the service - should fail
+        await expectAsync(failingService.read('test')).toBeRejectedWithError('IndexedDB not available');
+        
+      } finally {
+        // Always restore original indexedDB
+        Object.defineProperty(window, 'indexedDB', {
+          value: originalIndexedDB,
+          writable: true,
+          configurable: true
+        });
+      }
     });
   });
 });
