@@ -1,4 +1,4 @@
-# Service Architecture
+# Service Architecture 🔧
 
 [← Component Architecture](./component-architecture.md) | [Home](../README.md) | [Next: Security Architecture →](./security.md)
 
@@ -12,463 +12,342 @@
 
 ## Service Overview
 
-### Service Layer Structure
+### Actual Service Implementation 📐
 
 ```mermaid
 graph TD
-    subgraph "Core Services"
-        CAS[CAS Service<br/>Content Storage]
-        DISOT[DISOT Service<br/>Entry Management]
+    subgraph "Core Services (Singleton)"
+        CAS[CasService<br/>• store()<br/>• retrieve()<br/>• getAllContent()]
+        DISOT[DisotService<br/>• createEntry()<br/>• verifyEntry()<br/>• listEntries()]
     end
     
     subgraph "Infrastructure Services"
-        HASH[Hash Service<br/>SHA-256 Hashing]
-        SIG[Signature Service<br/>Digital Signatures]
-        STOR[Storage Service<br/>Data Persistence]
+        HASH[HashService<br/>• hash() via Web Crypto]
+        SIG[SignatureService<br/>• generateKeyPair()<br/>• sign() - Mock]
+        MEM[InMemoryStorage<br/>• Map-based storage]
+        IDB[IndexedDbStorage<br/>• Persistent storage]
     end
-    
-    subgraph "Domain Interfaces"
-        ICAS[IContentStorage]
-        IHASH[IHashService]
-        ISIG[ISignatureService]
-        ISTOR[IStorageProvider]
-    end
-    
-    CAS -.-> ICAS
-    HASH -.-> IHASH
-    SIG -.-> ISIG
-    STOR -.-> ISTOR
     
     CAS --> HASH
-    CAS --> STOR
+    CAS --> |via Factory| MEM
+    CAS --> |via Factory| IDB
     DISOT --> CAS
     DISOT --> SIG
     DISOT --> HASH
-    
-    style CAS fill:#e8eaf6,stroke:#3f51b5,stroke-width:3px
-    style DISOT fill:#e8eaf6,stroke:#3f51b5,stroke-width:3px
 ```
 
-### Service Responsibilities
+### Service Responsibilities 📋
 
 ```mermaid
-mindmap
-  root((Services))
-    CAS Service
-      Store content by hash
-      Retrieve content
-      List all content
-      Deduplication
-    DISOT Service
-      Create entries
-      Verify signatures
-      Manage entry lifecycle
-      Entry serialization
-    Hash Service
-      SHA-256 hashing
-      Consistent encoding
-      Web Crypto API
-    Signature Service
-      Generate key pairs
-      Sign data
-      Verify signatures
-      Mock implementation
-    Storage Service
-      Read/Write operations
-      Path management
-      In-memory storage
-      Future: persistence
+graph TD
+    subgraph "CasService Methods"
+        STORE[store(content)<br/>Returns: ContentHash]
+        RETRIEVE[retrieve(hash)<br/>Returns: Content]
+        LIST[getAllContent()<br/>Returns: ContentWithHash[]]
+        META[getMetadata(hash)<br/>Returns: ContentMetadata]
+    end
+    
+    subgraph "DisotService Methods"
+        CREATE[createEntry(hash, type, key)<br/>Returns: DisotEntry]
+        VERIFY[verifyEntry(entry)<br/>Returns: boolean]
+        LISTENT[listEntries()<br/>Returns: DisotEntry[]]
+        GET[getEntry(id)<br/>Returns: DisotEntry]
+    end
+    
+    subgraph "Storage Provider Interface"
+        READ[read(path)<br/>write(path, data)<br/>exists(path)<br/>list()<br/>delete(path)]        
+    end
 ```
 
 ## Service Dependencies
 
-### Dependency Graph
+### Actual Dependency Tree 🌳
 
 ```mermaid
 graph TD
-    subgraph "Application Layer"
-        COMP[Components]
+    subgraph "Components"
+        UPLOAD[ContentUploadComponent]
+        LIST[ContentListComponent]
+        DISOT_COMP[DisotEntryComponent]
+        MODAL[ContentSelectionModal]
     end
     
-    subgraph "Service Layer"
-        CAS[CasService]
-        DISOT[DisotService]
+    subgraph "Services (Injected)"
+        CAS[CasService<br/>@Injectable({providedIn: 'root'})]
+        DISOT[DisotService<br/>@Injectable({providedIn: 'root'})]
     end
     
-    subgraph "Infrastructure Layer"
-        HASH[HashService]
-        SIG[SignatureService]
-        STOR[LocalStorageService]
+    subgraph "Providers"
+        FACTORY[StorageProviderFactory<br/>Selects storage type]
+        MEM[InMemoryStorage]
+        IDB[IndexedDbStorage]
     end
     
-    subgraph "External APIs"
-        CRYPTO[Web Crypto API]
-        MEM[Memory Storage]
-    end
+    UPLOAD --> CAS
+    LIST --> CAS
+    DISOT_COMP --> DISOT
+    DISOT_COMP --> CAS
+    MODAL --> CAS
     
-    COMP --> CAS
-    COMP --> DISOT
-    
-    CAS --> HASH
-    CAS --> STOR
-    
+    CAS --> FACTORY
+    FACTORY --> MEM
+    FACTORY --> IDB
     DISOT --> CAS
-    DISOT --> SIG
-    DISOT --> HASH
-    
-    HASH --> CRYPTO
-    SIG --> CRYPTO
-    STOR --> MEM
-    
-    style COMP fill:#e1bee7,stroke:#4a148c
-    style CAS fill:#c5cae9,stroke:#1a237e
-    style CRYPTO fill:#fff3e0,stroke:#e65100
 ```
 
-### Service Injection Tree
+### Storage Provider Factory Pattern 🏭
 
 ```mermaid
 graph TD
-    subgraph "Root Injector"
-        ROOT[Root]
+    subgraph "Factory Configuration"
+        TOKEN[STORAGE_TYPE<br/>InjectionToken]
+        FACTORY[StorageProviderFactory]
     end
     
-    subgraph "providedIn: 'root'"
-        CAS[CasService]
-        DISOT[DisotService]
-        HASH[HashService]
-        SIG[SignatureService]
-        STOR[LocalStorageService]
+    subgraph "Provider Selection"
+        SETTING[User Setting<br/>Default: 'memory']
+        CHECK[Check Type]
+        MEM[Return InMemoryStorage]
+        IDB[Return IndexedDbStorage]
     end
     
-    subgraph "Component Injectors"
-        CL[ContentList]
-        CU[ContentUpload]
-        DE[DisotEntry]
-        SV[SignatureVerify]
-    end
-    
-    ROOT --> CAS
-    ROOT --> DISOT
-    ROOT --> HASH
-    ROOT --> SIG
-    ROOT --> STOR
-    
-    CL -.-> CAS
-    CU -.-> CAS
-    DE -.-> DISOT
-    SV -.-> DISOT
-    
-    style ROOT fill:#f3e5f5,stroke:#6a1b9a,stroke-width:3px
+    TOKEN --> FACTORY
+    FACTORY --> CHECK
+    SETTING --> CHECK
+    CHECK -->|type='memory'| MEM
+    CHECK -->|type='indexeddb'| IDB
 ```
 
 ## Service Interfaces
 
-### Interface Definitions
-
-```mermaid
-classDiagram
-    class IContentStorage {
-        <<interface>>
-        +store(content: Content): Promise~ContentHash~
-        +retrieve(hash: ContentHash): Promise~Content~
-        +exists(hash: ContentHash): Promise~boolean~
-        +getAllContent(): Promise~ContentWithHash[]~
-    }
-    
-    class IHashService {
-        <<interface>>
-        +hash(data: Uint8Array): Promise~string~
-    }
-    
-    class ISignatureService {
-        <<interface>>
-        +generateKeyPair(): KeyPair
-        +sign(data: Uint8Array, privateKey: string): Promise~Signature~
-        +verify(data: Uint8Array, signature: Signature): Promise~boolean~
-    }
-    
-    class IStorageProvider {
-        <<interface>>
-        +read(path: string): Promise~Uint8Array~
-        +write(path: string, data: Uint8Array): Promise~void~
-        +exists(path: string): Promise~boolean~
-        +list(): Promise~string[]~
-        +delete(path: string): Promise~void~
-    }
-    
-    class IDisotService {
-        <<interface>>
-        +createEntry(hash: ContentHash, type: string, key: string): Promise~DisotEntry~
-        +getEntry(id: string): Promise~DisotEntry~
-        +verifyEntry(entry: DisotEntry): Promise~boolean~
-    }
-```
-
-### Interface Segregation
+### Core Domain Interfaces 🔌
 
 ```mermaid
 graph TD
-    subgraph "Large Interface (Bad)"
-        BIG[IStorageService<br/>read()<br/>write()<br/>delete()<br/>list()<br/>encrypt()<br/>compress()<br/>backup()]
+    subgraph "IStorageProvider"
+        IMETHODS[read(path): Promise<Uint8Array><br/>write(path, data): Promise<void><br/>exists(path): Promise<boolean><br/>list(): Promise<string[]><br/>delete(path): Promise<void><br/>clear(): Promise<void><br/>getSize(): Promise<number>]
     end
     
-    subgraph "Segregated Interfaces (Good)"
-        STORAGE[IStorageProvider<br/>read()<br/>write()<br/>exists()]
-        LIST[IListProvider<br/>list()<br/>delete()]
-        CRYPTO[ICryptoProvider<br/>encrypt()<br/>decrypt()]
-        UTIL[IUtilityProvider<br/>compress()<br/>backup()]
+    subgraph "Implementations"
+        MEM_IMPL[InMemoryStorage<br/>• Map<string, Uint8Array><br/>• No persistence]
+        IDB_IMPL[IndexedDbStorage<br/>• IndexedDB API<br/>• Persistent storage]
     end
     
-    BIG -.->|Refactor| STORAGE
-    BIG -.->|Refactor| LIST
-    BIG -.->|Refactor| CRYPTO
-    BIG -.->|Refactor| UTIL
+    IMETHODS --> MEM_IMPL
+    IMETHODS --> IDB_IMPL
+```
+
+### Content & DISOT Types 📝
+
+```mermaid
+graph TD
+    subgraph "ContentHash Type"
+        CH[algorithm: 'sha256'<br/>value: string]
+    end
     
-    style BIG fill:#ffcdd2,stroke:#c62828
-    style STORAGE fill:#c8e6c9,stroke:#1b5e20
+    subgraph "DisotEntry Type"
+        DE[id: string<br/>contentHash: ContentHash<br/>signature: Signature<br/>timestamp: Date<br/>type: DisotEntryType]
+    end
+    
+    subgraph "DisotEntryType Enum"
+        TYPES[BLOG_POST = 'blog_post'<br/>DOCUMENT = 'document'<br/>IMAGE = 'image'<br/>SIGNATURE = 'signature']
+    end
+    
+    DE --> CH
+    DE --> TYPES
 ```
 
 ## Service Implementation
 
-### CAS Service Implementation
+### CAS Service Store Flow 💾
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant CAS as CasService
-    participant Hash as HashService
-    participant Storage as StorageService
+    participant Component
+    participant CasService
+    participant HashService
+    participant StorageProvider
     
-    Note over CAS: store(content: Content)
+    Component->>CasService: store(content)
+    CasService->>HashService: hash(content.data)
+    HashService->>HashService: crypto.subtle.digest('SHA-256')
+    HashService-->>CasService: hashValue
     
-    Client->>CAS: store(content)
-    CAS->>Hash: hash(content.data)
-    Hash-->>CAS: hashValue
+    CasService->>CasService: path = `content/${hashValue}`
     
-    CAS->>CAS: Create ContentHash object
-    CAS->>CAS: Generate storage path
-    
-    CAS->>Storage: exists(path)
-    alt Content doesn't exist
-        Storage-->>CAS: false
-        CAS->>Storage: write(path, data)
-        Storage-->>CAS: success
-    else Content exists
-        Storage-->>CAS: true
-        Note over CAS: Skip write (deduped)
+    CasService->>StorageProvider: exists(path)
+    alt New Content
+        StorageProvider-->>CasService: false
+        CasService->>StorageProvider: write(path, data)
+        CasService->>StorageProvider: write(metadata_path, metadata)
+    else Duplicate Content
+        StorageProvider-->>CasService: true
+        Note over CasService: ✅ Deduplication!
     end
     
-    CAS-->>Client: ContentHash
+    CasService-->>Component: ContentHash{algorithm, value}
 ```
 
-### DISOT Service Implementation
+### DISOT Entry Creation Flow ✍️
 
 ```mermaid
 graph TD
-    subgraph "Create Entry Flow"
-        INPUT[Input: hash, type, key]
-        TIMESTAMP[Generate Timestamp]
-        BUILD[Build Entry Data]
-        HASH[Hash Entry Data]
-        SIGN[Sign with Private Key]
-        ASSEMBLE[Assemble Entry]
-        STORE[Store in CAS]
-        RETURN[Return Entry]
+    subgraph "Blog Post Creation"
+        BLOG[User writes blog post]
+        STORE_BLOG[Store blog content via CAS]
+        GET_HASH[Get content hash]
     end
     
+    subgraph "Entry Creation"
+        INPUT[contentHash + type + privateKey]
+        TIMESTAMP[timestamp = new Date()]
+        BUILD[entryData = {hash, timestamp, type}]
+        HASH_ENTRY[Hash the entry data]
+        SIGN[Sign hash with private key]
+        CREATE[Create DisotEntry object]
+    end
+    
+    subgraph "Storage"
+        STORE_ENTRY[Store entry in entries map]
+        RETURN[Return DisotEntry]
+    end
+    
+    BLOG --> STORE_BLOG
+    STORE_BLOG --> GET_HASH
+    GET_HASH --> INPUT
     INPUT --> TIMESTAMP
     TIMESTAMP --> BUILD
-    BUILD --> HASH
-    HASH --> SIGN
-    SIGN --> ASSEMBLE
-    ASSEMBLE --> STORE
-    STORE --> RETURN
-    
-    style INPUT fill:#e3f2fd,stroke:#1565c0
-    style SIGN fill:#f3e5f5,stroke:#6a1b9a
-    style RETURN fill:#c8e6c9,stroke:#1b5e20
+    BUILD --> HASH_ENTRY
+    HASH_ENTRY --> SIGN
+    SIGN --> CREATE
+    CREATE --> STORE_ENTRY
+    STORE_ENTRY --> RETURN
 ```
 
-### Service Method Patterns
+### IndexedDB Initialization 🗄️
 
 ```mermaid
-graph LR
-    subgraph "Method Pattern"
-        VALIDATE[Validate Input]
-        PROCESS[Process Logic]
-        HANDLE[Handle Errors]
-        RETURN[Return Result]
+graph TD
+    subgraph "IndexedDB Setup"
+        OPEN[indexedDB.open('cas-storage', 1)]
+        UPGRADE[onupgradeneeded]
+        CREATE[createObjectStore('content')]
+        SUCCESS[onsuccess]
+        ERROR[onerror]
     end
     
     subgraph "Error Handling"
-        TRY[Try Block]
-        CATCH[Catch Block]
-        LOG[Log Error]
-        THROW[Throw/Return Error]
+        INIT_ERR[Store initialization error]
+        ENSURE[ensureDb() checks]
+        RETRY[Retry if needed]
+        THROW_ERR[Throw if persistent]
     end
     
-    subgraph "Async Pattern"
-        PROMISE[Return Promise]
-        ASYNC[Async/Await]
-        RESOLVE[Resolve Value]
-        REJECT[Reject Error]
-    end
-    
-    VALIDATE --> PROCESS
-    PROCESS --> HANDLE
-    HANDLE --> RETURN
-    
-    TRY --> CATCH
-    CATCH --> LOG
-    LOG --> THROW
-    
-    ASYNC --> PROMISE
-    PROMISE --> RESOLVE
-    PROMISE --> REJECT
+    OPEN --> UPGRADE
+    UPGRADE --> CREATE
+    CREATE --> SUCCESS
+    OPEN --> ERROR
+    ERROR --> INIT_ERR
+    INIT_ERR --> ENSURE
+    ENSURE --> RETRY
+    RETRY --> THROW_ERR
 ```
 
 ## Service Testing
 
-### Testing Strategy
+### Test Coverage Stats 📊
 
 ```mermaid
 graph TD
-    subgraph "Test Types"
-        UNIT[Unit Tests<br/>Isolated service testing]
-        INTEGRATION[Integration Tests<br/>Service interactions]
-        E2E[E2E Tests<br/>Full workflow]
+    subgraph "Test Results (108 tests)"
+        CAS_TESTS[CasService: 12 tests ✅]
+        DISOT_TESTS[DisotService: 15 tests ✅]
+        HASH_TESTS[HashService: 3 tests ✅]
+        SIG_TESTS[SignatureService: 8 tests ✅]
+        MEM_TESTS[InMemoryStorage: 7 tests ✅]
+        IDB_TESTS[IndexedDbStorage: 8 tests ✅]
+        COMP_TESTS[Components: 55 tests ✅]
     end
     
-    subgraph "Test Utilities"
-        MOCK[Mock Dependencies]
-        SPY[Spy on Methods]
-        STUB[Stub Responses]
+    subgraph "Test Patterns Used"
+        MOCK[jasmine.createSpyObj]
+        ASYNC[async/await testing]
+        PROMISE[Promise handling]
+        ERROR[Error case testing]
     end
-    
-    subgraph "Test Coverage"
-        HAPPY[Happy Path]
-        ERROR[Error Cases]
-        EDGE[Edge Cases]
-    end
-    
-    UNIT --> MOCK
-    INTEGRATION --> SPY
-    E2E --> STUB
-    
-    UNIT --> HAPPY
-    UNIT --> ERROR
-    UNIT --> EDGE
-    
-    style UNIT fill:#c8e6c9,stroke:#1b5e20
-    style MOCK fill:#e3f2fd,stroke:#1565c0
 ```
 
-### Service Test Structure
+### Actual Test Example 🧪
 
 ```mermaid
 sequenceDiagram
-    participant Test
-    participant Service
-    participant Mock
+    participant Test as DisotEntryComponent.spec
+    participant Component
+    participant CasService
+    participant DisotService
     
-    Note over Test: beforeEach()
-    Test->>Test: Create TestBed
-    Test->>Test: Inject service
-    Test->>Mock: Create mocks
+    Note over Test: it('should create blog post entry')
+    Test->>Component: Set blogPostContent
+    Test->>Component: createEntry()
     
-    Note over Test: it('should...')
-    Test->>Service: Call method
-    Service->>Mock: Use dependency
-    Mock-->>Service: Return mock data
-    Service-->>Test: Return result
+    Component->>CasService: store(blogData)
+    CasService-->>Component: ContentHash
     
-    Test->>Test: Assert expectations
-    Test->>Mock: Verify calls
+    Component->>DisotService: createEntry(hash, BLOG_POST, key)
+    DisotService-->>Component: DisotEntry
+    
+    Test->>Test: expect(casService.store).toHaveBeenCalled()
+    Test->>Test: expect(entry.type).toBe(BLOG_POST)
 ```
 
-### Mock Service Pattern
-
-```mermaid
-classDiagram
-    class HashService {
-        +hash(data: Uint8Array): Promise~string~
-    }
-    
-    class MockHashService {
-        +hash(data: Uint8Array): Promise~string~
-        +hashSpy: jasmine.Spy
-    }
-    
-    class TestBed {
-        +configureTestingModule(config)
-        +inject(token): T
-    }
-    
-    class CasServiceTest {
-        -casService: CasService
-        -mockHashService: MockHashService
-        +beforeEach(): void
-        +testStore(): void
-    }
-    
-    HashService <|-- MockHashService
-    CasServiceTest --> TestBed
-    CasServiceTest --> MockHashService
-    CasServiceTest --> CasService
-```
-
-### Test Coverage Matrix
+### Key Test Scenarios 🎯
 
 ```mermaid
 graph TD
-    subgraph "CAS Service Tests"
-        CAS_STORE[store() - 5 tests]
-        CAS_RETRIEVE[retrieve() - 4 tests]
-        CAS_LIST[getAllContent() - 3 tests]
+    subgraph "Content Storage Tests"
+        T1[Upload file → Get hash]
+        T2[Store duplicate → Deduplication works]
+        T3[Retrieve by hash → Get content]
+        T4[List all → Returns array]
     end
     
-    subgraph "DISOT Service Tests"
-        DISOT_CREATE[createEntry() - 6 tests]
-        DISOT_GET[getEntry() - 4 tests]
-        DISOT_VERIFY[verifyEntry() - 5 tests]
+    subgraph "DISOT Entry Tests"
+        T5[Create blog post → Stores content first]
+        T6[Sign entry → Verify signature]
+        T7[List entries → Returns all]
+        T8[Invalid key → Error handling]
     end
     
-    subgraph "Infrastructure Tests"
-        HASH_TEST[HashService - 3 tests]
-        SIG_TEST[SignatureService - 8 tests]
-        STOR_TEST[StorageService - 5 tests]
+    subgraph "IndexedDB Tests"
+        T9[Init DB → Creates store]
+        T10[Write/Read → Persistence]
+        T11[Clear → Removes all]
+        T12[Init error → Proper handling]
     end
-    
-    style CAS_STORE fill:#c8e6c9,stroke:#1b5e20
-    style DISOT_CREATE fill:#c8e6c9,stroke:#1b5e20
-    style HASH_TEST fill:#c8e6c9,stroke:#1b5e20
 ```
 
-### Dependency Injection Testing
+### Component Integration Tests 🔄
 
 ```mermaid
-graph LR
-    subgraph "Production"
-        PROD_SVC[Real Service]
-        PROD_DEP[Real Dependencies]
+graph TD
+    subgraph "ContentSelectionModal Tests"
+        M1[Opens modal]
+        M2[Shows content list]
+        M3[Filters content]
+        M4[Previews content]
+        M5[Selects & closes]
     end
     
-    subgraph "Testing"
-        TEST_SVC[Service Under Test]
-        TEST_DEP[Mock Dependencies]
+    subgraph "DisotEntry Integration"
+        D1[Generate keypair]
+        D2[Select content via modal]
+        D3[Create blog post]
+        D4[Sign & store entry]
+        D5[Display previous entries]
     end
     
-    subgraph "TestBed Configuration"
-        PROVIDERS[providers: [{<br/>provide: HashService,<br/>useClass: MockHashService<br/>}]]
-    end
-    
-    PROD_SVC --> PROD_DEP
-    TEST_SVC --> TEST_DEP
-    PROVIDERS --> TEST_DEP
-    
-    style PROD_SVC fill:#ffcdd2,stroke:#c62828
-    style TEST_SVC fill:#c8e6c9,stroke:#1b5e20
+    M5 --> D2
+    D3 --> D4
 ```
 
 ---

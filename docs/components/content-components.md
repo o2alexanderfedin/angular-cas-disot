@@ -37,8 +37,8 @@ graph TD
     UPLOAD --> HASH
     HASH --> DISPLAY
     
-    style COMPONENT fill:#e3f2fd,stroke:#1565c0
-    style SERVICE fill:#e8eaf6,stroke:#3f51b5
+    
+    
 ```
 
 ### Component Definition
@@ -190,8 +190,8 @@ graph TD
     SEARCH --> FILTER
     PREVIEW --> CACHE
     
-    style LIST fill:#e3f2fd,stroke:#1565c0
-    style SEARCH fill:#f3e5f5,stroke:#6a1b9a
+    
+    
 ```
 
 ### Component Definition

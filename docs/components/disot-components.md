@@ -38,9 +38,9 @@ graph TD
     SIGN -.-> SIG
     STORE -.-> DISOT
     
-    style SELECT fill:#e3f2fd,stroke:#1565c0
-    style SIGN fill:#f3e5f5,stroke:#6a1b9a
-    style DISOT fill:#e8eaf6,stroke:#3f51b5
+    
+    
+    
 ```
 
 ### Component Definition
@@ -272,8 +272,8 @@ graph TD
     HASH --> CHECK
     CHECK --> RESULT
     
-    style VERIFY fill:#f3e5f5,stroke:#6a1b9a
-    style CHECK fill:#e8f5e9,stroke:#2e7d32
+    
+    
 ```
 
 ### Component Definition
@@ -537,7 +537,7 @@ describe('SignatureVerificationComponent', () => {
 ### Integration with Other Components
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Component Integration"
         ENTRY[DISOT Entry<br/>Creates entries]
         VERIFY[Signature Verification<br/>Verifies entries]
@@ -553,10 +553,6 @@ graph LR
     VERIFY -->|Verifies| ENTRIES
     LIST -->|References| CONTENT
     ENTRIES -->|Points to| CONTENT
-    
-    style ENTRY fill:#e3f2fd,stroke:#1565c0
-    style VERIFY fill:#f3e5f5,stroke:#6a1b9a
-    style ENTRIES fill:#e8f5e9,stroke:#2e7d32
 ```
 
 ---

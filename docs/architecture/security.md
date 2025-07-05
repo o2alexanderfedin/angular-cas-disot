@@ -46,15 +46,15 @@ graph TD
     CRYPTO --> SIGN
     ACCESS --> AUDIT
     
-    style CRYPTO fill:#e8eaf6,stroke:#3f51b5,stroke-width:3px
-    style HASH fill:#c8e6c9,stroke:#1b5e20
-    style SIGN fill:#f3e5f5,stroke:#6a1b9a
+    
+    
+    
 ```
 
 ### Threat Model
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Threats"
         TAMPER[Data Tampering]
         FORGE[Signature Forgery]
@@ -76,9 +76,6 @@ graph LR
     INJECT --> VALID_M
     XSS --> CSP_M
     MITM --> TLS_M
-    
-    style TAMPER fill:#ffcdd2,stroke:#c62828
-    style HASH_M fill:#c8e6c9,stroke:#1b5e20
 ```
 
 ## Cryptographic Architecture
@@ -118,8 +115,8 @@ graph TD
     SIGN_API --> SIGN_DATA
     VERIFY_API --> VERIFY_SIG
     
-    style SUBTLE fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    style SHA256 fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ### Cryptographic Flow
@@ -188,8 +185,8 @@ graph TD
     USE --> ROTATE
     ROTATE --> REVOKE
     
-    style EPHEMERAL fill:#fff3e0,stroke:#e65100
-    style SECP256K1 fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ## Data Integrity
@@ -197,7 +194,7 @@ graph TD
 ### Content Addressing Security
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Content Integrity"
         CONTENT[Original Content]
         HASH[SHA-256 Hash]
@@ -225,9 +222,6 @@ graph LR
     COMPARE --> IMMUTABLE
     COMPARE --> DEDUP
     COMPARE --> INTEGRITY
-    
-    style HASH fill:#e3f2fd,stroke:#1565c0
-    style INTEGRITY fill:#c8e6c9,stroke:#1b5e20
 ```
 
 ### DISOT Security Model
@@ -254,8 +248,8 @@ graph TD
     TIMESTAMP --> TIME
     PUBKEY --> IDENTITY
     
-    style SIGNATURE fill:#f3e5f5,stroke:#6a1b9a
-    style AUTH fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ## Authentication & Authorization
@@ -282,8 +276,8 @@ graph TD
     PUBLIC -.->|Enable| PRIVATE
     PUBLIC -.->|Add| ENCRYPT
     
-    style NO_AUTH fill:#fff3e0,stroke:#e65100
-    style AUTH fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ### Future Authentication Flow
@@ -342,14 +336,14 @@ graph TD
     FORMAT --> INJECT_CHECK
     SIZE --> OVERFLOW
     
-    style SERVICE fill:#e8eaf6,stroke:#3f51b5
-    style XSS_CHECK fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ### Secure Coding Patterns
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Do"
         VALIDATE_IN[Validate all inputs]
         PARAM_QUERY[Parameterized queries]
@@ -371,9 +365,6 @@ graph LR
     RAW_HTML -.->|Instead| ESCAPE_OUT
     CUSTOM_CRYPTO -.->|Instead| USE_CRYPTO
     HTTP -.->|Instead| HTTPS
-    
-    style VALIDATE_IN fill:#c8e6c9,stroke:#1b5e20
-    style TRUST_INPUT fill:#ffcdd2,stroke:#c62828
 ```
 
 ### Security Headers
@@ -402,8 +393,8 @@ graph TD
     STS --> MITM_P
     RP --> LEAK
     
-    style CSP fill:#e3f2fd,stroke:#1565c0
-    style XSS_P fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ### Security Testing
@@ -435,8 +426,8 @@ graph TD
     PENETRATION --> SCANNER
     AUDIT --> OWASP
     
-    style UNIT_SEC fill:#c8e6c9,stroke:#1b5e20
-    style OWASP fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ### Deployment Security Checklist
@@ -474,8 +465,8 @@ graph TD
     AUDIT_P --> PATCH
     PATCH --> INCIDENT
     
-    style TEST fill:#c8e6c9,stroke:#1b5e20
-    style MONITOR fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ---

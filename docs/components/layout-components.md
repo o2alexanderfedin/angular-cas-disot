@@ -37,8 +37,8 @@ graph TD
     ROUTER --> CREATE
     ROUTER --> VERIFY
     
-    style HEADER fill:#e1bee7,stroke:#4a148c
-    style ROUTER fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ### Component Definition
@@ -152,7 +152,7 @@ export const routes: Routes = [
 ```
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Route Structure"
         ROOT[/]
         CONTENT[/content]
@@ -166,9 +166,6 @@ graph LR
     ROOT --> UPLOAD
     DISOT --> CREATE
     DISOT --> VERIFY
-    
-    style ROOT fill:#f3e5f5,stroke:#6a1b9a
-    style CONTENT fill:#e3f2fd,stroke:#1565c0
 ```
 
 ## Navigation Component
@@ -247,8 +244,8 @@ graph TD
     CONTAINER --> MAIN
     CONTAINER --> FOOTER
     
-    style CONTAINER fill:#e8eaf6,stroke:#3f51b5
-    style MAIN fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ### Grid Layout for Content
@@ -273,7 +270,7 @@ graph TD
 ### Layout Composition
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Layout Components"
         APP[App Shell]
         NAV[Navigation]
@@ -291,9 +288,6 @@ graph LR
     CONTENT --> LIST
     CONTENT --> FORM
     CONTENT --> DETAIL
-    
-    style APP fill:#e1bee7,stroke:#4a148c
-    style CONTENT fill:#e3f2fd,stroke:#1565c0
 ```
 
 ### Theme and Styling
@@ -402,8 +396,8 @@ graph TD
     ACCESSIBLE --> ARIA
     PERFORMANCE --> GRID
     
-    style SEMANTIC fill:#c8e6c9,stroke:#1b5e20
-    style RESPONSIVE fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ---

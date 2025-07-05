@@ -119,10 +119,10 @@ src/app/
 ```
 
 ### Key Design Patterns
-- **Dependency Injection**: Services are injected, not instantiated
-- **Interface Segregation**: Small, focused interfaces
-- **Single Responsibility**: Each service/component has one purpose
-- **Test-Driven Development**: Tests written before implementation
+- **Dependency Injection**: Services provided at root level
+- **Factory Pattern**: Storage provider selection at runtime
+- **Clean Architecture**: Clear separation between UI, business logic, and infrastructure
+- **Content Addressing**: SHA-256 based deduplication
 
 For detailed architecture documentation, see [docs/architecture](docs/architecture/overview.md).
 

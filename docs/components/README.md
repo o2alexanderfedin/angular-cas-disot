@@ -49,9 +49,9 @@ graph TD
     ROUTER --> ENTRY
     ROUTER --> VERIFY
     
-    style APP fill:#e1bee7,stroke:#4a148c,stroke-width:3px
-    style UPLOAD fill:#e3f2fd,stroke:#1565c0
-    style ENTRY fill:#f3e5f5,stroke:#6a1b9a
+    
+    
+    
 ```
 
 ### Component Categories
@@ -79,7 +79,7 @@ mindmap
 ### Component Communication Patterns
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Data Flow"
         PARENT[Parent Component]
         CHILD[Child Component]
@@ -100,10 +100,6 @@ graph LR
     PARENT --> SERVICE
     CHILD --> SERVICE
     SERVICE -->|BehaviorSubject| OBSERVABLE
-    
-    style INPUT fill:#e3f2fd,stroke:#1565c0
-    style OUTPUT fill:#f3e5f5,stroke:#6a1b9a
-    style OBSERVABLE fill:#e8f5e9,stroke:#2e7d32
 ```
 
 ### Component Testing Strategy
@@ -136,8 +132,8 @@ graph TD
     KARMA --> JASMINE
     JASMINE --> TESTBED
     
-    style UNIT fill:#c8e6c9,stroke:#1b5e20
-    style TESTBED fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ---

@@ -51,15 +51,15 @@ graph TD
     INTERFACES --> DOMAIN
     INTERFACES --> INFRA_INT
     
-    style SERVICES fill:#e8eaf6,stroke:#3f51b5
-    style INTERFACES fill:#f3e5f5,stroke:#6a1b9a
-    style MODELS fill:#e8f5e9,stroke:#2e7d32
+    
+    
+    
 ```
 
 ### API Conventions
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Naming Conventions"
         SERVICE[*Service suffix<br/>CasService]
         INTERFACE[I* prefix<br/>IContentStorage]
@@ -77,10 +77,6 @@ graph LR
         REJECT[Reject Promise]
         NULL[Return null]
     end
-    
-    style SERVICE fill:#e3f2fd,stroke:#1565c0
-    style ASYNC fill:#f3e5f5,stroke:#6a1b9a
-    style THROW fill:#ffcdd2,stroke:#c62828
 ```
 
 ### Type System

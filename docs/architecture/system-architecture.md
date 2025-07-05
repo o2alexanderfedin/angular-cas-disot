@@ -1,4 +1,4 @@
-# System Architecture
+# System Architecture 🏛️
 
 [← Architecture Overview](./overview.md) | [Home](../README.md) | [Next: Data Flow →](./data-flow.md)
 
@@ -12,368 +12,299 @@
 
 ## System Overview
 
+### CAS/DISOT Application Context 🌐
+
 ```mermaid
-C4Context
-    title System Context Diagram for CAS/DISOT Application
-
-    Person(user, "User", "Content creator/verifier")
-    System(cas_system, "CAS/DISOT System", "Content addressable storage with signature verification")
-    System_Ext(browser_storage, "Browser Storage", "Local/Session storage")
-    System_Ext(crypto_api, "Web Crypto API", "Browser cryptography")
-
-    Rel(user, cas_system, "Upload content, Create entries, Verify signatures")
-    Rel(cas_system, browser_storage, "Store/Retrieve content")
-    Rel(cas_system, crypto_api, "Hash content, Sign/Verify")
+graph TD
+    subgraph "Users"
+        USER[👤 Content Creator<br/>Uploads files<br/>Creates DISOT entries]
+    end
+    
+    subgraph "CAS/DISOT System"
+        UPLOAD[📤 File Upload]
+        HASH[#️⃣ SHA-256 Hashing]
+        STORE[💾 Content Storage]
+        DISOT[📝 DISOT Entries]
+        VERIFY[✅ Signature Verification]
+    end
+    
+    subgraph "Browser APIs"
+        CRYPTO[🔐 Web Crypto API]
+        IDB[🗄️ IndexedDB]
+        MEM[💭 Memory Storage]
+    end
+    
+    USER --> UPLOAD
+    UPLOAD --> HASH
+    HASH --> STORE
+    STORE --> DISOT
+    DISOT --> VERIFY
+    
+    HASH --> CRYPTO
+    STORE --> IDB
+    STORE --> MEM
 ```
 
 ## Architectural Patterns
 
-### Hexagonal Architecture
-
-```mermaid
-graph TB
-    subgraph "Application Core"
-        subgraph "Domain"
-            DM[Domain Models]
-            DI[Domain Interfaces]
-            BR[Business Rules]
-        end
-        
-        subgraph "Application"
-            UC[Use Cases]
-            SVC[Application Services]
-        end
-    end
-    
-    subgraph "Adapters"
-        subgraph "Primary Adapters"
-            UI[UI Components]
-            API[API Controllers]
-        end
-        
-        subgraph "Secondary Adapters"
-            STOR[Storage Adapter]
-            CRYPTO[Crypto Adapter]
-        end
-    end
-    
-    UI --> UC
-    API --> UC
-    UC --> SVC
-    SVC --> DI
-    DI <--> DM
-    DM --> BR
-    
-    STOR -.-> DI
-    CRYPTO -.-> DI
-    
-    style DM fill:#fce4ec,stroke:#880e4f
-    style DI fill:#e8eaf6,stroke:#283593
-    style UC fill:#e0f2f1,stroke:#004d40
-    style UI fill:#fff3e0,stroke:#e65100
-```
-
-### Clean Architecture Layers
+### Clean Architecture in Practice 🎯
 
 ```mermaid
 graph TD
-    subgraph "Presentation Layer"
-        COMP[Components]
-        TEMP[Templates]
-        STYLES[Styles]
+    subgraph "🎨 UI Layer (Components)"
+        UPLOAD_C[ContentUploadComponent]
+        LIST_C[ContentListComponent]
+        DISOT_C[DisotEntryComponent]
+        MODAL_C[ContentSelectionModal]
     end
     
-    subgraph "Application Layer"
-        APP_SVC[Application Services]
-        DTO[Data Transfer Objects]
-        MAP[Mappers]
+    subgraph "⚙️ Business Logic (Services)"
+        CAS_S[CasService]
+        DISOT_S[DisotService]
     end
     
-    subgraph "Domain Layer"
-        ENT[Entities]
-        VO[Value Objects]
-        DOM_SVC[Domain Services]
-        REPO[Repository Interfaces]
+    subgraph "🔧 Infrastructure"
+        HASH_I[HashService]
+        SIG_I[SignatureService]
+        STOR_I[Storage Providers]
     end
     
-    subgraph "Infrastructure Layer"
-        IMPL[Repository Implementations]
-        EXT[External Services]
-        CONF[Configuration]
+    subgraph "📋 Domain Models"
+        CONTENT[Content]
+        CHASH[ContentHash]
+        ENTRY[DisotEntry]
     end
     
-    COMP --> APP_SVC
-    APP_SVC --> DTO
-    DTO --> MAP
-    MAP --> ENT
-    APP_SVC --> DOM_SVC
-    DOM_SVC --> REPO
-    IMPL -.-> REPO
-    EXT --> IMPL
+    UPLOAD_C --> CAS_S
+    LIST_C --> CAS_S
+    DISOT_C --> DISOT_S
+    MODAL_C --> CAS_S
     
-    style COMP fill:#e1bee7,stroke:#4a148c
-    style APP_SVC fill:#c5cae9,stroke:#1a237e
-    style ENT fill:#c8e6c9,stroke:#1b5e20
-    style IMPL fill:#ffccbc,stroke:#bf360c
+    CAS_S --> CONTENT
+    DISOT_S --> ENTRY
+    
+    CAS_S --> HASH_I
+    CAS_S --> STOR_I
+    DISOT_S --> SIG_I
+```
+
+### Dependency Injection Flow 💉
+
+```mermaid
+graph TD
+    subgraph "Angular DI Container"
+        ROOT[Root Injector]
+    end
+    
+    subgraph "Service Registration"
+        CAS[@Injectable({providedIn: 'root'})<br/>CasService]
+        DISOT[@Injectable({providedIn: 'root'})<br/>DisotService]
+        HASH[@Injectable({providedIn: 'root'})<br/>HashService]
+    end
+    
+    subgraph "Component Injection"
+        COMP[constructor(<br/>  private cas: CasService,<br/>  private disot: DisotService<br/>)]
+    end
+    
+    subgraph "Factory Pattern"
+        FACTORY[StorageProviderFactory]
+        TOKEN[STORAGE_TYPE token]
+        PROVIDER[Returns IStorageProvider]
+    end
+    
+    ROOT --> CAS
+    ROOT --> DISOT
+    ROOT --> HASH
+    
+    CAS --> COMP
+    DISOT --> COMP
+    
+    TOKEN --> FACTORY
+    FACTORY --> PROVIDER
 ```
 
 ## Module Structure
 
-### Angular Module Organization
+### Actual Project Structure 📁
 
 ```mermaid
 graph TD
-    subgraph "App Module"
-        APP[App Component]
-        ROUTES[App Routes]
+    subgraph "src/app/"
+        APP[app.component.ts<br/>app.routes.ts]
     end
     
-    subgraph "Core Module"
-        subgraph "Domain"
-            INTERFACES[Interfaces]
-        end
-        
-        subgraph "Services"
-            CORE_SVC[Core Services]
-        end
+    subgraph "core/"
+        DOMAIN[domain/interfaces/<br/>• content.interface.ts<br/>• crypto.interface.ts<br/>• disot.interface.ts]
+        SERVICES[services/<br/>• cas.service.ts<br/>• disot.service.ts<br/>• hash.service.ts<br/>• signature.service.ts<br/>• storage.service.ts]
     end
     
-    subgraph "Feature Modules"
-        subgraph "Content Module"
-            C_LIST[Content List]
-            C_UPLOAD[Content Upload]
-        end
-        
-        subgraph "DISOT Module"
-            D_ENTRY[DISOT Entry]
-            D_VERIFY[Signature Verification]
-        end
+    subgraph "features/"
+        CONTENT[content/<br/>• content-list/<br/>• content-upload/]
+        DISOT[disot/<br/>• disot-entry/<br/>• signature-verification/]
     end
     
-    subgraph "Shared Module"
-        SHARED[Shared Components]
-        PIPES[Pipes]
-        DIRECTIVES[Directives]
+    subgraph "shared/"
+        SHARED[components/<br/>• content-selection-modal/]
+        MODULE[shared-module.ts]
     end
     
-    APP --> ROUTES
-    ROUTES --> C_LIST
-    ROUTES --> C_UPLOAD
-    ROUTES --> D_ENTRY
-    ROUTES --> D_VERIFY
-    
-    C_LIST --> CORE_SVC
-    C_UPLOAD --> CORE_SVC
-    D_ENTRY --> CORE_SVC
-    D_VERIFY --> CORE_SVC
-    
-    C_LIST --> SHARED
-    C_UPLOAD --> SHARED
-    D_ENTRY --> SHARED
-    D_VERIFY --> SHARED
-    
-    CORE_SVC --> INTERFACES
+    APP --> CONTENT
+    APP --> DISOT
+    CONTENT --> SERVICES
+    DISOT --> SERVICES
+    SERVICES --> DOMAIN
+    CONTENT --> SHARED
+    DISOT --> SHARED
 ```
 
-### File System Structure
+### Component Routing Structure 🗺️
 
 ```mermaid
 graph TD
-    subgraph "src/app"
-        ROOT["/"]
-        
-        ROOT --> CORE[core/]
-        ROOT --> FEATURES[features/]
-        ROOT --> SHARED[shared/]
-        
-        CORE --> DOMAIN[domain/]
-        CORE --> SERVICES[services/]
-        
-        DOMAIN --> INTF[interfaces/]
-        
-        FEATURES --> CONTENT[content/]
-        FEATURES --> DISOT[disot/]
-        
-        CONTENT --> C_LIST[content-list/]
-        CONTENT --> C_UPLOAD[content-upload/]
-        
-        DISOT --> D_ENTRY[disot-entry/]
-        DISOT --> D_VERIFY[signature-verification/]
+    subgraph "App Routes"
+        HOME[/ → ContentListComponent]
+        UPLOAD[/upload → ContentUploadComponent]
+        DISOT[/disot → DisotEntryComponent]
+        VERIFY[/verify → SignatureVerificationComponent]
+        SETTINGS[/settings → SettingsComponent]
     end
     
-    style ROOT fill:#fff,stroke:#333,stroke-width:3px
-    style CORE fill:#e3f2fd,stroke:#1565c0
-    style FEATURES fill:#f3e5f5,stroke:#6a1b9a
-    style SHARED fill:#e8f5e9,stroke:#2e7d32
+    subgraph "Navigation Flow"
+        NAV[Navigation Bar]
+        NAV --> HOME
+        NAV --> UPLOAD
+        NAV --> DISOT
+        NAV --> VERIFY
+        NAV --> SETTINGS
+    end
+    
+    subgraph "Modal Navigation"
+        DISOT_PAGE[DISOT Entry Page]
+        MODAL[Content Selection Modal]
+        DISOT_PAGE --> |Open Modal| MODAL
+        MODAL --> |Select Content| DISOT_PAGE
+    end
 ```
 
 ## Dependency Graph
 
-### Service Dependencies
+### Service Dependencies in Action 🔗
 
 ```mermaid
-graph LR
-    subgraph "UI Components"
-        CLC[ContentListComponent]
-        CUC[ContentUploadComponent]
-        DEC[DisotEntryComponent]
-        SVC[SignatureVerificationComponent]
+graph TD
+    subgraph "Components & Their Dependencies"
+        UPLOAD[📤 ContentUploadComponent<br/>Injects: CasService]
+        LIST[📋 ContentListComponent<br/>Injects: CasService]
+        DISOT[✍️ DisotEntryComponent<br/>Injects: DisotService, CasService, SignatureService]
+        VERIFY[✅ SignatureVerificationComponent<br/>Injects: DisotService]
+        MODAL[🔍 ContentSelectionModal<br/>Injects: CasService]
     end
     
-    subgraph "Application Services"
-        CAS[CasService]
-        DISOT[DisotService]
+    subgraph "Service Dependency Chain"
+        CAS[CasService<br/>Uses: HashService, StorageProvider]
+        DISOT_S[DisotService<br/>Uses: CasService, SignatureService, HashService]
     end
     
-    subgraph "Infrastructure Services"
-        HASH[HashService]
-        SIG[SignatureService]
-        STOR[StorageService]
-    end
-    
-    CLC --> CAS
-    CUC --> CAS
-    DEC --> DISOT
-    SVC --> DISOT
-    
-    CAS --> HASH
-    CAS --> STOR
-    
+    UPLOAD --> CAS
+    LIST --> CAS
+    DISOT --> DISOT_S
     DISOT --> CAS
-    DISOT --> SIG
-    DISOT --> HASH
-    
-    style CLC fill:#ffebee,stroke:#c62828
-    style CAS fill:#e8eaf6,stroke:#3f51b5
-    style HASH fill:#e0f7fa,stroke:#006064
+    VERIFY --> DISOT_S
+    MODAL --> CAS
 ```
 
-### Interface Dependencies
+### Storage Provider Selection 💾
 
 ```mermaid
-classDiagram
-    class IContentStorage {
-        <<interface>>
-        +store(content: Content): ContentHash
-        +retrieve(hash: ContentHash): Content
-    }
+graph TD
+    subgraph "Storage Options"
+        MEM[💭 InMemoryStorage<br/>• Fast access<br/>• No persistence<br/>• Lost on refresh]
+        IDB[🗄️ IndexedDbStorage<br/>• Browser persistence<br/>• Survives refresh<br/>• ~50MB limit]
+    end
     
-    class IHashService {
-        <<interface>>
-        +hash(data: Uint8Array): string
-    }
+    subgraph "Selection Process"
+        SETTINGS[⚙️ Settings Page]
+        SELECT[User selects storage type]
+        FACTORY[StorageProviderFactory]
+        INJECT[Inject into CasService]
+    end
     
-    class ISignatureService {
-        <<interface>>
-        +sign(data: Uint8Array, privateKey: string): Signature
-        +verify(data: Uint8Array, signature: Signature): boolean
-    }
-    
-    class IStorageProvider {
-        <<interface>>
-        +read(path: string): Uint8Array
-        +write(path: string, data: Uint8Array): void
-        +exists(path: string): boolean
-    }
-    
-    class CasService {
-        -hashService: IHashService
-        -storageService: IStorageProvider
-    }
-    
-    class DisotService {
-        -casService: IContentStorage
-        -signatureService: ISignatureService
-        -hashService: IHashService
-    }
-    
-    CasService ..|> IContentStorage
-    CasService --> IHashService
-    CasService --> IStorageProvider
-    DisotService --> IContentStorage
-    DisotService --> ISignatureService
-    DisotService --> IHashService
+    SETTINGS --> SELECT
+    SELECT --> |'memory'| MEM
+    SELECT --> |'indexeddb'| IDB
+    MEM --> FACTORY
+    IDB --> FACTORY
+    FACTORY --> INJECT
 ```
 
 ## Deployment Architecture
 
-### Browser-Based Deployment
+### Current Browser-Only Architecture 🌐
 
 ```mermaid
 graph TD
-    subgraph "User Browser"
-        subgraph "Angular Application"
-            SPA[Single Page App]
-            ROUTER[Angular Router]
-            SERVICES[Services]
-        end
-        
-        subgraph "Browser APIs"
-            CRYPTO[Web Crypto API]
-            STORAGE[Local Storage]
-            SESSION[Session Storage]
-        end
+    subgraph "Development"
+        DEV[npm start<br/>localhost:4200]
     end
     
-    subgraph "Build Artifacts"
-        HTML[index.html]
-        JS[JavaScript Bundles]
-        CSS[CSS Styles]
-        ASSETS[Static Assets]
+    subgraph "Build Process"
+        BUILD[npm run build]
+        DIST[dist/cas-app/]
     end
     
-    subgraph "Web Server"
-        STATIC[Static File Server]
+    subgraph "Browser Runtime"
+        SPA[Angular SPA]
+        CRYPTO[Web Crypto API<br/>SHA-256 hashing]
+        IDB_API[IndexedDB API<br/>Persistent storage]
+        FILE[File API<br/>Drag & drop]
     end
     
-    STATIC --> HTML
-    STATIC --> JS
-    STATIC --> CSS
-    STATIC --> ASSETS
+    subgraph "User Data"
+        CONTENT[📄 Uploaded Content]
+        ENTRIES[📝 DISOT Entries]
+        KEYS[🔑 Key Pairs]
+    end
+    
+    DEV --> BUILD
+    BUILD --> DIST
+    DIST --> SPA
     
     SPA --> CRYPTO
-    SERVICES --> STORAGE
-    SERVICES --> SESSION
+    SPA --> IDB_API
+    SPA --> FILE
     
-    style SPA fill:#e1bee7,stroke:#4a148c
-    style CRYPTO fill:#ffecb3,stroke:#ff6f00
-    style STATIC fill:#c5e1a5,stroke:#33691e
+    IDB_API --> CONTENT
+    IDB_API --> ENTRIES
+    SPA --> KEYS
 ```
 
-### Production Architecture
+### Future Decentralized Architecture 🚀
 
 ```mermaid
-graph TB
-    subgraph "CDN"
-        CF[CloudFront/CDN]
+graph TD
+    subgraph "Current (v1.1.0)"
+        BROWSER[🌐 Browser Only<br/>IndexedDB storage]
     end
     
-    subgraph "Origin"
-        S3[S3 Bucket]
-        NG[Angular App]
+    subgraph "Future Phases"
+        P1[Phase 1: IPFS Integration<br/>Distributed content storage]
+        P2[Phase 2: Blockchain<br/>Immutable entry records]
+        P3[Phase 3: P2P Network<br/>Full decentralization]
     end
     
-    subgraph "Future Services"
-        API[API Gateway]
-        IPFS[IPFS Node]
-        BC[Blockchain]
+    subgraph "Potential Stack"
+        IPFS[🌍 IPFS<br/>Content distribution]
+        ETH[⛓️ Ethereum<br/>DISOT entries]
+        LIBP2P[🔗 libp2p<br/>Peer discovery]
     end
     
-    subgraph "Client"
-        BROWSER[Web Browser]
-    end
+    BROWSER --> P1
+    P1 --> P2
+    P2 --> P3
     
-    BROWSER --> CF
-    CF --> S3
-    S3 --> NG
-    
-    BROWSER -.-> API
-    API -.-> IPFS
-    API -.-> BC
-    
-    style CF fill:#ffecb3,stroke:#ff6f00
-    style S3 fill:#fff3e0,stroke:#e65100
-    style BROWSER fill:#e3f2fd,stroke:#1565c0
+    P1 --> IPFS
+    P2 --> ETH
+    P3 --> LIBP2P
 ```
 
 ---
