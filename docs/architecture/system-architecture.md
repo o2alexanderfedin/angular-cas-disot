@@ -15,7 +15,7 @@
 ### CAS/DISOT Application Context 🌐
 
 ```mermaid
-graph TD
+graph LR
     subgraph "Users"
         USER[👤 Content Creator<br/>Uploads files<br/>Creates DISOT entries]
     end
@@ -97,13 +97,13 @@ graph TD
     end
     
     subgraph "Service Registration"
-        CAS[@Injectable({providedIn: 'root'})<br/>CasService]
-        DISOT[@Injectable({providedIn: 'root'})<br/>DisotService]
-        HASH[@Injectable({providedIn: 'root'})<br/>HashService]
+        CAS["@Injectable({providedIn: 'root'})<br/>CasService"]
+        DISOT["@Injectable({providedIn: 'root'})<br/>DisotService"]
+        HASH["@Injectable({providedIn: 'root'})<br/>HashService"]
     end
     
     subgraph "Component Injection"
-        COMP[constructor(<br/>  private cas: CasService,<br/>  private disot: DisotService<br/>)]
+        COMP["constructor(<br/>  private cas: CasService,<br/>  private disot: DisotService<br/>)"]
     end
     
     subgraph "Factory Pattern"
