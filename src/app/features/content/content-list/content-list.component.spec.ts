@@ -236,4 +236,5 @@ describe('ContentListComponent', () => {
     // Wait for FileReader to complete
     await new Promise(resolve => setTimeout(resolve, 100));
   });
+
 });

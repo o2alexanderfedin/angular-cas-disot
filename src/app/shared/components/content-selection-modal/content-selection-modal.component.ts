@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared-module';
 import { CasService } from '../../../core/services/cas.service';
 import { ContentHash, ContentMetadata } from '../../../core/domain/interfaces/content.interface';
 
@@ -11,87 +10,157 @@ interface ContentItem {
   previewData: string | null;
   previewType: 'text' | 'json' | 'hex' | 'base64' | 'image' | null;
   detectedType?: string;
+  isLoadingPreview?: boolean;
 }
 
 @Component({
-  selector: 'app-content-list',
+  selector: 'app-content-selection-modal',
   standalone: true,
-  imports: [CommonModule, SharedModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   template: `
-    <div class="content-list">
-      <h2>Stored Content</h2>
-      
-      <div class="search-bar">
-        <input 
-          type="text" 
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="filterContent()"
-          placeholder="Search by hash..."
-          class="search-input"
-        />
-      </div>
-
-      <div *ngIf="isLoading" class="loading">
-        Loading content...
-      </div>
-
-      <div *ngIf="!isLoading && filteredItems.length === 0" class="empty-state">
-        <p>No content found</p>
-      </div>
-
-      <div class="content-grid">
-        <div *ngFor="let item of filteredItems" class="content-card">
-          <div class="card-header">
-            <h3>{{ item.hash.algorithm | uppercase }}</h3>
-            <span class="file-size">{{ formatFileSize(item.metadata.size || 0) }}</span>
-          </div>
-          
-          <div class="hash-value">
-            <code>{{ item.hash.value }}</code>
+    <div class="modal-backdrop" (click)="close()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Select Content for DISOT Entry</h2>
+          <button class="close-button" (click)="close()">×</button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="search-bar">
+            <input 
+              type="text" 
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="filterContent()"
+              placeholder="Search by hash..."
+              class="search-input"
+            />
           </div>
 
-          <div class="metadata">
-            <p>Created: {{ item.metadata.createdAt | date:'short' }}</p>
-            <p *ngIf="item.metadata.contentType">Type: {{ item.metadata.contentType }}</p>
+          <div *ngIf="isLoading" class="loading">
+            Loading content...
           </div>
 
-          <div *ngIf="item.previewData" class="preview-section">
-            <div class="preview-controls">
-              <label>Preview as: </label>
-              <select [(ngModel)]="item.previewType" (change)="updatePreview(item)" class="preview-type-select">
-                <option value="text">Text</option>
-                <option value="json">JSON</option>
-                <option value="hex">Hex</option>
-                <option value="base64">Base64</option>
-                <option value="image">Image</option>
-              </select>
-              <span *ngIf="item.detectedType" class="detected-type">(Detected: {{ item.detectedType }})</span>
+          <div *ngIf="!isLoading && filteredItems.length === 0" class="empty-state">
+            <p>No content found</p>
+          </div>
+
+          <div class="content-list">
+            <div *ngFor="let item of filteredItems" class="content-item">
+              <div class="item-clickable">
+                <div class="item-header">
+                  <span class="algorithm">{{ item.hash.algorithm | uppercase }}</span>
+                  <span class="size">{{ formatFileSize(item.metadata.size || 0) }}</span>
+                </div>
+                <div class="hash-value">
+                  <code>{{ item.hash.value }}</code>
+                </div>
+                <div class="metadata">
+                  <span>{{ item.metadata.createdAt | date:'short' }}</span>
+                  <span *ngIf="item.metadata.contentType">• {{ item.metadata.contentType }}</span>
+                </div>
+              </div>
+              
+              <div class="preview-section" *ngIf="item.previewData">
+                <div class="preview-controls">
+                  <label>Preview as: </label>
+                  <select [(ngModel)]="item.previewType" (change)="updatePreview(item)" class="preview-type-select">
+                    <option value="text">Text</option>
+                    <option value="json">JSON</option>
+                    <option value="hex">Hex</option>
+                    <option value="base64">Base64</option>
+                    <option value="image">Image</option>
+                  </select>
+                  <span *ngIf="item.detectedType" class="detected-type">(Detected: {{ item.detectedType }})</span>
+                </div>
+                <div class="preview" [ngClass]="'preview-' + item.previewType">
+                  <pre *ngIf="item.previewType === 'json'">{{ item.previewData }}</pre>
+                  <code *ngIf="item.previewType === 'hex' || item.previewType === 'base64'">{{ item.previewData }}</code>
+                  <p *ngIf="item.previewType === 'text'">{{ item.previewData }}</p>
+                  <img *ngIf="item.previewType === 'image'" [src]="item.previewData" alt="Preview" />
+                </div>
+              </div>
+              
+              <div class="item-actions">
+                <button 
+                  (click)="selectContent(item.hash); $event.stopPropagation()" 
+                  class="select-button"
+                >
+                  Select
+                </button>
+                <button 
+                  (click)="togglePreview(item); $event.stopPropagation()" 
+                  class="preview-button"
+                  [disabled]="item.isLoadingPreview"
+                >
+                  {{ item.isLoadingPreview ? 'Loading...' : (item.previewData ? 'Hide Preview' : 'Show Preview') }}
+                </button>
+              </div>
             </div>
-            <div class="preview" [ngClass]="'preview-' + item.previewType">
-              <pre *ngIf="item.previewType === 'json'">{{ item.previewData }}</pre>
-              <code *ngIf="item.previewType === 'hex' || item.previewType === 'base64'">{{ item.previewData }}</code>
-              <p *ngIf="item.previewType === 'text'">{{ item.previewData }}</p>
-              <img *ngIf="item.previewType === 'image'" [src]="item.previewData" alt="Preview" />
-            </div>
-          </div>
-
-          <div class="actions">
-            <button (click)="previewContent(item)" class="action-button" [disabled]="item.previewData !== null">
-              {{ item.previewData !== null ? 'Preview Loaded' : 'Load Preview' }}
-            </button>
-            <button (click)="downloadContent(item.hash)" class="action-button">
-              Download
-            </button>
           </div>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .content-list {
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: #333;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 30px;
+      color: #999;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-button:hover {
+      color: #333;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
     }
 
     .search-bar {
@@ -112,61 +181,77 @@ interface ContentItem {
       color: #666;
     }
 
-    .content-grid {
+    .content-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 20px;
+      gap: 10px;
     }
 
-    .content-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
+    .content-item {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      transition: all 0.2s;
       background-color: #f9f9f9;
+      overflow: hidden;
     }
 
-    .card-header {
+    .item-clickable {
+      padding: 15px;
+    }
+
+    .content-item:hover .item-clickable {
+      background-color: #e3f2fd;
+    }
+
+    .content-item:hover {
+      border-color: #2196f3;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .card-header h3 {
-      margin: 0;
-      color: #333;
+    .algorithm {
+      font-weight: 600;
+      color: #2196f3;
+      font-size: 14px;
     }
 
-    .file-size {
+    .size {
       color: #666;
       font-size: 14px;
     }
 
     .hash-value {
-      margin-bottom: 15px;
-      padding: 10px;
-      background-color: #e9ecef;
+      margin-bottom: 8px;
+      padding: 8px;
+      background-color: #fff;
       border-radius: 4px;
-      overflow-wrap: break-word;
+      border: 1px solid #e0e0e0;
     }
 
     .hash-value code {
       font-family: monospace;
       font-size: 12px;
+      word-break: break-all;
+      color: #333;
     }
 
     .metadata {
-      margin-bottom: 15px;
-      font-size: 14px;
+      font-size: 12px;
       color: #666;
-    }
-
-    .metadata p {
-      margin: 5px 0;
+      display: flex;
+      gap: 10px;
     }
 
     .preview-section {
-      margin-bottom: 15px;
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-top: 1px solid #e0e0e0;
     }
 
     .preview-controls {
@@ -222,78 +307,87 @@ interface ContentItem {
       line-height: 1.4;
     }
 
-    .actions {
+    .item-actions {
+      padding: 10px 15px;
+      background-color: #f9f9f9;
+      border-top: 1px solid #e0e0e0;
       display: flex;
       gap: 10px;
     }
 
-    .action-button {
-      flex: 1;
-      padding: 8px 12px;
+    .select-button {
+      padding: 6px 12px;
+      background-color: #28a745;
+      color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.3s;
+      font-weight: 500;
+      transition: background-color 0.2s;
     }
 
-    .action-button:hover {
-      background-color: #0056b3;
+    .select-button:hover {
+      background-color: #218838;
+    }
+
+    .preview-button {
+      padding: 6px 12px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+
+    .preview-button:hover:not(:disabled) {
+      background-color: #5a6268;
+    }
+
+    .preview-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   `]
 })
-export class ContentListComponent implements OnInit {
-  @Input() filter?: any;
+export class ContentSelectionModalComponent {
   @Output() contentSelected = new EventEmitter<ContentHash>();
+  @Output() closed = new EventEmitter<void>();
 
   contentItems: ContentItem[] = [];
   filteredItems: ContentItem[] = [];
   searchTerm = '';
   isLoading = false;
 
-  constructor(private casService: CasService) {}
-
-  ngOnInit(): void {
-    this.loadContentItems();
+  constructor(private casService: CasService) {
+    this.loadContent();
   }
 
-  async loadContentItems(): Promise<void> {
+  async loadContent(): Promise<void> {
     this.isLoading = true;
     try {
       const allContent = await this.casService.getAllContent();
       
-      // Clear existing items and load from storage
       this.contentItems = [];
-      
       for (const item of allContent) {
         const metadata = await this.casService.getMetadata(item.hash);
         this.contentItems.push({
           hash: item.hash,
           metadata,
           previewData: null,
-          previewType: null
+          previewType: null,
+          isLoadingPreview: false
         });
       }
       
       this.filterContent();
     } catch (error) {
-      console.error('Failed to load content items:', error);
+      console.error('Failed to load content:', error);
     } finally {
       this.isLoading = false;
     }
-  }
-
-  addContentItem(hash: ContentHash, metadata: ContentMetadata): void {
-    const item: ContentItem = {
-      hash,
-      metadata,
-      previewData: null,
-      previewType: null
-    };
-    this.contentItems.push(item);
-    this.filterContent();
   }
 
   filterContent(): void {
@@ -309,11 +403,29 @@ export class ContentListComponent implements OnInit {
 
   selectContent(hash: ContentHash): void {
     this.contentSelected.emit(hash);
+    this.close();
   }
 
-  async previewContent(item: ContentItem): Promise<void> {
-    if (item.previewData !== null) return;
+  close(): void {
+    this.closed.emit();
+  }
+
+  async togglePreview(item: ContentItem): Promise<void> {
+    if (item.previewData) {
+      // Hide preview
+      item.previewData = null;
+      item.previewType = null;
+      item.detectedType = undefined;
+    } else {
+      // Load preview
+      await this.loadPreview(item);
+    }
+  }
+
+  async loadPreview(item: ContentItem): Promise<void> {
+    if (item.isLoadingPreview) return;
     
+    item.isLoadingPreview = true;
     try {
       const content = await this.casService.retrieve(item.hash);
       
@@ -322,14 +434,14 @@ export class ContentListComponent implements OnInit {
       item.detectedType = detectedType;
       
       // Set initial preview type based on detection
-      if (!item.previewType) {
-        item.previewType = this.getInitialPreviewType(detectedType, content.data);
-      }
+      item.previewType = this.getInitialPreviewType(detectedType, content.data);
       
       // Generate preview based on type
       this.updatePreviewData(item, content.data);
     } catch (error) {
       console.error('Failed to preview content:', error);
+    } finally {
+      item.isLoadingPreview = false;
     }
   }
 
@@ -442,27 +554,6 @@ export class ContentListComponent implements OnInit {
         reader.readAsDataURL(blob);
         break;
     }
-  }
-
-  async downloadContent(hash: ContentHash): Promise<void> {
-    try {
-      const content = await this.casService.retrieve(hash);
-      this.downloadFile(content.data, hash.value);
-    } catch (error) {
-      console.error('Failed to download content:', error);
-    }
-  }
-
-  downloadFile(data: Uint8Array, filename: string): void {
-    const blob = new Blob([data]);
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
   }
 
   formatFileSize(bytes: number): string {
