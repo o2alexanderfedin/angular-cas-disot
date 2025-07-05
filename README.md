@@ -2,9 +2,9 @@
 
 [![Angular](https://img.shields.io/badge/Angular-v18-red.svg)](https://angular.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.5-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-74%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
+[![Tests](https://img.shields.io/badge/Tests-108%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.0.0)
+[![Release](https://img.shields.io/badge/Release-v1.1.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.1.0)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -15,19 +15,32 @@ A decentralized content management system implementing Content Addressable Stora
 - **Automatic Deduplication**: Identical content is stored only once
 - **Content Integrity**: Hash verification ensures content hasn't been tampered with
 - **Metadata Support**: Store additional information alongside content
+- **Multiple Storage Providers**: In-memory and IndexedDB storage options
 
 ### DISOT (Decentralized Immutable Source of Truth)
 - **Digital Signatures**: Create cryptographically signed entries
-- **Entry Types**: Support for CREATE, UPDATE, and DELETE operations
+- **Entry Types**: Support for BLOG_POST, DOCUMENT, IMAGE, and SIGNATURE types
 - **Signature Verification**: Verify the authenticity of any entry
 - **Timestamp Proof**: Each entry includes a timestamp for temporal ordering
+- **Blog Post Support**: Create blog posts directly within DISOT entries
 
 ### User Interface
 - **Modern Angular 18**: Built with standalone components
 - **Responsive Design**: Works seamlessly on desktop and mobile
 - **File Upload**: Drag-and-drop or click to upload
-- **Content Browser**: Search and preview stored content
+- **Content Browser**: Search and preview stored content with multiple view formats
 - **Entry Management**: Create and verify DISOT entries
+- **Content Preview**: View content as Text, JSON, Hex, Base64, or Image
+- **Modal Selection**: Elegant content selection with preview capability
+- **Previous Entries**: View and preview historical DISOT entries
+
+### New in v1.1.0
+- **IndexedDB Storage**: Persistent browser-based storage implementation
+- **Enhanced Content Preview**: Auto-detect content types and manual format selection
+- **Modal Content Selection**: Improved UX with preview in selection dialog
+- **Blog Post Creation**: Direct blog post creation in DISOT entries
+- **Previous Entry Previews**: View content from historical entries
+- **Storage Provider Selection**: Runtime configuration of storage backend
 
 ## 📋 Table of Contents
 
@@ -147,9 +160,10 @@ npm test
 Executes unit tests via [Karma](https://karma-runner.github.io) in headless Chrome.
 
 ### Test Coverage
-The project maintains high test coverage with 74 tests across all components and services:
-- Services: 30 tests
-- Components: 44 tests
+The project maintains high test coverage with 108 tests across all components and services:
+- Services: 47 tests
+- Components: 61 tests
+- All tests passing ✅
 
 ### Test Structure
 ```typescript
@@ -228,11 +242,13 @@ We welcome contributions! Please follow these steps:
 
 ## 🗺 Roadmap
 
-### Version 1.1.0 (Planned)
-- [ ] Real secp256k1 implementation
-- [ ] Persistent storage (IndexedDB)
-- [ ] Import/Export functionality
-- [ ] Batch operations support
+### Version 1.1.0 (Released)
+- [x] Persistent storage (IndexedDB)
+- [x] Storage provider selection
+- [x] Enhanced content preview
+- [x] Modal content selection
+- [x] Blog post support in DISOT
+- [x] Previous entry previews
 
 ### Version 1.2.0 (Future)
 - [ ] User authentication

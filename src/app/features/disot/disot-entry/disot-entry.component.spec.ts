@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DisotEntryComponent } from './disot-entry.component';
 import { DisotService } from '../../../core/services/disot.service';
 import { SignatureService } from '../../../core/services/signature.service';
+import { CasService } from '../../../core/services/cas.service';
 import { SharedModule } from '../../../shared/shared-module';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
@@ -12,16 +13,19 @@ describe('DisotEntryComponent', () => {
   let fixture: ComponentFixture<DisotEntryComponent>;
   let disotService: jasmine.SpyObj<DisotService>;
   let signatureService: jasmine.SpyObj<SignatureService>;
+  let casService: jasmine.SpyObj<CasService>;
 
   beforeEach(async () => {
-    const disotSpy = jasmine.createSpyObj('DisotService', ['createEntry', 'verifyEntry']);
+    const disotSpy = jasmine.createSpyObj('DisotService', ['createEntry', 'verifyEntry', 'listEntries']);
     const signatureSpy = jasmine.createSpyObj('SignatureService', ['generateKeyPair']);
+    const casSpy = jasmine.createSpyObj('CasService', ['store']);
 
     await TestBed.configureTestingModule({
       imports: [DisotEntryComponent, SharedModule],
       providers: [
         { provide: DisotService, useValue: disotSpy },
-        { provide: SignatureService, useValue: signatureSpy }
+        { provide: SignatureService, useValue: signatureSpy },
+        { provide: CasService, useValue: casSpy }
       ]
     }).compileComponents();
 
@@ -29,6 +33,10 @@ describe('DisotEntryComponent', () => {
     component = fixture.componentInstance;
     disotService = TestBed.inject(DisotService) as jasmine.SpyObj<DisotService>;
     signatureService = TestBed.inject(SignatureService) as jasmine.SpyObj<SignatureService>;
+    casService = TestBed.inject(CasService) as jasmine.SpyObj<CasService>;
+    
+    // Mock listEntries to prevent errors
+    disotService.listEntries.and.returnValue(Promise.resolve([]));
   });
 
   it('should create', () => {
@@ -38,9 +46,12 @@ describe('DisotEntryComponent', () => {
   it('should initialize with default values', () => {
     expect(component.selectedType).toBe(DisotEntryType.DOCUMENT);
     expect(component.privateKey).toBe('');
+    expect(component.publicKey).toBe('');
+    expect(component.blogPostContent).toBe('');
     expect(component.isCreating).toBe(false);
     expect(component.errorMessage).toBe('');
     expect(component.createdEntry).toBeNull();
+    expect(component.previousEntries).toEqual([]);
   });
 
   it('should set content hash from input', () => {
@@ -64,6 +75,7 @@ describe('DisotEntryComponent', () => {
     
     expect(signatureService.generateKeyPair).toHaveBeenCalled();
     expect(component.privateKey).toBe(mockKeyPair.privateKey);
+    expect(component.publicKey).toBe(mockKeyPair.publicKey);
   });
 
   it('should create DISOT entry', async () => {
@@ -77,11 +89,11 @@ describe('DisotEntryComponent', () => {
         publicKey: 'pubkey123'
       },
       timestamp: new Date(),
-      type: DisotEntryType.BLOG_POST
+      type: DisotEntryType.DOCUMENT
     };
     
     component.contentHash = mockHash;
-    component.selectedType = DisotEntryType.BLOG_POST;
+    component.selectedType = DisotEntryType.DOCUMENT;
     component.privateKey = 'privkey123';
     
     disotService.createEntry.and.returnValue(Promise.resolve(mockEntry));
@@ -90,7 +102,7 @@ describe('DisotEntryComponent', () => {
     
     expect(disotService.createEntry).toHaveBeenCalledWith(
       mockHash,
-      DisotEntryType.BLOG_POST,
+      DisotEntryType.DOCUMENT,
       'privkey123'
     );
     expect(component.createdEntry).toEqual(mockEntry);
@@ -191,5 +203,69 @@ describe('DisotEntryComponent', () => {
     expect(component.entryTypes).toContain(DisotEntryType.DOCUMENT);
     expect(component.entryTypes).toContain(DisotEntryType.IMAGE);
     expect(component.entryTypes).toContain(DisotEntryType.SIGNATURE);
+  });
+
+  it('should create blog post entry', async () => {
+    const mockHash: ContentHash = { algorithm: 'sha256', value: 'blogcontent123' };
+    const mockEntry: DisotEntry = {
+      id: 'blogentry123',
+      contentHash: mockHash,
+      signature: {
+        value: 'sig123',
+        algorithm: 'secp256k1',
+        publicKey: 'pubkey123'
+      },
+      timestamp: new Date(),
+      type: DisotEntryType.BLOG_POST
+    };
+    
+    component.selectedType = DisotEntryType.BLOG_POST;
+    component.blogPostContent = 'This is my blog post';
+    component.privateKey = 'privkey123';
+    
+    casService.store.and.returnValue(Promise.resolve(mockHash));
+    disotService.createEntry.and.returnValue(Promise.resolve(mockEntry));
+    
+    await component.createEntry();
+    
+    expect(casService.store).toHaveBeenCalled();
+    const storeCall = casService.store.calls.mostRecent().args[0];
+    const contentText = new TextDecoder().decode(storeCall.data);
+    const blogData = JSON.parse(contentText);
+    expect(blogData.blogPost).toBe('This is my blog post');
+    
+    expect(disotService.createEntry).toHaveBeenCalledWith(
+      mockHash,
+      DisotEntryType.BLOG_POST,
+      'privkey123'
+    );
+    expect(component.createdEntry).toEqual(mockEntry);
+  });
+
+  it('should show content selection modal', () => {
+    expect(component.showContentModal).toBe(false);
+    component.selectContent();
+    expect(component.showContentModal).toBe(true);
+  });
+
+  it('should handle content selection from modal', () => {
+    const mockHash: ContentHash = { algorithm: 'sha256', value: 'selected123' };
+    component.showContentModal = true;
+    
+    component.onContentSelected(mockHash);
+    
+    expect(component.contentHash).toEqual(mockHash);
+    expect(component.showContentModal).toBe(false);
+  });
+
+  it('should clear content', () => {
+    component.contentHash = { algorithm: 'sha256', value: 'test' };
+    component.clearContent();
+    expect(component.contentHash).toBeNull();
+  });
+
+  it('should load previous entries on init', () => {
+    fixture.detectChanges(); // Trigger ngOnInit
+    expect(disotService.listEntries).toHaveBeenCalled();
   });
 });

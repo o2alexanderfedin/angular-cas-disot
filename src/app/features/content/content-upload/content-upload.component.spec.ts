@@ -3,25 +3,30 @@ import { ContentUploadComponent } from './content-upload.component';
 import { CasService } from '../../../core/services/cas.service';
 import { SharedModule } from '../../../shared/shared-module';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
+import { Router } from '@angular/router';
 
 describe('ContentUploadComponent', () => {
   let component: ContentUploadComponent;
   let fixture: ComponentFixture<ContentUploadComponent>;
   let casService: jasmine.SpyObj<CasService>;
+  let router: jasmine.SpyObj<any>;
 
   beforeEach(async () => {
     const casSpy = jasmine.createSpyObj('CasService', ['store', 'exists']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [ContentUploadComponent, SharedModule],
       providers: [
-        { provide: CasService, useValue: casSpy }
+        { provide: CasService, useValue: casSpy },
+        { provide: Router, useValue: routerSpy }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContentUploadComponent);
     component = fixture.componentInstance;
     casService = TestBed.inject(CasService) as jasmine.SpyObj<CasService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<any>;
   });
 
   it('should create', () => {
@@ -147,5 +152,10 @@ describe('ContentUploadComponent', () => {
     await uploadCall;
 
     expect(component.isUploading).toBe(false);
+  });
+
+  it('should navigate to content list', () => {
+    component.navigateToContentList();
+    expect(router.navigate).toHaveBeenCalledWith(['/content']);
   });
 });
