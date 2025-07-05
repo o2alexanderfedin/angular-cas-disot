@@ -1,4 +1,4 @@
-# Architecture Overview
+# Architecture Overview 🏗️
 
 [← Home](../README.md) | [Next: System Architecture →](./system-architecture.md)
 
@@ -12,190 +12,157 @@
 
 ## Introduction
 
-The CAS/DISOT system is built using Angular with a clean architecture approach, emphasizing separation of concerns, testability, and maintainability. The system implements content-addressable storage with cryptographic verification capabilities.
+The CAS/DISOT system implements content-addressable storage with cryptographic verification capabilities. Built with Angular 18+, it provides secure content management with SHA-256 hashing and digital signatures.
 
 ## High-Level Architecture
 
 ```mermaid
 graph TB
-    subgraph "Presentation Layer"
-        UI[Angular Components]
-        RT[Router]
+    subgraph "🎨 Presentation Layer"
+        UPLOAD[Content Upload<br/>Component]
+        LIST[Content List<br/>Component]
+        DISOT[DISOT Entry<br/>Component]
+        VERIFY[Signature Verify<br/>Component]
+        MODAL[Selection Modal<br/>Component]
     end
     
-    subgraph "Application Layer"
-        SVC[Services]
-        INT[Interfaces]
+    subgraph "⚙️ Application Services"
+        CAS_SVC[CAS Service<br/>Content Storage]
+        DISOT_SVC[DISOT Service<br/>Entry Management]
     end
     
-    subgraph "Domain Layer"
-        DOM[Domain Models]
-        BL[Business Logic]
+    subgraph "🔧 Infrastructure Services"
+        HASH_SVC[Hash Service<br/>SHA-256]
+        SIG_SVC[Signature Service<br/>Key Management]
+        STOR_SVC[Storage Provider<br/>IndexedDB/Memory]
     end
     
-    subgraph "Infrastructure Layer"
-        STOR[Storage Providers]
-        CRYPTO[Cryptography Providers]
-    end
+    UPLOAD --> CAS_SVC
+    LIST --> CAS_SVC
+    DISOT --> DISOT_SVC
+    DISOT --> CAS_SVC
+    VERIFY --> DISOT_SVC
+    MODAL --> CAS_SVC
     
-    UI --> SVC
-    RT --> UI
-    SVC --> INT
-    SVC --> DOM
-    DOM --> BL
-    SVC --> STOR
-    SVC --> CRYPTO
-    
-    style UI fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style SVC fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style DOM fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style STOR fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    CAS_SVC --> HASH_SVC
+    CAS_SVC --> STOR_SVC
+    DISOT_SVC --> SIG_SVC
+    DISOT_SVC --> HASH_SVC
+    DISOT_SVC --> CAS_SVC
 ```
 
 ## Key Principles
 
-### SOLID Principles
-
-```mermaid
-mindmap
-  root((SOLID))
-    S[Single Responsibility]
-      Each service has one job
-      Components handle one feature
-    O[Open/Closed]
-      Extensible via interfaces
-      Closed for modification
-    L[Liskov Substitution]
-      Service implementations
-      Interchangeable providers
-    I[Interface Segregation]
-      Focused interfaces
-      No unused methods
-    D[Dependency Inversion]
-      Depend on abstractions
-      Inject dependencies
-```
-
-### Clean Architecture Layers
-
-```mermaid
-graph LR
-    subgraph "Dependencies Flow"
-        A[UI Components] --> B[Application Services]
-        B --> C[Domain Interfaces]
-        B --> D[Infrastructure]
-        D -.-> C
-    end
-    
-    style A fill:#ffebee,stroke:#c62828
-    style B fill:#e3f2fd,stroke:#1565c0
-    style C fill:#e8f5e9,stroke:#2e7d32
-    style D fill:#fff8e1,stroke:#f57f17
-```
-
-## Technology Stack
+### SOLID Principles Applied ✅
 
 ```mermaid
 graph TD
-    subgraph "Frontend Framework"
-        ANG[Angular 18+]
-        TS[TypeScript 5.5+]
-        RX[RxJS]
+    subgraph "S - Single Responsibility"
+        CAS[CasService: Content Storage Only]
+        HASH[HashService: SHA-256 Hashing Only]
+        SIG[SignatureService: Crypto Operations Only]
     end
     
-    subgraph "Testing"
-        KRM[Karma]
-        JSM[Jasmine]
+    subgraph "O - Open/Closed"
+        IPROV[IStorageProvider Interface]
+        MEM[InMemoryStorage]
+        IDB[IndexedDbStorage]
+        IPROV --> MEM
+        IPROV --> IDB
     end
     
-    subgraph "Build Tools"
-        NG[Angular CLI]
-        WP[Webpack]
+    subgraph "D - Dependency Inversion"
+        COMP[Components]
+        INTF[Interfaces]
+        IMPL[Implementations]
+        COMP --> INTF
+        IMPL --> INTF
     end
-    
-    subgraph "APIs"
-        WEB[Web Crypto API]
-        STOR[Storage APIs]
-    end
-    
-    ANG --> TS
-    ANG --> RX
-    ANG --> KRM
-    KRM --> JSM
-    ANG --> NG
-    NG --> WP
-    ANG --> WEB
-    ANG --> STOR
 ```
 
-## System Components
-
-### Core Components Overview
+### Clean Architecture Implementation 🎯
 
 ```mermaid
 graph TD
-    subgraph "Feature Components"
-        CU[Content Upload]
-        CL[Content List]
-        DE[DISOT Entry]
-        SV[Signature Verification]
+    subgraph "Dependencies Point Inward"
+        UI[UI Components]
+        SVC[Services]
+        INTF[Domain Interfaces]
+        INFRA[Infrastructure]
+        
+        UI --> SVC
+        SVC --> INTF
+        INFRA --> INTF
     end
     
-    subgraph "Core Services"
-        CAS[CAS Service]
-        DISOT[DISOT Service]
-        HASH[Hash Service]
-        SIG[Signature Service]
-        STORAGE[Storage Service]
+    subgraph "No Circular Dependencies"
+        UI -.X.-> INFRA
+        INTF -.X.-> SVC
+        INTF -.X.-> UI
     end
-    
-    subgraph "Domain Models"
-        CONTENT[Content]
-        ENTRY[DISOT Entry]
-        SIG_MODEL[Signature]
-        HASH_MODEL[Content Hash]
-    end
-    
-    CU --> CAS
-    CL --> CAS
-    DE --> DISOT
-    SV --> DISOT
-    
-    CAS --> HASH
-    CAS --> STORAGE
-    DISOT --> CAS
-    DISOT --> SIG
-    
-    CAS --> CONTENT
-    DISOT --> ENTRY
-    SIG --> SIG_MODEL
-    HASH --> HASH_MODEL
-    
-    style CU fill:#e1bee7,stroke:#4a148c
-    style CL fill:#e1bee7,stroke:#4a148c
-    style DE fill:#e1bee7,stroke:#4a148c
-    style SV fill:#e1bee7,stroke:#4a148c
-    style CAS fill:#c5cae9,stroke:#1a237e
-    style DISOT fill:#c5cae9,stroke:#1a237e
 ```
 
-### Component Interaction Flow
+## Technology Stack 🛠️
 
 ```mermaid
-sequenceDiagram
-    participant User
-    participant Component
-    participant Service
-    participant Domain
-    participant Infrastructure
+graph TD
+    subgraph "Core Technologies"
+        ANG[Angular 18.0.0]
+        TS[TypeScript 5.8.2]
+        RX[RxJS 7.8.0]
+        ANG --> TS
+        ANG --> RX
+    end
     
-    User->>Component: Interact
-    Component->>Service: Call method
-    Service->>Domain: Apply business logic
-    Service->>Infrastructure: Persist/Retrieve
-    Infrastructure-->>Service: Return data
-    Service-->>Component: Return result
-    Component-->>User: Update UI
+    subgraph "Testing Stack"
+        JASMINE[Jasmine 5.7.0]
+        KARMA[Karma 6.4.0]
+        KARMA --> JASMINE
+    end
+    
+    subgraph "Web APIs Used"
+        CRYPTO[Web Crypto API<br/>SHA-256 Hashing]
+        IDB[IndexedDB API<br/>Persistent Storage]
+        FILE[File API<br/>Content Upload]
+    end
+```
+
+## System Components 📦
+
+### CAS/DISOT Data Flow
+
+```mermaid
+graph TD
+    subgraph "Content Flow"
+        FILE[File Upload] --> HASH[SHA-256 Hash]
+        HASH --> STORE[Store by Hash]
+        STORE --> DEDUP[Deduplication Check]
+        DEDUP --> SAVE[Save to Storage]
+    end
+    
+    subgraph "DISOT Entry Flow"
+        CONTENT[Select Content] --> SIGN[Sign with Private Key]
+        SIGN --> ENTRY[Create DISOT Entry]
+        ENTRY --> VERIFY[Verification Ready]
+    end
+    
+    subgraph "Storage Options"
+        MEM[In-Memory<br/>Fast but Temporary]
+        IDB2[IndexedDB<br/>Persistent Browser Storage]
+    end
+```
+
+### Component Responsibilities 📋
+
+```mermaid
+graph TD
+    subgraph "UI Components"
+        UPLOAD[📤 Content Upload<br/>- Drag & Drop<br/>- File Selection<br/>- Progress Display]
+        LIST[📋 Content List<br/>- Search by Hash<br/>- Preview Content<br/>- Download Files]
+        DISOT[✍️ DISOT Entry<br/>- Create Blog Posts<br/>- Sign Content<br/>- Generate Keys]
+        VERIFY[✅ Signature Verify<br/>- Verify Entries<br/>- Check Signatures]
+        MODAL[🔍 Selection Modal<br/>- Browse Content<br/>- Preview Items<br/>- Select for DISOT]
+    end
 ```
 
 ---

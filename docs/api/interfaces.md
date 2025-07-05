@@ -321,9 +321,9 @@ graph TD
     SIG --> D_SIG
     SIG --> D_KEY
     
-    style CONTENT fill:#e8eaf6,stroke:#3f51b5
-    style HASH fill:#e8f5e9,stroke:#2e7d32
-    style C_HASH fill:#fff3e0,stroke:#e65100
+    
+    
+    
 ```
 
 ---

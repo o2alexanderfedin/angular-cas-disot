@@ -41,8 +41,8 @@ graph TD
     C --> G
     D --> H
     
-    style A fill:#e3f2fd,stroke:#1565c0
-    style B fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ### Current Test Structure

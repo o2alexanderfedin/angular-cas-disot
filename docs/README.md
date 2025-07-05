@@ -1,49 +1,59 @@
-# CAS/DISOT Technical Documentation
+# CAS/DISOT Technical Documentation 📚
 
 ## Table of Contents
 
-1. [Architecture Overview](./architecture/overview.md)
-2. [System Architecture](./architecture/system-architecture.md)
-3. [Data Flow](./architecture/data-flow.md)
-4. [Component Architecture](./architecture/component-architecture.md)
-5. [Service Architecture](./architecture/service-architecture.md)
-6. [Security Architecture](./architecture/security.md)
-7. [API Reference](./api/README.md)
-8. [Component Reference](./components/README.md)
-9. [Service Reference](./services/README.md)
-10. [Testing Guide](./testing/testing-guide.md)
+1. [Architecture Overview](./architecture/overview.md) - 🏗️ High-level system design
+2. [System Architecture](./architecture/system-architecture.md) - 🏛️ Detailed architecture patterns
+3. [Data Flow](./architecture/data-flow.md) - 🌊 How data moves through the system
+4. [Component Architecture](./architecture/component-architecture.md) - 🧩 UI component structure
+5. [Service Architecture](./architecture/service-architecture.md) - 🔧 Business logic services
+6. [Security Architecture](./architecture/security.md) - 🔐 Security considerations
+7. [API Reference](./api/README.md) - 📡 Service interfaces
+8. [Component Reference](./components/README.md) - 🎨 Component documentation
+9. [Service Reference](./services/README.md) - ⚙️ Service documentation
+10. [Testing Guide](./testing/testing-guide.md) - 🧪 Testing strategies
 
-## Quick Start
+## Quick Start 🚀
 
-This documentation provides a comprehensive technical overview of the Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) system implemented in Angular.
+This documentation covers the CAS/DISOT application - a browser-based content management system with cryptographic verification.
 
-### Key Concepts
+### What This App Does
 
-- **CAS (Content Addressable Storage)**: A storage system where content is addressed by its cryptographic hash
-- **DISOT (Decentralized Immutable Source of Truth)**: A system for creating verifiable, tamper-proof records using digital signatures
-- **Clean Architecture**: Separation of concerns with clear boundaries between layers
+- 📤 **Upload Files**: Drag & drop or select files to store
+- 🔐 **Content Addressing**: Files stored by SHA-256 hash (deduplication)
+- 📝 **DISOT Entries**: Create signed, timestamped records
+- ✅ **Verification**: Verify digital signatures on entries
+- 💾 **Storage Options**: In-memory or persistent IndexedDB
 
-### Documentation Structure
+### Key Features Implemented
 
 ```mermaid
 graph TD
-    A[Documentation Root] --> B[Architecture]
-    A --> C[API Reference]
-    A --> D[Component Reference]
-    A --> E[Service Reference]
+    subgraph "v1.1.0 Features"
+        UPLOAD[📤 File Upload<br/>Drag & drop support]
+        HASH[#️⃣ SHA-256 Hashing<br/>Content deduplication]
+        PREVIEW[👁️ Content Preview<br/>Text, JSON, Images, Hex]
+        DISOT[📝 DISOT Entries<br/>Blog posts, documents]
+        STORAGE[💾 Storage Options<br/>Memory & IndexedDB]
+        MODAL[🔍 Selection Modal<br/>Browse & preview]
+    end
+```
+
+### Navigation Structure
+
+```mermaid
+graph TD
+    HOME[🏠 Home/Content List]
+    UPLOAD[📤 Upload Content]
+    DISOT[✍️ Create DISOT Entry]
+    VERIFY[✅ Verify Signatures]
+    SETTINGS[⚙️ Settings]
     
-    B --> F[Overview]
-    B --> G[System Architecture]
-    B --> H[Data Flow]
-    B --> I[Component Architecture]
-    B --> J[Service Architecture]
-    B --> K[Security]
-    
-    style A fill:#f9f,stroke:#333,stroke-width:4px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-    style D fill:#bbf,stroke:#333,stroke-width:2px
-    style E fill:#bbf,stroke:#333,stroke-width:2px
+    HOME --> UPLOAD
+    HOME --> DISOT
+    HOME --> VERIFY
+    HOME --> SETTINGS
+    DISOT --> |Modal| HOME
 ```
 
 ---

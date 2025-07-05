@@ -44,7 +44,7 @@ cas-app/
 ### 1. Co-located Tests
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Each Module"
         A[component.ts]
         B[component.spec.ts]
@@ -55,9 +55,6 @@ graph LR
         A -.-> C
         A -.-> D
     end
-    
-    style A fill:#e3f2fd,stroke:#1565c0
-    style B fill:#c8e6c9,stroke:#1b5e20
 ```
 
 **Why co-located tests?**
@@ -97,8 +94,8 @@ graph TD
         DISOT --> VERIFY
     end
     
-    style CONTENT fill:#e3f2fd,stroke:#1565c0
-    style DISOT fill:#f3e5f5,stroke:#6a1b9a
+    
+    
 ```
 
 ### 3. Core/Features/Shared Pattern

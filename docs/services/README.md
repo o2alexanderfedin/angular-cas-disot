@@ -38,8 +38,8 @@ graph TD
     INFRA --> SIG
     INFRA --> STOR
     
-    style CORE fill:#e8eaf6,stroke:#3f51b5
-    style INFRA fill:#e8f5e9,stroke:#2e7d32
+    
+    
 ```
 
 ## Core Services
@@ -165,8 +165,8 @@ graph TD
     MOCK_SIGN -.->|TODO| REAL_SIGN
     MOCK_VERIFY -.->|TODO| REAL_VERIFY
     
-    style MOCK_GEN fill:#fff3e0,stroke:#e65100
-    style REAL_GEN fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ### Storage Service
@@ -260,8 +260,8 @@ graph TD
     ACTION --> VERIFY
     VERIFY --> CLEANUP
     
-    style SETUP fill:#e3f2fd,stroke:#1565c0
-    style VERIFY fill:#c8e6c9,stroke:#1b5e20
+    
+    
 ```
 
 ## Service Best Practices
@@ -269,7 +269,7 @@ graph TD
 ### Dependency Injection
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Good Practice"
         INTERFACE[Depend on Interfaces]
         INJECT[Constructor Injection]
@@ -287,9 +287,6 @@ graph LR
     
     CONCRETE -.->|Avoid| NEW
     NEW -.->|Leads to| COUPLED
-    
-    style INTERFACE fill:#c8e6c9,stroke:#1b5e20
-    style CONCRETE fill:#ffcdd2,stroke:#c62828
 ```
 
 ### Error Handling
@@ -336,8 +333,8 @@ graph TD
     ASYNC --> COMPOSE
     INTERFACE --> TEST
     
-    style SINGLETON fill:#e8eaf6,stroke:#3f51b5
-    style INTERFACE fill:#e8f5e9,stroke:#2e7d32
+    
+    
 ```
 
 ### Performance Considerations

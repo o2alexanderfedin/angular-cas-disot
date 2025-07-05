@@ -37,8 +37,15 @@ constructor(
 Stores content and returns its hash.
 
 ```mermaid
-graph LR
-    INPUT[Content] --> HASH[Generate Hash] --> STORE[Store by Hash] --> OUTPUT[ContentHash]
+graph TD
+    INPUT[Content]
+    HASH[Generate Hash]
+    STORE[Store by Hash]
+    OUTPUT[ContentHash]
+    
+    INPUT --> HASH
+    HASH --> STORE
+    STORE --> OUTPUT
 ```
 
 **Signature:**
@@ -70,8 +77,15 @@ const hash = await casService.store(content);
 Retrieves content by its hash.
 
 ```mermaid
-graph LR
-    INPUT[ContentHash] --> PATH[Generate Path] --> READ[Read Content] --> OUTPUT[Content]
+graph TD
+    INPUT[ContentHash]
+    PATH[Generate Path]
+    READ[Read Content]
+    OUTPUT[Content]
+    
+    INPUT --> PATH
+    PATH --> READ
+    READ --> OUTPUT
 ```
 
 **Signature:**
@@ -211,8 +225,15 @@ export class HashService implements IHashService
 Generates SHA-256 hash of data.
 
 ```mermaid
-graph LR
-    INPUT[Uint8Array] --> SHA256[SHA-256] --> HEX[Hex Encode] --> OUTPUT[string]
+graph TD
+    INPUT[Uint8Array]
+    SHA256[SHA-256]
+    HEX[Hex Encode]
+    OUTPUT[string]
+    
+    INPUT --> SHA256
+    SHA256 --> HEX
+    HEX --> OUTPUT
 ```
 
 **Signature:**
@@ -251,9 +272,13 @@ export class SignatureService implements ISignatureService
 Generates a new key pair.
 
 ```mermaid
-graph LR
-    GENERATE[Generate] --> PRIVATE[Private Key] 
-    GENERATE --> PUBLIC[Public Key]
+graph TD
+    GENERATE[Generate]
+    PRIVATE[Private Key]
+    PUBLIC[Public Key]
+    
+    GENERATE --> PRIVATE
+    GENERATE --> PUBLIC
 ```
 
 **Signature:**
@@ -379,9 +404,9 @@ graph TD
     DISOT --> SIG
     DISOT --> HASH
     
-    style CAS fill:#e8eaf6,stroke:#3f51b5
-    style DISOT fill:#e8eaf6,stroke:#3f51b5
-    style HASH fill:#e8f5e9,stroke:#2e7d32
+    
+    
+    
 ```
 
 ---

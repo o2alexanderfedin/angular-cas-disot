@@ -309,9 +309,9 @@ graph TD
     KEYPAIR --> SIG
     SIG --> ALGORITHM
     
-    style CONTENT fill:#e3f2fd,stroke:#1565c0
-    style ENTRY fill:#f3e5f5,stroke:#6a1b9a
-    style KEYPAIR fill:#e8f5e9,stroke:#2e7d32
+    
+    
+    
 ```
 
 ---

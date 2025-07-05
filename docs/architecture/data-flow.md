@@ -1,4 +1,4 @@
-# Data Flow Architecture
+# Data Flow Architecture 🌊
 
 [← System Architecture](./system-architecture.md) | [Home](../README.md) | [Next: Component Architecture →](./component-architecture.md)
 
@@ -12,391 +12,420 @@
 
 ## Content Upload Flow
 
-### Upload Sequence Diagram
+### Real Upload Implementation 📤
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant UI as Upload Component
-    participant CAS as CAS Service
-    participant HASH as Hash Service
-    participant STOR as Storage Service
+    participant User
+    participant ContentUploadComponent
+    participant CasService
+    participant HashService
+    participant StorageProvider
     
-    U->>UI: Select file
-    UI->>UI: Read file content
-    UI->>CAS: store(content)
-    CAS->>HASH: hash(data)
-    HASH-->>CAS: SHA-256 hash
-    CAS->>CAS: Generate path from hash
-    CAS->>STOR: exists(path)
+    User->>ContentUploadComponent: Drag & drop file
+    ContentUploadComponent->>ContentUploadComponent: FileReader.readAsArrayBuffer()
+    ContentUploadComponent->>CasService: store({data: Uint8Array})
     
-    alt Content doesn't exist
-        STOR-->>CAS: false
-        CAS->>STOR: write(path, data)
-        STOR-->>CAS: success
-    else Content exists
-        STOR-->>CAS: true
-        Note over CAS: Skip write (deduplication)
+    CasService->>HashService: hash(data)
+    HashService->>HashService: crypto.subtle.digest('SHA-256')
+    HashService-->>CasService: "abc123..."
+    
+    CasService->>CasService: path = `content/${hash}`
+    CasService->>StorageProvider: exists(path)
+    
+    alt New Content
+        StorageProvider-->>CasService: false
+        CasService->>StorageProvider: write(path, data)
+        CasService->>StorageProvider: write(metadata_path, metadata)
+        Note over CasService: 🆕 Content stored!
+    else Duplicate
+        StorageProvider-->>CasService: true
+        Note over CasService: ♾️ Deduplication!
     end
     
-    CAS-->>UI: ContentHash
-    UI-->>U: Display success
+    CasService-->>ContentUploadComponent: ContentHash
+    ContentUploadComponent-->>User: ✅ Upload complete
 ```
 
-### Upload Data Flow Diagram
+### Drag & Drop Upload Process 🎯
 
 ```mermaid
-graph LR
-    subgraph "Input"
-        FILE[File Input]
-        META[Metadata]
+graph TD
+    subgraph "User Actions"
+        DRAG[🖼️ Drag file over zone]
+        DROP[📥 Drop file]
+        SELECT[📁 Or click to select]
     end
     
-    subgraph "Processing"
-        READ[Read File]
-        HASH[Generate Hash]
-        STORE[Store Content]
+    subgraph "Component Processing"
+        PREVENT[Prevent default browser behavior]
+        READ[FileReader reads as ArrayBuffer]
+        CONVERT[Convert to Uint8Array]
+        UPLOAD[Call casService.store()]
     end
     
-    subgraph "Output"
-        HASH_ID[Content Hash]
-        STATUS[Upload Status]
+    subgraph "Results"
+        HASH[🆔 SHA-256: abc123...]
+        SIZE[📊 Size: 1.5 MB]
+        DATE[📅 Date: 2025-07-05]
     end
     
-    FILE --> READ
-    META --> READ
-    READ --> HASH
-    HASH --> STORE
-    STORE --> HASH_ID
-    STORE --> STATUS
-    
-    style FILE fill:#e3f2fd,stroke:#1565c0
-    style HASH fill:#f3e5f5,stroke:#6a1b9a
-    style HASH_ID fill:#e8f5e9,stroke:#2e7d32
+    DRAG --> PREVENT
+    DROP --> PREVENT
+    SELECT --> READ
+    PREVENT --> READ
+    READ --> CONVERT
+    CONVERT --> UPLOAD
+    UPLOAD --> HASH
+    UPLOAD --> SIZE
+    UPLOAD --> DATE
 ```
 
 ## Content Retrieval Flow
 
-### Retrieval Sequence Diagram
+### List & Preview Implementation 📋
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant UI as List Component
-    participant CAS as CAS Service
-    participant STOR as Storage Service
+    participant User
+    participant ContentListComponent 
+    participant CasService
+    participant StorageProvider
     
-    U->>UI: View content list
-    UI->>CAS: getAllContent()
-    CAS->>STOR: list all paths
-    STOR-->>CAS: path array
+    User->>ContentListComponent: Navigate to content list
+    ContentListComponent->>ContentListComponent: ngOnInit()
+    ContentListComponent->>CasService: getAllContent()
     
-    loop For each path
-        CAS->>STOR: read(path)
-        STOR-->>CAS: content data
-        CAS->>CAS: Extract hash from path
-        CAS->>CAS: Create ContentWithHash
+    CasService->>StorageProvider: list()
+    StorageProvider-->>CasService: ["content/abc123", "content/def456"]
+    
+    loop For each content path
+        CasService->>StorageProvider: read(content_path)
+        StorageProvider-->>CasService: Uint8Array data
+        CasService->>StorageProvider: read(metadata_path)
+        StorageProvider-->>CasService: metadata JSON
+        CasService->>CasService: Create ContentWithHash
     end
     
-    CAS-->>UI: ContentWithHash[]
-    UI-->>U: Display content list
+    CasService-->>ContentListComponent: ContentWithHash[]
     
-    U->>UI: Download content
-    UI->>CAS: retrieve(hash)
-    CAS->>CAS: Generate path from hash
-    CAS->>STOR: read(path)
-    STOR-->>CAS: content data
-    CAS-->>UI: Content
-    UI-->>U: Download file
+    User->>ContentListComponent: Click preview 👁️
+    ContentListComponent->>ContentListComponent: detectContentType()
+    ContentListComponent->>ContentListComponent: Show preview modal
+    
+    User->>ContentListComponent: Click download 📥
+    ContentListComponent->>ContentListComponent: Create blob & download link
 ```
 
-### Content List Data Flow
+### Content Type Detection 🔍
 
 ```mermaid
 graph TD
-    subgraph "Storage Layer"
-        PATHS[Stored Paths]
-        DATA[Content Data]
+    subgraph "Auto Detection"
+        BYTES[Read first bytes]
+        PNG[PNG: 89 50 4E 47]
+        JPEG[JPEG: FF D8 FF]
+        JSON[Try JSON.parse()]
+        TEXT[UTF-8 decode]
     end
     
-    subgraph "Service Layer"
-        LIST[List Contents]
-        RETRIEVE[Retrieve Content]
-        TRANSFORM[Transform Data]
+    subgraph "Manual Override"
+        SELECT[🎯 User selects type]
+        TEXT_OPT[Text]
+        JSON_OPT[JSON]
+        HEX_OPT[Hex]
+        B64_OPT[Base64]
     end
     
-    subgraph "UI Layer"
-        DISPLAY[Display List]
-        PREVIEW[Show Preview]
-        DOWNLOAD[Enable Download]
+    subgraph "Preview Display"
+        IMG[🇼️ Image preview]
+        CODE[📝 Code highlight]
+        HEX_VIEW[🔢 Hex dump]
+        B64_VIEW[🔤 Base64 string]
     end
     
-    PATHS --> LIST
-    DATA --> RETRIEVE
-    LIST --> TRANSFORM
-    RETRIEVE --> TRANSFORM
-    TRANSFORM --> DISPLAY
-    DISPLAY --> PREVIEW
-    DISPLAY --> DOWNLOAD
+    BYTES --> PNG
+    BYTES --> JPEG
+    BYTES --> JSON
+    BYTES --> TEXT
     
-    style PATHS fill:#fff3e0,stroke:#e65100
-    style TRANSFORM fill:#e8eaf6,stroke:#3f51b5
-    style DISPLAY fill:#fce4ec,stroke:#880e4f
+    PNG --> IMG
+    JPEG --> IMG
+    JSON --> CODE
+    TEXT --> CODE
+    
+    SELECT --> TEXT_OPT
+    SELECT --> JSON_OPT
+    SELECT --> HEX_OPT
+    SELECT --> B64_OPT
+    
+    TEXT_OPT --> CODE
+    JSON_OPT --> CODE
+    HEX_OPT --> HEX_VIEW
+    B64_OPT --> B64_VIEW
 ```
 
 ## DISOT Entry Creation
 
-### Entry Creation Flow
+### Blog Post Entry Flow 📝
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant UI as Entry Component
-    participant DISOT as DISOT Service
-    participant CAS as CAS Service
-    participant SIG as Signature Service
-    participant HASH as Hash Service
+    participant User
+    participant DisotEntryComponent
+    participant CasService
+    participant DisotService
+    participant SignatureService
     
-    U->>UI: Create new entry
-    UI->>UI: Generate key pair
-    UI->>UI: Select content & type
+    User->>DisotEntryComponent: Click "Generate Key Pair" 🔑
+    DisotEntryComponent->>SignatureService: generateKeyPair()
+    SignatureService-->>DisotEntryComponent: {privateKey, publicKey}
     
-    U->>UI: Submit entry
-    UI->>CAS: store(content)
-    CAS-->>UI: contentHash
+    User->>DisotEntryComponent: Select "Blog Post" type
+    User->>DisotEntryComponent: Write blog content
+    User->>DisotEntryComponent: Click "Create Entry"
     
-    UI->>DISOT: createEntry(contentHash, type, privateKey)
-    DISOT->>DISOT: Create timestamp
-    DISOT->>DISOT: Build entry data
-    DISOT->>HASH: hash(entryData)
-    HASH-->>DISOT: entry hash
-    DISOT->>SIG: sign(entryData, privateKey)
-    SIG-->>DISOT: signature
+    DisotEntryComponent->>DisotEntryComponent: Create blog JSON
+    DisotEntryComponent->>CasService: store(blogData)
+    CasService-->>DisotEntryComponent: blogContentHash
     
-    DISOT->>DISOT: Assemble DisotEntry
-    DISOT->>CAS: store(serialized entry)
-    CAS-->>DISOT: entry storage hash
+    DisotEntryComponent->>DisotService: createEntry(hash, BLOG_POST, privateKey)
+    DisotService->>DisotService: timestamp = new Date()
+    DisotService->>DisotService: Build entry data
+    DisotService->>SignatureService: sign(data, privateKey)
+    SignatureService-->>DisotService: signature
     
-    DISOT-->>UI: DisotEntry
-    UI-->>U: Display entry ID
+    DisotService->>DisotService: Store in entries Map
+    DisotService-->>DisotEntryComponent: DisotEntry{id, signature, ...}
+    
+    DisotEntryComponent-->>User: ✅ Entry created!
 ```
 
-### Entry Data Structure Flow
+### Content Selection Modal Flow 🔍
 
 ```mermaid
 graph TD
-    subgraph "Input Data"
-        CONTENT[Content Hash]
-        TYPE[Entry Type]
-        KEYS[Key Pair]
+    subgraph "Modal Trigger"
+        BTN[🔘 Select Content button]
+        OPEN[showContentModal = true]
     end
     
-    subgraph "Entry Assembly"
-        TS[Add Timestamp]
-        SIGN[Generate Signature]
-        ID[Generate Entry ID]
+    subgraph "Modal Display"
+        LIST[📋 Show all content]
+        SEARCH[🔍 Search by hash]
+        PREVIEW[👁️ Preview content]
     end
     
-    subgraph "DISOT Entry"
-        ENTRY[Complete Entry]
-        SERIAL[Serialized Entry]
+    subgraph "Selection Process"
+        SELECT[🎯 User clicks Select]
+        EMIT[Emit contentSelected event]
+        CLOSE[Close modal]
     end
     
-    subgraph "Storage"
-        STORE[Store in CAS]
-        RETRIEVE[Retrievable by ID]
+    subgraph "Parent Component"
+        RECEIVE[onContentSelected(hash)]
+        UPDATE[contentHash = hash]
+        DISPLAY[Show selected hash]
     end
     
-    CONTENT --> TS
-    TYPE --> TS
-    KEYS --> SIGN
-    TS --> SIGN
-    SIGN --> ID
-    ID --> ENTRY
-    ENTRY --> SERIAL
-    SERIAL --> STORE
-    STORE --> RETRIEVE
-    
-    style CONTENT fill:#e3f2fd,stroke:#1565c0
-    style ENTRY fill:#f3e5f5,stroke:#6a1b9a
-    style STORE fill:#e8f5e9,stroke:#2e7d32
+    BTN --> OPEN
+    OPEN --> LIST
+    LIST --> SEARCH
+    LIST --> PREVIEW
+    PREVIEW --> SELECT
+    SELECT --> EMIT
+    EMIT --> CLOSE
+    EMIT --> RECEIVE
+    RECEIVE --> UPDATE
+    UPDATE --> DISPLAY
 ```
 
 ## Signature Verification Flow
 
-### Verification Sequence
+### Entry Verification Process ✅
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant UI as Verify Component
-    participant DISOT as DISOT Service
-    participant CAS as CAS Service
-    participant SIG as Signature Service
-    participant HASH as Hash Service
+    participant User
+    participant SignatureVerifyComponent
+    participant DisotService
+    participant SignatureService
+    participant HashService
     
-    U->>UI: Enter entry ID
-    UI->>DISOT: getEntry(id)
-    DISOT->>CAS: retrieve(hash from id)
-    CAS-->>DISOT: serialized entry
-    DISOT->>DISOT: Deserialize entry
-    DISOT-->>UI: DisotEntry
+    User->>SignatureVerifyComponent: Enter entry ID
+    SignatureVerifyComponent->>DisotService: getEntry(id)
+    DisotService->>DisotService: Look up in entries Map
+    DisotService-->>SignatureVerifyComponent: DisotEntry | undefined
     
-    UI->>UI: Display entry details
-    U->>UI: Verify signature
-    UI->>DISOT: verifyEntry(entry)
-    
-    DISOT->>DISOT: Reconstruct signed data
-    DISOT->>HASH: hash(signed data)
-    HASH-->>DISOT: data hash
-    DISOT->>SIG: verify(data, signature)
-    SIG-->>DISOT: boolean result
-    
-    DISOT-->>UI: Verification result
-    UI-->>U: Display result
+    alt Entry Found
+        SignatureVerifyComponent->>SignatureVerifyComponent: Display entry details
+        User->>SignatureVerifyComponent: Click "Verify Signature"
+        
+        SignatureVerifyComponent->>DisotService: verifyEntry(entry)
+        DisotService->>DisotService: Reconstruct signed data
+        DisotService->>HashService: hash(signedData)
+        HashService-->>DisotService: dataHash
+        
+        DisotService->>SignatureService: verify(data, signature)
+        SignatureService-->>DisotService: true (mock always returns true)
+        
+        DisotService-->>SignatureVerifyComponent: ✅ Valid
+        SignatureVerifyComponent-->>User: "Signature is valid!"
+    else Entry Not Found
+        SignatureVerifyComponent-->>User: ❌ "Entry not found"
+    end
 ```
 
-### Verification Data Flow
+### Previous Entries Display 📜
 
 ```mermaid
-graph LR
-    subgraph "Input"
-        ID[Entry ID]
-        ENTRY[DISOT Entry]
+graph TD
+    subgraph "Load Previous Entries"
+        INIT[Component ngOnInit]
+        LIST[disotService.listEntries()]
+        SORT[Sort by timestamp DESC]
     end
     
-    subgraph "Verification Process"
-        RECONSTRUCT[Reconstruct Data]
-        HASH_DATA[Hash Data]
-        VERIFY_SIG[Verify Signature]
+    subgraph "Display Each Entry"
+        ID[🆔 Entry ID]
+        TYPE[🏧 Entry Type badge]
+        TIME[🕰️ Timestamp]
+        HASH[#️⃣ Content hash]
     end
     
-    subgraph "Output"
-        VALID[Valid]
-        INVALID[Invalid]
-        ERROR[Error]
+    subgraph "Preview Feature"
+        PREV_BTN[👁️ Preview button]
+        LOAD[Load content from CAS]
+        SHOW[Show in modal/accordion]
     end
     
-    ID --> ENTRY
-    ENTRY --> RECONSTRUCT
-    RECONSTRUCT --> HASH_DATA
-    HASH_DATA --> VERIFY_SIG
+    INIT --> LIST
+    LIST --> SORT
+    SORT --> ID
+    SORT --> TYPE
+    SORT --> TIME
+    SORT --> HASH
     
-    VERIFY_SIG --> VALID
-    VERIFY_SIG --> INVALID
-    VERIFY_SIG --> ERROR
-    
-    style ID fill:#e3f2fd,stroke:#1565c0
-    style VERIFY_SIG fill:#f3e5f5,stroke:#6a1b9a
-    style VALID fill:#c8e6c9,stroke:#1b5e20
-    style INVALID fill:#ffcdd2,stroke:#c62828
+    ID --> PREV_BTN
+    PREV_BTN --> LOAD
+    LOAD --> SHOW
 ```
 
 ## State Management
 
-### Component State Flow
-
-```mermaid
-stateDiagram-v2
-    [*] --> Idle
-    
-    Idle --> Loading: User Action
-    Loading --> Success: Operation Complete
-    Loading --> Error: Operation Failed
-    
-    Success --> Idle: Reset
-    Error --> Idle: Retry/Reset
-    
-    state Success {
-        [*] --> DisplayResult
-        DisplayResult --> UpdateUI
-        UpdateUI --> [*]
-    }
-    
-    state Error {
-        [*] --> ShowError
-        ShowError --> LogError
-        LogError --> [*]
-    }
-```
-
-### Data Flow Between Components
+### Component Loading States 🔄
 
 ```mermaid
 graph TD
-    subgraph "Shared State"
-        CONTENT_CACHE[Content Cache]
-        ENTRY_CACHE[Entry Cache]
+    subgraph "Common Component Pattern"
+        IDLE[isLoading = false<br/>errorMessage = '']
+        LOADING[isLoading = true<br/>Disable buttons]
+        SUCCESS[isLoading = false<br/>Show success UI]
+        ERROR[isLoading = false<br/>errorMessage = 'Details']
     end
     
-    subgraph "Upload Flow"
-        UPLOAD[Upload Component]
-        UPLOAD_SVC[Upload Service]
+    subgraph "User Actions"
+        UPLOAD[📤 Upload file]
+        CREATE[✍️ Create entry]
+        VERIFY[✅ Verify signature]
     end
     
-    subgraph "List Flow"
-        LIST[List Component]
-        LIST_SVC[List Service]
+    subgraph "UI Updates"
+        SPINNER[🌀 Show spinner]
+        MESSAGE[💬 Show message]
+        DISABLE[🚫 Disable inputs]
     end
     
-    subgraph "DISOT Flow"
-        DISOT_CREATE[Create Component]
-        DISOT_VERIFY[Verify Component]
-        DISOT_SVC[DISOT Service]
-    end
+    IDLE --> |User action| LOADING
+    LOADING --> |Success| SUCCESS
+    LOADING --> |Error| ERROR
+    SUCCESS --> |Reset| IDLE
+    ERROR --> |Retry| IDLE
     
-    UPLOAD --> UPLOAD_SVC
-    UPLOAD_SVC --> CONTENT_CACHE
+    UPLOAD --> LOADING
+    CREATE --> LOADING
+    VERIFY --> LOADING
     
-    LIST --> LIST_SVC
-    LIST_SVC --> CONTENT_CACHE
-    
-    DISOT_CREATE --> DISOT_SVC
-    DISOT_VERIFY --> DISOT_SVC
-    DISOT_SVC --> ENTRY_CACHE
-    DISOT_SVC --> CONTENT_CACHE
-    
-    style CONTENT_CACHE fill:#e8eaf6,stroke:#3f51b5
-    style ENTRY_CACHE fill:#e8eaf6,stroke:#3f51b5
+    LOADING --> SPINNER
+    LOADING --> DISABLE
+    ERROR --> MESSAGE
 ```
 
-### Error Handling Flow
+### Service Data Persistence 💾
 
 ```mermaid
 graph TD
-    subgraph "Error Sources"
-        VALIDATION[Validation Error]
-        STORAGE[Storage Error]
-        CRYPTO[Crypto Error]
-        NETWORK[Network Error]
+    subgraph "CasService State"
+        STORAGE[storageProvider: IStorageProvider]
+        FACTORY[Selected via factory]
     end
     
-    subgraph "Error Handler"
-        CATCH[Catch Error]
-        LOG[Log Error]
-        TRANSFORM[Transform Error]
+    subgraph "DisotService State"
+        ENTRIES[entries: Map<string, DisotEntry>]
+        MEMORY[In-memory only ⚠️]
     end
     
-    subgraph "UI Response"
-        NOTIFY[Notify User]
-        SUGGEST[Suggest Action]
-        RECOVER[Recovery Option]
+    subgraph "Storage Providers"
+        MEM[💭 InMemoryStorage<br/>contentMap: Map<>]
+        IDB[🗄️ IndexedDbStorage<br/>cas-storage DB]
     end
     
-    VALIDATION --> CATCH
-    STORAGE --> CATCH
-    CRYPTO --> CATCH
-    NETWORK --> CATCH
+    subgraph "Data Lifetime"
+        SESSION[🕒 Session only<br/>(InMemory)]
+        PERSIST[💾 Persistent<br/>(IndexedDB)]
+    end
     
-    CATCH --> LOG
-    LOG --> TRANSFORM
-    TRANSFORM --> NOTIFY
-    NOTIFY --> SUGGEST
-    SUGGEST --> RECOVER
+    STORAGE --> FACTORY
+    FACTORY --> MEM
+    FACTORY --> IDB
     
-    style CATCH fill:#ffcdd2,stroke:#c62828
-    style TRANSFORM fill:#fff3e0,stroke:#e65100
-    style NOTIFY fill:#fce4ec,stroke:#880e4f
+    ENTRIES --> MEMORY
+    MEMORY --> SESSION
+    
+    MEM --> SESSION
+    IDB --> PERSIST
+    
+    Note over ENTRIES: ⚠️ TODO: Persist DISOT entries
+```
+
+### Error Handling Examples 🚫
+
+```mermaid
+graph TD
+    subgraph "Common Errors"
+        NO_CONTENT[❌ No content selected]
+        NO_KEY[❌ No private key]
+        NOT_FOUND[❌ Entry not found]
+        STORAGE_ERR[❌ Storage failed]
+        INIT_ERR[❌ IndexedDB init failed]
+    end
+    
+    subgraph "Error Messages"
+        MSG1["Please select content first"]
+        MSG2["Please enter or generate a private key"]
+        MSG3["Entry not found"]
+        MSG4["Failed to store content"]
+        MSG5["Failed to initialize IndexedDB"]
+    end
+    
+    subgraph "User Recovery"
+        SELECT[🎯 Select content]
+        GENERATE[🔑 Generate key]
+        RETRY[🔄 Try again]
+        SWITCH[🔄 Switch to memory storage]
+    end
+    
+    NO_CONTENT --> MSG1
+    NO_KEY --> MSG2
+    NOT_FOUND --> MSG3
+    STORAGE_ERR --> MSG4
+    INIT_ERR --> MSG5
+    
+    MSG1 --> SELECT
+    MSG2 --> GENERATE
+    MSG3 --> RETRY
+    MSG4 --> RETRY
+    MSG5 --> SWITCH
 ```
 
 ---

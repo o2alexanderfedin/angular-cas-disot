@@ -51,9 +51,9 @@ graph TD
     CU --> ERROR
     DE --> MODAL
     
-    style APP fill:#e1bee7,stroke:#4a148c,stroke-width:3px
-    style CL fill:#c5cae9,stroke:#1a237e
-    style FU fill:#b2dfdb,stroke:#004d40
+    
+    
+    
 ```
 
 ## Component Hierarchy
@@ -88,8 +88,8 @@ graph TD
     ROUTER --> DE
     ROUTER --> SV
     
-    style APP fill:#f3e5f5,stroke:#6a1b9a,stroke-width:3px
-    style ROUTER fill:#e8eaf6,stroke:#3f51b5
+    
+    
 ```
 
 ### Component Structure Pattern
@@ -162,8 +162,8 @@ graph TD
     C_LOGIC --> C_OUTPUT
     C_OUTPUT -->|Event Emission| P_HANDLER
     
-    style P_DATA fill:#e3f2fd,stroke:#1565c0
-    style C_OUTPUT fill:#f3e5f5,stroke:#6a1b9a
+    
+    
 ```
 
 ### Service-Based Communication
@@ -190,11 +190,11 @@ sequenceDiagram
 ### Router-Based Communication
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Navigation Flow"
         LIST[List Component]
-        DETAIL[Detail Component]
         ROUTER[Angular Router]
+        DETAIL[Detail Component]
     end
     
     subgraph "Route Params"
@@ -210,9 +210,6 @@ graph LR
     DETAIL -->|queryParams| ROUTER
     ROUTER --> QUERY
     QUERY --> LIST
-    
-    style ROUTER fill:#e8eaf6,stroke:#3f51b5
-    style PARAMS fill:#fff3e0,stroke:#e65100
 ```
 
 ## Component Lifecycle
@@ -248,9 +245,9 @@ graph TD
     VIEW_INIT --> VIEW_CHECK
     VIEW_CHECK --> DESTROY
     
-    style CONSTRUCT fill:#e3f2fd,stroke:#1565c0
-    style INIT fill:#c5cae9,stroke:#1a237e
-    style DESTROY fill:#ffcdd2,stroke:#c62828
+    
+    
+    
 ```
 
 ### Component State Management
@@ -311,8 +308,8 @@ graph TD
     SC -->|Data| PC
     PC -->|Events| SC
     
-    style SC fill:#e1bee7,stroke:#4a148c
-    style PC fill:#c5e1a5,stroke:#33691e
+    
+    
 ```
 
 ### Component Composition
@@ -371,14 +368,14 @@ graph TD
     LOG --> USER
     USER --> RECOVER
     
-    style CATCH fill:#ffcdd2,stroke:#c62828
-    style USER fill:#fff3e0,stroke:#e65100
+    
+    
 ```
 
 ### Reactive Forms Pattern
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Form Structure"
         FORM[FormGroup]
         CONTROLS[FormControls]
@@ -410,8 +407,8 @@ graph LR
     SYNC --> ERRORS
     ASYNC --> ERRORS
     
-    style FORM fill:#e8eaf6,stroke:#3f51b5
-    style STREAM fill:#f3e5f5,stroke:#6a1b9a
+    
+    
 ```
 
 ### Component Testing Pattern
@@ -445,8 +442,8 @@ graph TD
     INTEGRATION --> SPY
     E2E --> ASYNC
     
-    style SETUP fill:#c8e6c9,stroke:#1b5e20
-    style UNIT fill:#e3f2fd,stroke:#1565c0
+    
+    
 ```
 
 ---
