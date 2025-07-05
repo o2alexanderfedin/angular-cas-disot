@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.5-blue.svg)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/Tests-108%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v1.1.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.1.0)
+[![Release](https://img.shields.io/badge/Release-v1.1.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.1.1)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -241,6 +241,13 @@ We welcome contributions! Please follow these steps:
 - Ensure all tests pass before submitting PR
 
 ## 🗺 Roadmap
+
+### Version 1.1.1 (Released)
+- [x] Improved documentation clarity
+- [x] Removed color styling from diagrams
+- [x] Vertical diagram orientation
+- [x] Implementation-specific documentation
+- [x] Enhanced with visual emojis
 
 ### Version 1.1.0 (Released)
 - [x] Persistent storage (IndexedDB)
