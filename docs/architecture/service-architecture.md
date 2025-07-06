@@ -73,8 +73,8 @@ graph TD
     end
     
     subgraph "Services (Injected)"
-        CAS["CasService<br/>@Injectable({providedIn: 'root'})"]
-        DISOT["DisotService<br/>@Injectable({providedIn: 'root'})"]
+        CAS["CasService<br/>@Injectable<br/>({providedIn: 'root'})"]
+        DISOT["DisotService<br/>@Injectable<br/>({providedIn: 'root'})"]
     end
     
     subgraph "Providers"
