@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md)
-
----
-
 # Maintenance Documentation 🛠️
+
+[⬅️ Developer Guide](../) | [🏠 Documentation Home](../../)
 
 This section contains guides and best practices for maintaining the CAS/DISOT Angular application.
 
@@ -74,11 +72,10 @@ Best practices for code refactoring, modernization strategies, and technical deb
 
 ## Quick Links
 
-- [Developer Guide](../README.md)
 - [Testing Strategy](../testing/)
 - [CI/CD Pipeline](../../05-deployment/ci-cd.md)
 - [Contributing Guide](../contributing.md)
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#maintenance-documentation-)
+[⬅️ Developer Guide](../) | [⬆️ Top](#maintenance-documentation-) | [🏠 Documentation Home](../../)

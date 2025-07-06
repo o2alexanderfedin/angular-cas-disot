@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md) | [Architecture](../architecture/) | [Testing](../testing/)
+# Angular Code Cleanup Tools & Approaches
 
----
-
-# Angular Code Cleanup Tools & Approaches - Comprehensive Guide
+[⬅️ Maintenance](../) | [🏠 Documentation Home](../../../)
 
 > **Document Version**: 1.0  
 > **Last Updated**: January 2025  
@@ -577,8 +575,6 @@ module.exports = {
 
 The combination of automated tools and manual review provides the most effective approach to maintaining clean, efficient Angular codebases. Regular cleanup reduces technical debt and improves application performance while maintaining code quality standards.
 
----
-
 ## Related Documentation
 
 - [Testing Strategy](../testing/testing-strategy.md) - Learn about testing approaches and coverage
@@ -587,7 +583,7 @@ The combination of automated tools and manual review provides the most effective
 - [Contributing Guide](../contributing.md) - Guidelines for contributing to the project
 - [Build Process](../../05-deployment/build-process.md) - Understanding the build pipeline
 
-## Quick Links
+## External Resources
 
 - [Knip Documentation](https://github.com/webpro/knip)
 - [ts-prune Documentation](https://github.com/nadeesha/ts-prune)
@@ -596,8 +592,4 @@ The combination of automated tools and manual review provides the most effective
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#angular-code-cleanup-tools--approaches---comprehensive-guide) | [Next: Testing →](../testing/)
-
-<function_calls>
-<invoke name="TodoWrite">
-<parameter name="todos">[{"id": "1", "content": "Create comprehensive code cleanup report structure", "status": "completed", "priority": "high"}, {"id": "2", "content": "Document all dead code detection tools with detailed analysis", "status": "in_progress", "priority": "high"}, {"id": "3", "content": "Add implementation guides and best practices for each tool", "status": "pending", "priority": "medium"}, {"id": "4", "content": "Include workflow recommendations and tool comparison matrix", "status": "pending", "priority": "medium"}]
+[⬅️ Maintenance](../) | [⬆️ Top](#angular-code-cleanup-tools--approaches) | [🏠 Documentation Home](../../../)

@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md)
-
----
-
 # Architecture Documentation 🏗️
+
+[⬅️ Developer Guide](../) | [🏠 Documentation Home](../../)
 
 This section contains detailed architectural documentation for the CAS/DISOT Angular application.
 
@@ -58,11 +56,10 @@ Important architectural decisions and their rationale.
 
 ## Quick Links
 
-- [Developer Guide](../README.md)
 - [Security Documentation](../security/)
 - [Testing Strategy](../testing/)
 - [API Reference](../../04-api-reference/)
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#architecture-documentation-)
+[⬅️ Developer Guide](../) | [⬆️ Top](#architecture-documentation-) | [🏠 Documentation Home](../../)
