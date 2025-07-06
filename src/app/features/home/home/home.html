@@ -1,0 +1,136 @@
+<div class="home-container">
+  <header class="hero-section">
+    <h1 class="hero-title">CAS/DISOT System</h1>
+    <p class="hero-subtitle">Content Addressable Storage with Decentralized Immutable Source of Truth</p>
+  </header>
+
+  <section class="intro-section">
+    <div class="intro-card">
+      <h2>What is CAS/DISOT?</h2>
+      <p>
+        CAS/DISOT is a decentralized content management system that combines content-addressable storage (CAS) 
+        with cryptographic signatures to create an immutable source of truth (DISOT).
+      </p>
+      <div class="key-features">
+        <div class="feature">
+          <span class="feature-icon">🔐</span>
+          <strong>Content Addressing:</strong> Files are stored and retrieved using their SHA-256 hash
+        </div>
+        <div class="feature">
+          <span class="feature-icon">✍️</span>
+          <strong>Digital Signatures:</strong> Create signed entries that prove authorship and timestamp
+        </div>
+        <div class="feature">
+          <span class="feature-icon">🔍</span>
+          <strong>Verification:</strong> Verify the integrity and authenticity of any content
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <h3>Upload Content</h3>
+        <p>Upload any file to the system. It will be hashed using SHA-256 and stored by its content hash.</p>
+        <button routerLink="/content/upload" class="action-button">Upload Files</button>
+      </div>
+
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <h3>Create DISOT Entry</h3>
+        <p>Sign your content with a cryptographic key to create a timestamped, verifiable entry.</p>
+        <button routerLink="/disot/create" class="action-button">Create Entry</button>
+      </div>
+
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <h3>Share & Verify</h3>
+        <p>Share your signed entries. Anyone can verify the authenticity and timestamp of your content.</p>
+        <button routerLink="/disot/verify" class="action-button">Verify Entries</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="use-cases">
+    <h2>Use Cases</h2>
+    <div class="use-case-grid">
+      <div class="use-case-card">
+        <h3>📝 Blog Posts</h3>
+        <p>Create immutable blog posts with verified authorship and timestamps</p>
+      </div>
+      <div class="use-case-card">
+        <h3>📄 Documents</h3>
+        <p>Store important documents with cryptographic proof of existence</p>
+      </div>
+      <div class="use-case-card">
+        <h3>🖼️ Digital Art</h3>
+        <p>Prove ownership and creation date of digital artwork</p>
+      </div>
+      <div class="use-case-card">
+        <h3>📊 Research Data</h3>
+        <p>Create verifiable research data with immutable timestamps</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="technical-section">
+    <h2>Technical Details</h2>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <h3>Content Addressing</h3>
+        <ul>
+          <li>SHA-256 hashing ensures unique content identification</li>
+          <li>Automatic deduplication - identical files share the same hash</li>
+          <li>Content integrity verification built-in</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <h3>Storage Options</h3>
+        <ul>
+          <li><strong>In-Memory:</strong> Fast temporary storage (default)</li>
+          <li><strong>IndexedDB:</strong> Persistent browser storage</li>
+          <li><strong>IPFS:</strong> Distributed storage (coming soon)</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <h3>Cryptography</h3>
+        <ul>
+          <li>secp256k1 key pairs for digital signatures</li>
+          <li>Timestamp included in signed entries</li>
+          <li>Signature verification for authenticity</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="getting-started">
+    <h2>Getting Started</h2>
+    <div class="steps-container">
+      <div class="step-card">
+        <h3>Step 1: Configure Storage</h3>
+        <p>Go to <a routerLink="/settings">Settings</a> and choose your preferred storage provider.</p>
+      </div>
+      <div class="step-card">
+        <h3>Step 2: Upload Content</h3>
+        <p>Upload files through the <a routerLink="/content/upload">Upload page</a> or drag & drop interface.</p>
+      </div>
+      <div class="step-card">
+        <h3>Step 3: Create Entries</h3>
+        <p>Sign your content with <a routerLink="/disot/create">DISOT entries</a> for verifiable authorship.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="home-footer">
+    <p>
+      CAS/DISOT is an open-source project. 
+      <a href="https://github.com/o2alexanderfedin/angular-cas-disot" target="_blank" rel="noopener">
+        View on GitHub
+      </a>
+    </p>
+  </footer>
+</div>

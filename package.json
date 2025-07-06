@@ -1,12 +1,14 @@
 {
   "name": "cas-app",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --browsers=ChromeHeadless --watch=false"
+    "test": "ng test --browsers=ChromeHeadless --watch=false",
+    "build:ghpages": "ng build --base-href /angular-cas-disot/",
+    "deploy:ghpages": "npm run build:ghpages && cp dist/cas-app/browser/index.html dist/cas-app/browser/404.html && npx gh-pages -d dist/cas-app/browser"
   },
   "prettier": {
     "overrides": [
@@ -36,6 +38,8 @@
     "@angular/cli": "^20.0.5",
     "@angular/compiler-cli": "^20.0.0",
     "@types/jasmine": "~5.1.0",
+    "angular-cli-ghpages": "^2.0.3",
+    "gh-pages": "^6.3.0",
     "jasmine-core": "~5.7.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

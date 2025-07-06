@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './features/home/home/home';
 import { ContentListComponent } from './features/content/content-list/content-list.component';
 import { ContentUploadComponent } from './features/content/content-upload/content-upload.component';
 import { DisotEntryComponent } from './features/disot/disot-entry/disot-entry.component';
@@ -6,9 +7,11 @@ import { SignatureVerificationComponent } from './features/disot/signature-verif
 import { StorageSettingsComponent } from './features/settings/storage-settings/storage-settings.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/content', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'content', component: ContentListComponent },
-  { path: 'upload', component: ContentUploadComponent },
+  { path: 'content/upload', component: ContentUploadComponent },
+  { path: 'upload', redirectTo: '/content/upload', pathMatch: 'full' },
   { path: 'disot/create', component: DisotEntryComponent },
   { path: 'disot/verify', component: SignatureVerificationComponent },
   { path: 'settings', component: StorageSettingsComponent }
