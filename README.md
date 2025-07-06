@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.5-blue.svg)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/Tests-108%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v1.1.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.1.1)
+[![Release](https://img.shields.io/badge/Release-v1.1.2-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.1.2)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -241,6 +241,13 @@ We welcome contributions! Please follow these steps:
 - Ensure all tests pass before submitting PR
 
 ## 🗺 Roadmap
+
+### Version 1.1.2 (Released)
+- [x] Fixed Mermaid diagram rendering issues
+- [x] Quoted special characters in node labels
+- [x] Optimized diagram orientations (horizontal for flows, vertical for hierarchies)
+- [x] Fixed @Injectable, Promise<>, Map<>, and other special syntax
+- [x] Improved overall diagram readability
 
 ### Version 1.1.1 (Released)
 - [x] Improved documentation clarity
