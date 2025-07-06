@@ -57,7 +57,7 @@ export class ContentPreviewService {
     switch (format) {
       case 'text':
         try {
-          const text = new TextDecoder().decode(data);
+          const text = new TextDecoder('utf-8', { fatal: true }).decode(data);
           return text.length > maxSize 
             ? text.substring(0, maxSize) + '...' 
             : text;
