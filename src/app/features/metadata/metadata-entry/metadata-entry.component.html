@@ -1,0 +1,165 @@
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Create Metadata Entry</h1>
+
+  <form [formGroup]="metadataForm" (ngSubmit)="onSubmit()">
+    <!-- References Section -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Content References</h2>
+      <div formArrayName="references" class="space-y-4">
+        <div *ngFor="let ref of references.controls; let i = index" 
+             [formGroupName]="i"
+             class="border rounded-lg p-4 bg-gray-50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Content Hash *</label>
+              <input type="text" 
+                     formControlName="hash"
+                     placeholder="QmXxx..."
+                     class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">MIME Type *</label>
+              <input type="text" 
+                     formControlName="mimeType"
+                     placeholder="text/plain"
+                     class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">MIME Type Source *</label>
+              <select formControlName="mimeTypeSource"
+                      class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="manual">Manual</option>
+                <option value="detected">Detected</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Relationship</label>
+              <input type="text" 
+                     formControlName="relationship"
+                     placeholder="main, attachment, etc."
+                     class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+          <button type="button" 
+                  (click)="removeReference(i)"
+                  *ngIf="references.length > 1"
+                  class="mt-2 text-red-600 hover:text-red-800">
+            Remove Reference
+          </button>
+        </div>
+      </div>
+      <button type="button" 
+              (click)="addReference()"
+              class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Add Reference
+      </button>
+    </div>
+
+    <!-- Authors Section -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Authors</h2>
+      <div formArrayName="authors" class="space-y-4">
+        <div *ngFor="let author of authors.controls; let i = index" 
+             [formGroupName]="i"
+             class="border rounded-lg p-4 bg-gray-50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Author Hash *</label>
+              <input type="text" 
+                     formControlName="authorHash"
+                     placeholder="QmAuthor..."
+                     class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Role *</label>
+              <select formControlName="role"
+                      class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option *ngFor="let role of authorRoles" [value]="role">
+                  {{ role | titlecase }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <button type="button" 
+                  (click)="removeAuthor(i)"
+                  *ngIf="authors.length > 1"
+                  class="mt-2 text-red-600 hover:text-red-800">
+            Remove Author
+          </button>
+        </div>
+      </div>
+      <button type="button" 
+              (click)="addAuthor()"
+              class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Add Author
+      </button>
+    </div>
+
+    <!-- Version Information -->
+    <div class="mb-8" formGroupName="version">
+      <h2 class="text-xl font-semibold mb-4">Version Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Version *</label>
+          <input type="text" 
+                 formControlName="version"
+                 placeholder="1.0.0"
+                 class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Previous Version Hash</label>
+          <input type="text" 
+                 formControlName="previousVersion"
+                 placeholder="QmPrevious..."
+                 class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Change Description</label>
+          <input type="text" 
+                 formControlName="changeDescription"
+                 placeholder="What changed..."
+                 class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Pair Section -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Signing Key</h2>
+      <div *ngIf="!keyPair" class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p class="text-sm text-yellow-800 mb-3">You need a key pair to sign the metadata entry.</p>
+        <button type="button" 
+                (click)="generateKeyPair()"
+                class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700">
+          Generate Key Pair
+        </button>
+      </div>
+      <div *ngIf="keyPair" class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <p class="text-sm text-green-800 mb-2">Key pair generated successfully!</p>
+        <div class="text-xs text-gray-600">
+          <p class="mb-1"><strong>Public Key:</strong> {{ keyPair.publicKey.substring(0, 20) }}...</p>
+          <p><strong>Private Key:</strong> ••••••••••••••••</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Display -->
+    <div *ngIf="error" class="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
+      <p class="text-red-800">{{ error }}</p>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-end gap-4">
+      <button type="button" 
+              routerLink="/metadata"
+              class="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50">
+        Cancel
+      </button>
+      <button type="submit" 
+              [disabled]="!metadataForm.valid || !keyPair || submitting"
+              class="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+        {{ submitting ? 'Creating...' : 'Create Metadata Entry' }}
+      </button>
+    </div>
+  </form>
+</div>

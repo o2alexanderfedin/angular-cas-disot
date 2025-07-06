@@ -29,6 +29,7 @@ import { CommonModule } from '@angular/common';
           <a routerLink="/content/upload" routerLinkActive="active">Upload</a>
           <a routerLink="/disot/create" routerLinkActive="active">Create Entry</a>
           <a routerLink="/disot/verify" routerLinkActive="active">Verify</a>
+          <a routerLink="/metadata/create" routerLinkActive="active">Metadata</a>
           <a routerLink="/settings" routerLinkActive="active">Settings</a>
         </nav>
       </header>

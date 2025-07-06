@@ -88,14 +88,22 @@ export function createMetadataContent(params: {
   changeDescription?: string;
   version?: string;
 }): MetadataContent {
+  const versionInfo: VersionInfo = {
+    version: params.version || '1.0.0'
+  };
+  
+  if (params.previousVersion !== undefined) {
+    versionInfo.previousVersion = params.previousVersion;
+  }
+  
+  if (params.changeDescription !== undefined) {
+    versionInfo.changeDescription = params.changeDescription;
+  }
+  
   return {
     timestamp: Date.now(),
     references: params.references,
     authors: params.authors,
-    version: {
-      version: params.version || '1.0.0',
-      previousVersion: params.previousVersion,
-      changeDescription: params.changeDescription
-    }
+    version: versionInfo
   };
 }
