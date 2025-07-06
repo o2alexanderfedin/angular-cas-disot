@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared-module';
 import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provider.factory';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-storage-settings',
@@ -229,8 +228,7 @@ export class StorageSettingsComponent implements OnInit {
   storageChanged = false;
 
   constructor(
-    @Inject(STORAGE_TYPE) private storageType: StorageType,
-    private router: Router
+    @Inject(STORAGE_TYPE) private storageType: StorageType
   ) {
     this.currentStorageType = this.storageType;
     this.selectedStorageType = this.storageType;

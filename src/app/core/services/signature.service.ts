@@ -55,7 +55,8 @@ export class SignatureService implements ISignatureService {
     // For testing, verify by checking the signature format
     // In production, use proper secp256k1 verification
     try {
-      const msgHash = await this.hashService.hash(data);
+      // Hash the data for verification (currently unused in mock implementation)
+      await this.hashService.hash(data);
       
       // For mock implementation, just check that signature was created
       // with the same algorithm and has valid format

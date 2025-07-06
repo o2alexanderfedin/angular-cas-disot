@@ -4,7 +4,7 @@ import { CasService } from './cas.service';
 import { SignatureService } from './signature.service';
 import { HashService } from './hash.service';
 import { LocalStorageService } from './local-storage.service';
-import { DisotEntry, DisotEntryType } from '../domain/interfaces/disot.interface';
+import { DisotEntryType } from '../domain/interfaces/disot.interface';
 import { ContentHash } from '../domain/interfaces/content.interface';
 import { STORAGE_PROVIDER } from './storage-provider.factory';
 

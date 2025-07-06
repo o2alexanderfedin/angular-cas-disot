@@ -68,7 +68,7 @@ describe('SignatureService', () => {
 
   it('should reject signature with wrong public key', async () => {
     const keyPair1 = await service.generateKeyPair();
-    const keyPair2 = await service.generateKeyPair();
+    await service.generateKeyPair(); // Generate second key pair to verify wrong key rejection
     const testData = new TextEncoder().encode('Test data');
     
     const signature = await service.sign(testData, keyPair1.privateKey);
@@ -130,7 +130,7 @@ describe('SignatureService', () => {
           generateKey: jasmine.createSpy('generateKey').and.returnValue(
             Promise.resolve(mockKeyPair)
           ),
-          exportKey: jasmine.createSpy('exportKey').and.callFake((format: string, key: CryptoKey) => {
+          exportKey: jasmine.createSpy('exportKey').and.callFake((_format: string, key: CryptoKey) => {
             if (key === mockKeyPair.privateKey) {
               return Promise.reject(new Error('Private key export failed'));
             }
@@ -161,7 +161,7 @@ describe('SignatureService', () => {
           generateKey: jasmine.createSpy('generateKey').and.returnValue(
             Promise.resolve(mockKeyPair)
           ),
-          exportKey: jasmine.createSpy('exportKey').and.callFake((format: string, key: CryptoKey) => {
+          exportKey: jasmine.createSpy('exportKey').and.callFake((_format: string, key: CryptoKey) => {
             if (key === mockKeyPair.privateKey) {
               return Promise.resolve({ kty: 'EC', crv: 'P-256', x: 'test1', y: 'test1', d: 'private' });
             }

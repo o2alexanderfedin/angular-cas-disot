@@ -7,7 +7,6 @@ import {
 } from './storage-provider.factory';
 import { LocalStorageService } from './local-storage.service';
 import { IndexedDbStorageService } from './indexed-db-storage.service';
-import { IStorageProvider } from '../domain/interfaces/storage.interface';
 
 describe('StorageProviderFactory', () => {
   let localStorageService: jasmine.SpyObj<LocalStorageService>;
