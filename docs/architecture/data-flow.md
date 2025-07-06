@@ -196,7 +196,7 @@ sequenceDiagram
     SignatureService-->>DisotService: signature
     
     DisotService->>DisotService: Store in entries Map
-    DisotService-->>DisotEntryComponent: DisotEntry{id, signature, ...}
+    DisotService-->>DisotEntryComponent: "DisotEntry{id, signature, ...}"
     
     DisotEntryComponent-->>User: ✅ Entry created!
 ```

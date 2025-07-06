@@ -73,8 +73,8 @@ graph TD
     end
     
     subgraph "Services (Injected)"
-        CAS[CasService<br/>@Injectable({providedIn: 'root'})]
-        DISOT[DisotService<br/>@Injectable({providedIn: 'root'})]
+        CAS["CasService<br/>@Injectable({providedIn: 'root'})"]
+        DISOT["DisotService<br/>@Injectable({providedIn: 'root'})"]
     end
     
     subgraph "Providers"
@@ -125,11 +125,11 @@ graph TD
 ```mermaid
 graph TD
     subgraph "IStorageProvider"
-        IMETHODS[read(path): Promise<Uint8Array><br/>write(path, data): Promise<void><br/>exists(path): Promise<boolean><br/>list(): Promise<string[]><br/>delete(path): Promise<void><br/>clear(): Promise<void><br/>getSize(): Promise<number>]
+        IMETHODS["read(path): Promise<Uint8Array><br/>write(path, data): Promise<void><br/>exists(path): Promise<boolean><br/>list(): Promise<string[]><br/>delete(path): Promise<void><br/>clear(): Promise<void><br/>getSize(): Promise<number>"]
     end
     
     subgraph "Implementations"
-        MEM_IMPL[InMemoryStorage<br/>• Map<string, Uint8Array><br/>• No persistence]
+        MEM_IMPL["InMemoryStorage<br/>• Map<string, Uint8Array><br/>• No persistence"]
         IDB_IMPL[IndexedDbStorage<br/>• IndexedDB API<br/>• Persistent storage]
     end
     
@@ -150,7 +150,7 @@ graph TD
     end
     
     subgraph "DisotEntryType Enum"
-        TYPES[BLOG_POST = 'blog_post'<br/>DOCUMENT = 'document'<br/>IMAGE = 'image'<br/>SIGNATURE = 'signature']
+        TYPES["BLOG_POST = 'blog_post'<br/>DOCUMENT = 'document'<br/>IMAGE = 'image'<br/>SIGNATURE = 'signature'"]
     end
     
     DE --> CH
@@ -185,7 +185,7 @@ sequenceDiagram
         Note over CasService: ✅ Deduplication!
     end
     
-    CasService-->>Component: ContentHash{algorithm, value}
+    CasService-->>Component: "ContentHash{algorithm, value}"
 ```
 
 ### DISOT Entry Creation Flow ✍️
