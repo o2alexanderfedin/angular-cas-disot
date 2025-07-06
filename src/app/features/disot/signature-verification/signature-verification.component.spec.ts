@@ -228,4 +228,55 @@ describe('SignatureVerificationComponent', () => {
     expect(formatted).toBeTruthy();
     expect(typeof formatted).toBe('string');
   });
+
+  it('should reject empty entry ID', async () => {
+    await component.verifyById('');
+    
+    expect(component.errorMessage).toBe('Please enter an entry ID');
+    expect(disotService.getEntry).not.toHaveBeenCalled();
+  });
+
+  it('should reject whitespace-only entry ID', async () => {
+    await component.verifyById('   ');
+    
+    expect(component.errorMessage).toBe('Please enter an entry ID');
+    expect(disotService.getEntry).not.toHaveBeenCalled();
+  });
+
+  it('should handle unknown verification error type', async () => {
+    const mockEntry: DisotEntry = {
+      id: 'unknown123',
+      contentHash: { algorithm: 'sha256', value: 'unknownhash' },
+      signature: {
+        value: 'unknownsig',
+        algorithm: 'secp256k1',
+        publicKey: 'unknownpub'
+      },
+      timestamp: new Date(),
+      type: DisotEntryType.DOCUMENT
+    };
+
+    component.disotEntry = mockEntry;
+    disotService.verifyEntry.and.returnValue(Promise.reject('Unknown error'));
+
+    await component.verifySignature();
+
+    expect(component.errorMessage).toBe('Verification failed: Unknown error');
+  });
+
+  it('should handle unknown entry loading error type', async () => {
+    const entryId = 'unknownerror123';
+
+    disotService.getEntry.and.returnValue(Promise.reject('Unknown loading error'));
+
+    await component.verifyById(entryId);
+
+    expect(component.errorMessage).toBe('Failed to load entry: Unknown loading error');
+  });
+
+  it('should format entry type correctly', () => {
+    expect(component.formatEntryType('BLOG_POST')).toBe('BLOG POST');
+    expect(component.formatEntryType('IMAGE_FILE')).toBe('IMAGE FILE');
+    expect(component.formatEntryType('DOCUMENT')).toBe('DOCUMENT');
+  });
 });

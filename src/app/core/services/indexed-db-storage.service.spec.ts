@@ -450,5 +450,148 @@ describe('IndexedDbStorageService', () => {
         });
       }
     });
+
+    it('should handle read operation errors', async () => {
+      const path = 'error/path';
+      const getRequest = { 
+        onsuccess: null as ((e: any) => void) | null, 
+        onerror: null as ((e: any) => void) | null,
+        result: null,
+        error: new Error('Read operation failed')
+      };
+      
+      mockObjectStore.get.and.returnValue(getRequest);
+      
+      const readPromise = service.read(path);
+      
+      // Simulate error
+      setTimeout(() => {
+        if (getRequest.onerror) {
+          getRequest.onerror({ target: getRequest } as any);
+        }
+      }, 0);
+      
+      await expectAsync(readPromise).toBeRejectedWithError(`Failed to read path: ${path}`);
+    });
+
+    it('should handle exists operation errors', async () => {
+      const path = 'error/path';
+      const countRequest = { 
+        onsuccess: null as ((e: any) => void) | null, 
+        onerror: null as ((e: any) => void) | null,
+        result: 0,
+        error: new Error('Count operation failed')
+      };
+      
+      mockObjectStore.count.and.returnValue(countRequest);
+      
+      const existsPromise = service.exists(path);
+      
+      // Simulate error
+      setTimeout(() => {
+        if (countRequest.onerror) {
+          countRequest.onerror({ target: countRequest } as any);
+        }
+      }, 0);
+      
+      await expectAsync(existsPromise).toBeRejectedWithError(`Failed to check existence: ${path}`);
+    });
+
+    it('should handle list operation errors', async () => {
+      const getAllKeysRequest = { 
+        onsuccess: null as ((e: any) => void) | null, 
+        onerror: null as ((e: any) => void) | null,
+        result: [],
+        error: new Error('List operation failed')
+      };
+      
+      mockObjectStore.getAllKeys.and.returnValue(getAllKeysRequest);
+      
+      const listPromise = service.list();
+      
+      // Simulate error
+      setTimeout(() => {
+        if (getAllKeysRequest.onerror) {
+          getAllKeysRequest.onerror({ target: getAllKeysRequest } as any);
+        }
+      }, 0);
+      
+      await expectAsync(listPromise).toBeRejectedWithError('Failed to list paths');
+    });
+
+    it('should handle delete operation errors', async () => {
+      const path = 'error/path';
+      const deleteRequest = { 
+        onsuccess: null as ((e: any) => void) | null, 
+        onerror: null as ((e: any) => void) | null,
+        error: new Error('Delete operation failed')
+      };
+      
+      mockObjectStore.delete.and.returnValue(deleteRequest);
+      
+      const deletePromise = service.delete(path);
+      
+      // Simulate error
+      setTimeout(() => {
+        if (deleteRequest.onerror) {
+          deleteRequest.onerror({ target: deleteRequest } as any);
+        }
+      }, 0);
+      
+      await expectAsync(deletePromise).toBeRejectedWithError(`Failed to delete path: ${path}`);
+    });
+
+    it('should handle clear operation errors', async () => {
+      const clearRequest = { 
+        onsuccess: null as ((e: any) => void) | null, 
+        onerror: null as ((e: any) => void) | null,
+        error: new Error('Clear operation failed')
+      };
+      
+      mockObjectStore.clear.and.returnValue(clearRequest);
+      
+      const clearPromise = service.clear();
+      
+      // Simulate error
+      setTimeout(() => {
+        if (clearRequest.onerror) {
+          clearRequest.onerror({ target: clearRequest } as any);
+        }
+      }, 0);
+      
+      await expectAsync(clearPromise).toBeRejectedWithError('Failed to clear storage');
+    });
+
+    it('should handle getSize operation errors', async () => {
+      const cursorRequest = { 
+        onsuccess: null as ((e: any) => void) | null, 
+        onerror: null as ((e: any) => void) | null,
+        result: null,
+        error: new Error('Cursor operation failed')
+      };
+      
+      mockObjectStore.openCursor.and.returnValue(cursorRequest);
+      
+      const sizePromise = service.getSize();
+      
+      // Simulate error
+      setTimeout(() => {
+        if (cursorRequest.onerror) {
+          cursorRequest.onerror({ target: cursorRequest } as any);
+        }
+      }, 0);
+      
+      await expectAsync(sizePromise).toBeRejectedWithError('Failed to calculate storage size');
+    });
+
+    it('should handle transaction creation errors', async () => {
+      const path = 'test/path';
+      const data = new Uint8Array([1, 2, 3]);
+      
+      // Mock transaction creation to throw error
+      mockDb.transaction.and.throwError('Transaction creation failed');
+      
+      await expectAsync(service.write(path, data)).toBeRejectedWithError('Transaction creation failed');
+    });
   });
 });

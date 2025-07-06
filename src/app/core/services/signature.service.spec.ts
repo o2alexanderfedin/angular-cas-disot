@@ -81,4 +81,147 @@ describe('SignatureService', () => {
     
     expect(isValid).toBe(false);
   });
+
+  describe('crypto.subtle error handling', () => {
+    let originalCrypto: Crypto;
+
+    beforeEach(() => {
+      originalCrypto = window.crypto;
+    });
+
+    afterEach(() => {
+      Object.defineProperty(window, 'crypto', {
+        value: originalCrypto,
+        writable: true,
+        configurable: true
+      });
+    });
+
+    it('should handle crypto.subtle.generateKey errors', async () => {
+      const mockCrypto = {
+        ...originalCrypto,
+        subtle: {
+          ...originalCrypto.subtle,
+          generateKey: jasmine.createSpy('generateKey').and.returnValue(
+            Promise.reject(new Error('Key generation failed'))
+          )
+        }
+      };
+
+      Object.defineProperty(window, 'crypto', {
+        value: mockCrypto,
+        writable: true,
+        configurable: true
+      });
+
+      await expectAsync(service.generateKeyPair()).toBeRejectedWithError('Key generation failed');
+    });
+
+    it('should handle crypto.subtle.exportKey errors for private key', async () => {
+      const mockKeyPair = {
+        privateKey: {} as CryptoKey,
+        publicKey: {} as CryptoKey
+      };
+
+      const mockCrypto = {
+        ...originalCrypto,
+        subtle: {
+          ...originalCrypto.subtle,
+          generateKey: jasmine.createSpy('generateKey').and.returnValue(
+            Promise.resolve(mockKeyPair)
+          ),
+          exportKey: jasmine.createSpy('exportKey').and.callFake((format: string, key: CryptoKey) => {
+            if (key === mockKeyPair.privateKey) {
+              return Promise.reject(new Error('Private key export failed'));
+            }
+            return Promise.resolve({ kty: 'EC', crv: 'P-256', x: 'test', y: 'test' });
+          })
+        }
+      };
+
+      Object.defineProperty(window, 'crypto', {
+        value: mockCrypto,
+        writable: true,
+        configurable: true
+      });
+
+      await expectAsync(service.generateKeyPair()).toBeRejectedWithError('Private key export failed');
+    });
+
+    it('should handle crypto.subtle.exportKey errors for public key', async () => {
+      const mockKeyPair = {
+        privateKey: {} as CryptoKey,
+        publicKey: {} as CryptoKey
+      };
+
+      const mockCrypto = {
+        ...originalCrypto,
+        subtle: {
+          ...originalCrypto.subtle,
+          generateKey: jasmine.createSpy('generateKey').and.returnValue(
+            Promise.resolve(mockKeyPair)
+          ),
+          exportKey: jasmine.createSpy('exportKey').and.callFake((format: string, key: CryptoKey) => {
+            if (key === mockKeyPair.privateKey) {
+              return Promise.resolve({ kty: 'EC', crv: 'P-256', x: 'test1', y: 'test1', d: 'private' });
+            }
+            if (key === mockKeyPair.publicKey) {
+              return Promise.reject(new Error('Public key export failed'));
+            }
+            return Promise.resolve({});
+          })
+        }
+      };
+
+      Object.defineProperty(window, 'crypto', {
+        value: mockCrypto,
+        writable: true,
+        configurable: true
+      });
+
+      await expectAsync(service.generateKeyPair()).toBeRejectedWithError('Public key export failed');
+    });
+
+    it('should handle crypto.subtle unavailable', async () => {
+      const mockCrypto = {
+        ...originalCrypto,
+        subtle: undefined as any
+      };
+
+      Object.defineProperty(window, 'crypto', {
+        value: mockCrypto,
+        writable: true,
+        configurable: true
+      });
+
+      await expectAsync(service.generateKeyPair()).toBeRejectedWith(jasmine.any(TypeError));
+    });
+  });
+
+  describe('hash service error handling', () => {
+    it('should handle hash errors in sign method', async () => {
+      const hashService = TestBed.inject(HashService);
+      spyOn(hashService, 'hash').and.returnValue(Promise.reject(new Error('Hash failed')));
+
+      const testData = new Uint8Array([1, 2, 3]);
+      const privateKey = 'test_private_key';
+
+      await expectAsync(service.sign(testData, privateKey)).toBeRejectedWithError('Hash failed');
+    });
+
+    it('should handle hash errors in verify method', async () => {
+      const hashService = TestBed.inject(HashService);
+      spyOn(hashService, 'hash').and.returnValue(Promise.reject(new Error('Hash verification failed')));
+
+      const testData = new Uint8Array([1, 2, 3]);
+      const signature = {
+        value: 'a'.repeat(64),
+        algorithm: 'secp256k1' as const,
+        publicKey: 'b'.repeat(64)
+      };
+
+      const result = await service.verify(testData, signature);
+      expect(result).toBe(false);
+    });
+  });
 });

@@ -1,66 +1,70 @@
-const fs = require('fs');
-const path = require('path');
+// Based on current coverage: Statements 71.35% (523/733), Branches 50.34% (73/145), Functions 77.63% (125/161), Lines 73.16% (499/682)
 
-// Read the lcov.info file
-const lcovPath = path.join(__dirname, 'coverage/lcov.info');
-const lcovContent = fs.readFileSync(lcovPath, 'utf8');
+console.log('Current test coverage analysis:');
+console.log('=============================');
+console.log('Overall coverage: Statements 71.35% (523/733)');
+console.log('Branches: 50.34% (73/145)');
+console.log('Functions: 77.63% (125/161)'); 
+console.log('Lines: 73.16% (499/682)');
+console.log('');
 
-// Parse lcov data
-const files = {};
-let currentFile = null;
+console.log('Areas needing improved coverage:');
+console.log('================================');
 
-lcovContent.split('\n').forEach(line => {
-  if (line.startsWith('SF:')) {
-    currentFile = line.substring(3);
-    files[currentFile] = {
-      functions: { found: 0, hit: 0 },
-      lines: { found: 0, hit: 0 },
-      branches: { found: 0, hit: 0 }
-    };
-  } else if (currentFile) {
-    if (line.startsWith('FNF:')) files[currentFile].functions.found = parseInt(line.substring(4));
-    if (line.startsWith('FNH:')) files[currentFile].functions.hit = parseInt(line.substring(4));
-    if (line.startsWith('LF:')) files[currentFile].lines.found = parseInt(line.substring(3));
-    if (line.startsWith('LH:')) files[currentFile].lines.hit = parseInt(line.substring(3));
-    if (line.startsWith('BRF:')) files[currentFile].branches.found = parseInt(line.substring(4));
-    if (line.startsWith('BRH:')) files[currentFile].branches.hit = parseInt(line.substring(4));
+// Based on the coverage HTML files we can see, let's identify the worst areas
+const lowCoverageAreas = [
+  {
+    file: 'signature.service.ts',
+    issues: ['catch block at line 286 not covered', 'only 94.73% statements'],
+    suggestions: ['Add test for crypto.subtle errors', 'Test verification failure paths']
+  },
+  {
+    file: 'indexed-db-storage.service.ts', 
+    issues: ['error handlers not covered', '89.71% statements', 'multiple error paths untested'],
+    suggestions: ['Test IndexedDB unavailable scenarios', 'Test transaction failures', 'Test database errors']
+  },
+  {
+    file: 'content-upload.component.ts',
+    issues: ['formatFileSize function not covered', 'file reader error handler not tested', '82.05% statements'],
+    suggestions: ['Test file size formatting edge cases', 'Test file reading failures', 'Test upload error scenarios']
+  },
+  {
+    file: 'signature-verification.component.ts',
+    issues: ['empty entry ID validation not tested', 'some error branches not covered', '94.11% statements'],
+    suggestions: ['Test empty entry ID input', 'Test unknown error scenarios', 'Test network failures']
+  },
+  {
+    file: 'storage-settings.component.ts',
+    issues: ['reloadPage function not covered', '96% statements'],
+    suggestions: ['Mock window.location.reload', 'Test page reload functionality']
   }
+];
+
+lowCoverageAreas.forEach((area, index) => {
+  console.log(`${index + 1}. ${area.file}:`);
+  console.log(`   Issues: ${area.issues.join(', ')}`);
+  console.log(`   Suggestions: ${area.suggestions.join(', ')}`);
+  console.log('');
 });
 
-// Calculate coverage percentages and sort by lowest coverage
-const fileCoverage = Object.entries(files)
-  .map(([file, data]) => {
-    const lineCoverage = data.lines.found > 0 ? (data.lines.hit / data.lines.found * 100) : 100;
-    const functionCoverage = data.functions.found > 0 ? (data.functions.hit / data.functions.found * 100) : 100;
-    const branchCoverage = data.branches.found > 0 ? (data.branches.hit / data.branches.found * 100) : 100;
-    const avgCoverage = (lineCoverage + functionCoverage + branchCoverage) / 3;
-    
-    return {
-      file: file.replace(/.*\/cas-app\//, ''),
-      lineCoverage: lineCoverage.toFixed(1),
-      functionCoverage: functionCoverage.toFixed(1),
-      branchCoverage: branchCoverage.toFixed(1),
-      avgCoverage: avgCoverage.toFixed(1),
-      lines: data.lines,
-      functions: data.functions,
-      branches: data.branches
-    };
-  })
-  .filter(item => item.avgCoverage < 80) // Show files with less than 80% average coverage
-  .sort((a, b) => a.avgCoverage - b.avgCoverage);
+console.log('Priority fixes to reach 80% coverage:');
+console.log('=====================================');
+console.log('1. Add error handling tests for IndexedDB service');
+console.log('2. Test SignatureService error scenarios');  
+console.log('3. Test ContentUpload error paths and formatFileSize');
+console.log('4. Mock browser APIs in StorageSettings tests');
+console.log('5. Add edge case tests for SignatureVerification');
 
-console.log('Files with coverage < 80% (sorted by lowest coverage):');
-console.log('======================================================');
-fileCoverage.forEach(item => {
-  console.log(`\n${item.file}`);
-  console.log(`  Average: ${item.avgCoverage}%`);
-  console.log(`  Lines: ${item.lineCoverage}% (${item.lines.hit}/${item.lines.found})`);
-  console.log(`  Functions: ${item.functionCoverage}% (${item.functions.hit}/${item.functions.found})`);
-  console.log(`  Branches: ${item.branchCoverage}% (${item.branches.hit}/${item.branches.found})`);
-});
-
-console.log('\n\nTop 5 files to improve for maximum impact:');
+console.log('\nLow-hanging fruit for quick coverage gains:');
 console.log('==========================================');
-fileCoverage.slice(0, 5).forEach((item, index) => {
-  console.log(`${index + 1}. ${item.file} (${item.avgCoverage}% avg coverage)`);
-});
+console.log('- Mock window.location.reload in StorageSettings');
+console.log('- Test formatFileSize function with various inputs');
+console.log('- Add tests for empty string validations');
+console.log('- Test crypto API error scenarios');
+console.log('- Test IndexedDB error handlers');
+
+console.log('\nEstimated effort to reach 80% coverage:');
+console.log('=======================================');
+console.log('- Need to increase from 71.35% to 80% = +8.65%');
+console.log('- That equals ~63 more statements covered (8.65% of 733)');
+console.log('- Focus on the 5 priority areas above for maximum impact');

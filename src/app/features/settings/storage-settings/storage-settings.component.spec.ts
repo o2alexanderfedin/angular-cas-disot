@@ -134,4 +134,15 @@ describe('StorageSettingsComponent', () => {
     expect(console.error).toHaveBeenCalledWith('Error clearing storage:', jasmine.any(Error));
     expect(window.alert).toHaveBeenCalledWith('Failed to clear storage. Please try again.');
   });
+
+  it('should reload the page', () => {
+    const mockLocation = {
+      reload: jasmine.createSpy('reload')
+    };
+    Object.defineProperty(window, 'location', { value: mockLocation, writable: true });
+
+    component.reloadPage();
+
+    expect(mockLocation.reload).toHaveBeenCalled();
+  });
 });

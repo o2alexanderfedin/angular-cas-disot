@@ -19,14 +19,15 @@ module.exports = function (config) {
       suppressAll: true
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/cas-app'),
+      dir: require('path').join(__dirname, './coverage'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'html', subdir: 'cas-app' },
+        { type: 'text-summary' },
+        { type: 'lcov' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'coverage'],
     browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeHeadlessCI: {

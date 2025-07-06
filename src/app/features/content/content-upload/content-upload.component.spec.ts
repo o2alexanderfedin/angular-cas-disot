@@ -158,4 +158,60 @@ describe('ContentUploadComponent', () => {
     component.navigateToContentList();
     expect(router.navigate).toHaveBeenCalledWith(['/content']);
   });
+
+  describe('formatFileSize', () => {
+    it('should format 0 bytes', () => {
+      expect(component.formatFileSize(0)).toBe('0 Bytes');
+    });
+
+    it('should format bytes', () => {
+      expect(component.formatFileSize(1)).toBe('1 Bytes');
+      expect(component.formatFileSize(512)).toBe('512 Bytes');
+      expect(component.formatFileSize(1023)).toBe('1023 Bytes');
+    });
+
+    it('should format kilobytes', () => {
+      expect(component.formatFileSize(1024)).toBe('1 KB');
+      expect(component.formatFileSize(1536)).toBe('1.5 KB');
+      expect(component.formatFileSize(1048575)).toBe('1024 KB');
+    });
+
+    it('should format megabytes', () => {
+      expect(component.formatFileSize(1048576)).toBe('1 MB');
+      expect(component.formatFileSize(1572864)).toBe('1.5 MB');
+      expect(component.formatFileSize(1073741823)).toBe('1024 MB');
+    });
+
+    it('should format gigabytes', () => {
+      expect(component.formatFileSize(1073741824)).toBe('1 GB');
+      expect(component.formatFileSize(1610612736)).toBe('1.5 GB');
+    });
+  });
+
+  it('should handle file reader error', async () => {
+    const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
+    component.selectedFile = mockFile;
+    
+    const mockFileReader = {
+      readAsArrayBuffer: jasmine.createSpy('readAsArrayBuffer'),
+      onload: null as any,
+      onerror: null as any,
+      result: null
+    };
+    spyOn(window, 'FileReader').and.returnValue(mockFileReader as any);
+
+    const uploadPromise = component.uploadFile();
+
+    // Trigger FileReader onerror
+    setTimeout(() => {
+      if (mockFileReader.onerror) {
+        mockFileReader.onerror();
+      }
+    }, 0);
+
+    await uploadPromise;
+
+    expect(component.errorMessage).toContain('Upload failed: Failed to read file');
+    expect(component.isUploading).toBe(false);
+  });
 });
