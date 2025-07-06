@@ -139,10 +139,26 @@ describe('StorageSettingsComponent', () => {
     const mockLocation = {
       reload: jasmine.createSpy('reload')
     };
-    Object.defineProperty(window, 'location', { value: mockLocation, writable: true });
+    
+    // Store original location
+    const originalLocation = window.location;
+    
+    // Mock location property
+    Object.defineProperty(window, 'location', { 
+      value: mockLocation, 
+      writable: true, 
+      configurable: true 
+    });
 
     component.reloadPage();
 
     expect(mockLocation.reload).toHaveBeenCalled();
+    
+    // Restore original location
+    Object.defineProperty(window, 'location', { 
+      value: originalLocation, 
+      writable: true, 
+      configurable: true 
+    });
   });
 });

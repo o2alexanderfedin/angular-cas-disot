@@ -271,7 +271,7 @@ describe('SignatureVerificationComponent', () => {
 
     await component.verifyById(entryId);
 
-    expect(component.errorMessage).toBe('Failed to load entry: Unknown loading error');
+    expect(component.errorMessage).toBe('Failed to load entry: Unknown error');
   });
 
   it('should format entry type correctly', () => {
