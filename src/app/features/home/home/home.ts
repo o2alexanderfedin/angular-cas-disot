@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CoverageService } from '../../../core/services/coverage.service';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +9,12 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  coveragePercentage = '0%';
 
+  constructor(private coverageService: CoverageService) {}
+
+  ngOnInit(): void {
+    this.coveragePercentage = this.coverageService.getFormattedStatementsCoverage();
+  }
 }
