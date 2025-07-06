@@ -5,6 +5,7 @@ import { ContentUploadComponent } from './features/content/content-upload/conten
 import { DisotEntryComponent } from './features/disot/disot-entry/disot-entry.component';
 import { SignatureVerificationComponent } from './features/disot/signature-verification/signature-verification.component';
 import { StorageSettingsComponent } from './features/settings/storage-settings/storage-settings.component';
+import { MigrationComponent } from './features/settings/migration/migration.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'upload', redirectTo: '/content/upload', pathMatch: 'full' },
   { path: 'disot/create', component: DisotEntryComponent },
   { path: 'disot/verify', component: SignatureVerificationComponent },
-  { path: 'settings', component: StorageSettingsComponent }
+  { path: 'settings', component: StorageSettingsComponent },
+  { path: 'settings/migration', component: MigrationComponent }
 ];
