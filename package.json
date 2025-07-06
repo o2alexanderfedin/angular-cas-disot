@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --browsers=ChromeHeadless --watch=false",
     "build:ghpages": "ng build --base-href /angular-cas-disot/",
-    "deploy:ghpages": "npm run build:ghpages && npx gh-pages -d dist/cas-app"
+    "deploy:ghpages": "npm run build:ghpages && cp dist/cas-app/browser/index.html dist/cas-app/browser/404.html && npx gh-pages -d dist/cas-app/browser"
   },
   "prettier": {
     "overrides": [

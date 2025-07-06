@@ -45,7 +45,7 @@ Add these scripts to your `package.json`:
 {
   "scripts": {
     "build:ghpages": "ng build --base-href /angular-cas-disot/",
-    "deploy:ghpages": "npm run build:ghpages && npx gh-pages -d dist/cas-app"
+    "deploy:ghpages": "npm run build:ghpages && npx gh-pages -d dist/cas-app/browser"
   }
 }
 ```
