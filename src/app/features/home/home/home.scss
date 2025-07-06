@@ -13,10 +13,19 @@
   margin-bottom: 3rem;
 }
 
+.hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
 .hero-title {
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .hero-subtitle {

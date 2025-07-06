@@ -1,8 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared-module';
-import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provider.factory';
+import { StorageType, STORAGE_TYPE, STORAGE_PROVIDER } from '../../../core/services/storage-provider.factory';
+import { IStorageProvider } from '../../../core/domain/interfaces/storage.interface';
+import { IPFSStorageService, IPFS_CONFIG } from '../../../core/services/ipfs/ipfs-storage.service';
+import { HeliaStorageService } from '../../../core/services/helia/helia-storage.service';
+import { IPFSConfig } from '../../../core/domain/interfaces/ipfs.interface';
 
 @Component({
   selector: 'app-storage-settings',
@@ -16,7 +20,7 @@ import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provid
         <h3>Storage Provider</h3>
         <p class="description">
           Choose how your content is stored. In-memory storage is faster but data is lost when you close the browser. 
-          IndexedDB provides persistent storage across browser sessions.
+          IndexedDB provides persistent storage across browser sessions. IPFS provides distributed storage across the network.
         </p>
         
         <div class="storage-options">
@@ -51,6 +55,40 @@ import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provid
               </p>
             </div>
           </label>
+          
+          <label class="storage-option">
+            <input 
+              type="radio" 
+              name="storageType" 
+              [value]="StorageType.IPFS"
+              [(ngModel)]="selectedStorageType"
+              (change)="onStorageTypeChange()"
+            />
+            <div class="option-content">
+              <strong>IPFS Storage (External Node)</strong>
+              <p>Distributed storage using IPFS network. Requires local IPFS node or gateway.</p>
+              <p class="warning" *ngIf="selectedStorageType === StorageType.IPFS && !ipfsHealthy">
+                Warning: IPFS node not detected. Make sure IPFS is running on localhost:5001.
+              </p>
+            </div>
+          </label>
+          
+          <label class="storage-option">
+            <input 
+              type="radio" 
+              name="storageType" 
+              [value]="StorageType.HELIA"
+              [(ngModel)]="selectedStorageType"
+              (change)="onStorageTypeChange()"
+            />
+            <div class="option-content">
+              <strong>Helia Storage (Browser-Native IPFS)</strong>
+              <p>IPFS running directly in your browser. No external node required. Larger download size (~2-3MB).</p>
+              <p class="info" *ngIf="selectedStorageType === StorageType.HELIA">
+                Note: Data is stored locally in IndexedDB and works offline.
+              </p>
+            </div>
+          </label>
         </div>
         
         <div *ngIf="storageChanged" class="info-message">
@@ -67,12 +105,20 @@ import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provid
         </div>
       </div>
       
-      <div class="settings-section" *ngIf="currentStorageType === StorageType.INDEXED_DB">
+      <div class="settings-section" *ngIf="currentStorageType !== StorageType.IN_MEMORY">
         <h3>Storage Management</h3>
         <div class="storage-info">
-          <p>Current storage provider: <strong>IndexedDB</strong></p>
+          <p>Current storage provider: <strong>{{ getStorageProviderName() }}</strong></p>
+          <div *ngIf="currentStorageType === StorageType.IPFS" class="ipfs-info">
+            <p>IPFS Status: <span [class.healthy]="ipfsHealthy" [class.unhealthy]="!ipfsHealthy">{{ ipfsHealthy ? 'Connected' : 'Disconnected' }}</span></p>
+            <p *ngIf="ipfsHealthy && ipfsConfig">API Endpoint: {{ ipfsConfig.apiEndpoint || '/api/v0' }}</p>
+          </div>
+          <div *ngIf="currentStorageType === StorageType.HELIA" class="ipfs-info">
+            <p>Helia Status: <span [class.healthy]="heliaHealthy" [class.unhealthy]="!heliaHealthy">{{ heliaHealthy ? 'Running' : 'Not Initialized' }}</span></p>
+            <p *ngIf="heliaHealthy">Browser-native IPFS node active</p>
+          </div>
           <button (click)="clearStorage()" class="danger-button">
-            Clear All Stored Data
+            Clear All Local Data
           </button>
         </div>
       </div>
@@ -157,6 +203,12 @@ import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provid
       margin-top: 5px !important;
     }
 
+    .info {
+      color: #3498db !important;
+      font-style: italic;
+      margin-top: 5px !important;
+    }
+
     .info-message {
       margin-top: 20px;
       padding: 15px;
@@ -218,6 +270,24 @@ import { StorageType, STORAGE_TYPE } from '../../../core/services/storage-provid
     .danger-button:hover {
       background-color: #c0392b;
     }
+
+    .ipfs-info {
+      margin-bottom: 15px;
+    }
+
+    .ipfs-info p {
+      margin: 5px 0;
+    }
+
+    .healthy {
+      color: #27ae60;
+      font-weight: bold;
+    }
+
+    .unhealthy {
+      color: #e74c3c;
+      font-weight: bold;
+    }
   `]
 })
 export class StorageSettingsComponent implements OnInit {
@@ -226,24 +296,63 @@ export class StorageSettingsComponent implements OnInit {
   currentStorageType: StorageType;
   indexedDbAvailable = false;
   storageChanged = false;
+  ipfsHealthy = false;
+  heliaHealthy = false;
+  ipfsConfig: IPFSConfig | null = null;
 
   constructor(
-    @Inject(STORAGE_TYPE) private storageType: StorageType
+    @Inject(STORAGE_TYPE) private storageType: StorageType,
+    @Inject(STORAGE_PROVIDER) private storageProvider: IStorageProvider,
+    @Optional() @Inject(IPFS_CONFIG) ipfsConfig?: IPFSConfig
   ) {
     this.currentStorageType = this.storageType;
     this.selectedStorageType = this.storageType;
+    this.ipfsConfig = ipfsConfig || null;
   }
 
   ngOnInit() {
     this.checkIndexedDbAvailability();
+    this.checkIPFSHealth();
+    this.checkHeliaHealth();
   }
 
   checkIndexedDbAvailability() {
     this.indexedDbAvailable = typeof window !== 'undefined' && 'indexedDB' in window;
   }
 
+  async checkIPFSHealth() {
+    if (this.currentStorageType === StorageType.IPFS && this.storageProvider instanceof IPFSStorageService) {
+      try {
+        this.ipfsHealthy = await this.storageProvider.isHealthy();
+      } catch (error) {
+        this.ipfsHealthy = false;
+      }
+    }
+  }
+
+  async checkHeliaHealth() {
+    if (this.currentStorageType === StorageType.HELIA && this.storageProvider instanceof HeliaStorageService) {
+      try {
+        this.heliaHealthy = await this.storageProvider.isHealthy();
+      } catch (error) {
+        this.heliaHealthy = false;
+      }
+    }
+  }
+
   onStorageTypeChange() {
     this.storageChanged = this.selectedStorageType !== this.currentStorageType;
+    
+    // Check IPFS health when selecting IPFS
+    if (this.selectedStorageType === StorageType.IPFS) {
+      this.checkIPFSHealthForSelection();
+    }
+  }
+
+  async checkIPFSHealthForSelection() {
+    // For now, we'll skip the health check when selecting
+    // The actual health check will happen when the storage is initialized
+    this.ipfsHealthy = false;
   }
 
   applyChanges() {
@@ -273,11 +382,38 @@ export class StorageSettingsComponent implements OnInit {
           await indexedDB.deleteDatabase('cas-storage');
           alert('Storage cleared successfully. The page will reload.');
           this.reloadPage();
+        } else if (this.currentStorageType === StorageType.IPFS) {
+          // For IPFS, we can only clear the local cache
+          await indexedDB.deleteDatabase('cas-storage');
+          alert('Local cache cleared successfully. IPFS content remains on the network.');
+          this.reloadPage();
+        } else if (this.currentStorageType === StorageType.HELIA) {
+          // Clear Helia databases
+          await indexedDB.deleteDatabase('helia-blocks');
+          await indexedDB.deleteDatabase('helia-data');
+          await indexedDB.deleteDatabase('helia-path-mappings');
+          alert('Helia storage cleared successfully. The page will reload.');
+          this.reloadPage();
         }
       } catch (error) {
         console.error('Error clearing storage:', error);
         alert('Failed to clear storage. Please try again.');
       }
+    }
+  }
+
+  getStorageProviderName(): string {
+    switch (this.currentStorageType) {
+      case StorageType.IN_MEMORY:
+        return 'In-Memory';
+      case StorageType.INDEXED_DB:
+        return 'IndexedDB';
+      case StorageType.IPFS:
+        return 'IPFS (External Node)';
+      case StorageType.HELIA:
+        return 'Helia (Browser IPFS)';
+      default:
+        return 'Unknown';
     }
   }
 }

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CoverageService } from '../../../core/services/coverage.service';
+import { IPFSStatusIndicatorComponent } from '../../../shared/ipfs-status-indicator/ipfs-status-indicator.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, IPFSStatusIndicatorComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

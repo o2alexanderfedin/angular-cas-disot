@@ -1,15 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { HomeComponent } from './home';
+import { StorageType, STORAGE_TYPE, STORAGE_PROVIDER } from '../../../core/services/storage-provider.factory';
+import { IStorageProvider } from '../../../core/domain/interfaces/storage.interface';
+import { IPFS_CONFIG } from '../../../core/services/ipfs/ipfs-storage.service';
+import { DEFAULT_IPFS_CONFIG } from '../../../core/services/ipfs/ipfs.config';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let mockStorageProvider: jasmine.SpyObj<IStorageProvider>;
 
   beforeEach(async () => {
+    mockStorageProvider = jasmine.createSpyObj('IStorageProvider', ['write', 'read', 'exists', 'delete', 'list']);
+    
     await TestBed.configureTestingModule({
-      imports: [HomeComponent, RouterTestingModule]
+      imports: [HomeComponent, RouterTestingModule, HttpClientTestingModule],
+      providers: [
+        { provide: STORAGE_TYPE, useValue: StorageType.IN_MEMORY },
+        { provide: STORAGE_PROVIDER, useValue: mockStorageProvider },
+        { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG }
+      ]
     })
     .compileComponents();
 
