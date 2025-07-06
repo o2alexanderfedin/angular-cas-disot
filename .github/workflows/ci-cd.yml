@@ -77,7 +77,7 @@ jobs:
       matrix:
         environment: 
           - name: 'staging'
-            base_href: '/angular-cas-disot-staging/'
+            base_href: '/angular-cas-disot/staging/'
             branch_condition: 'develop'
           - name: 'production' 
             base_href: '/angular-cas-disot/'
@@ -133,7 +133,7 @@ jobs:
           </html>
           EOF
             
-            echo "Coverage report available at: ${{ matrix.environment.name == 'production' && 'https://o2alexanderfedin.github.io/angular-cas-disot/coverage/' || 'https://o2alexanderfedin.github.io/angular-cas-disot-staging/coverage/' }}"
+            echo "Coverage report available at: ${{ matrix.environment.name == 'production' && 'https://o2alexanderfedin.github.io/angular-cas-disot/coverage/' || 'https://o2alexanderfedin.github.io/angular-cas-disot/staging/coverage/' }}"
           fi
           
           # Add environment indicator
