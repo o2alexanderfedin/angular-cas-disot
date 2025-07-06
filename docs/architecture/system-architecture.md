@@ -287,7 +287,7 @@ graph TD
     end
     
     subgraph "Future Phases"
-        P1[Phase 1: IPFS Integration<br/>Distributed content storage]
+        P1[Phase 1: IPFS Integration<br/>Distributed content storage<br/>📄 [Detailed Architecture](./phase1-ipfs-architecture.md)]
         P2[Phase 2: Blockchain<br/>Immutable entry records]
         P3[Phase 3: P2P Network<br/>Full decentralization]
     end

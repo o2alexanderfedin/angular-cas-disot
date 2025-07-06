@@ -283,7 +283,7 @@ We welcome contributions! Please follow these steps:
 - [ ] WebSocket support
 
 ### Version 2.0.0 (Long-term)
-- [ ] IPFS integration
+- [ ] IPFS integration - [📄 Architecture](docs/architecture/phase1-ipfs-architecture.md) | [🔨 Implementation](docs/architecture/phase1-implementation-guide.md) | [🗺️ Roadmap](docs/architecture/phase1-roadmap.md)
 - [ ] Blockchain anchoring
 - [ ] P2P synchronization
 - [ ] Mobile applications
