@@ -14,11 +14,12 @@ export enum DisotEntryType {
   BLOG_POST = 'blog_post',
   SIGNATURE = 'signature',
   DOCUMENT = 'document',
-  IMAGE = 'image'
+  IMAGE = 'image',
+  METADATA = 'metadata'
 }
 
 export interface IDisotService {
-  createEntry(contentHash: ContentHash, type: DisotEntryType, privateKey: string): Promise<DisotEntry>;
+  createEntry(content: ContentHash | any, type: DisotEntryType, privateKey: string): Promise<DisotEntry>;
   verifyEntry(entry: DisotEntry): Promise<boolean>;
   getEntry(id: string): Promise<DisotEntry>;
   listEntries(filter?: DisotFilter): Promise<DisotEntry[]>;
