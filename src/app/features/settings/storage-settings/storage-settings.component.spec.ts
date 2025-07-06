@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { StorageSettingsComponent } from './storage-settings.component';
 import { StorageType, STORAGE_TYPE, STORAGE_PROVIDER } from '../../../core/services/storage-provider.factory';
-import { Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { IStorageProvider } from '../../../core/domain/interfaces/storage.interface';
 import { IPFS_CONFIG } from '../../../core/services/ipfs/ipfs-storage.service';
 import { DEFAULT_IPFS_CONFIG } from '../../../core/services/ipfs/ipfs.config';
@@ -10,13 +10,13 @@ import { DEFAULT_IPFS_CONFIG } from '../../../core/services/ipfs/ipfs.config';
 describe('StorageSettingsComponent', () => {
   let component: StorageSettingsComponent;
   let fixture: ComponentFixture<StorageSettingsComponent>;
-  let mockRouter: jasmine.SpyObj<Router>;
   let mockLocalStorage: any;
   let mockStorageProvider: jasmine.SpyObj<IStorageProvider>;
 
   beforeEach(async () => {
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockStorageProvider = jasmine.createSpyObj('IStorageProvider', ['write', 'read', 'exists', 'delete', 'list']);
+    // Add isHealthy method for IPFS providers
+    (mockStorageProvider as any).isHealthy = jasmine.createSpy('isHealthy').and.returnValue(Promise.resolve(true));
     
     // Mock localStorage
     mockLocalStorage = {
@@ -30,10 +30,10 @@ describe('StorageSettingsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StorageSettingsComponent, HttpClientTestingModule],
       providers: [
+        provideRouter([]),
         { provide: STORAGE_TYPE, useValue: StorageType.IN_MEMORY },
         { provide: STORAGE_PROVIDER, useValue: mockStorageProvider },
-        { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
-        { provide: Router, useValue: mockRouter }
+        { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG }
       ]
     }).compileComponents();
 
@@ -158,10 +158,10 @@ describe('StorageSettingsComponent', () => {
       await TestBed.configureTestingModule({
         imports: [StorageSettingsComponent, HttpClientTestingModule],
         providers: [
+          provideRouter([]),
           { provide: STORAGE_TYPE, useValue: StorageType.IPFS },
           { provide: STORAGE_PROVIDER, useValue: ipfsStorageProvider },
-          { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
-          { provide: Router, useValue: mockRouter }
+          { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG }
         ]
       }).compileComponents();
 
@@ -259,13 +259,28 @@ describe('StorageSettingsComponent', () => {
       expect(() => fixture.detectChanges()).not.toThrow();
     });
 
-    it('should handle all storage types in template', () => {
+    it('should handle all storage types in template', async () => {
+      // Test each storage type by recreating the component with the proper configuration
       const storageTypes = [StorageType.IN_MEMORY, StorageType.INDEXED_DB, StorageType.IPFS];
       
-      storageTypes.forEach(type => {
-        component.currentStorageType = type;
-        expect(() => fixture.detectChanges()).not.toThrow();
-      });
+      for (const type of storageTypes) {
+        await TestBed.resetTestingModule();
+        await TestBed.configureTestingModule({
+          imports: [StorageSettingsComponent, HttpClientTestingModule],
+          providers: [
+            provideRouter([]),
+            { provide: STORAGE_TYPE, useValue: type },
+            { provide: STORAGE_PROVIDER, useValue: mockStorageProvider },
+            { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG }
+          ]
+        }).compileComponents();
+
+        const testFixture = TestBed.createComponent(StorageSettingsComponent);
+        const testComponent = testFixture.componentInstance;
+        
+        expect(() => testFixture.detectChanges()).not.toThrow();
+        expect(testComponent.currentStorageType).toBe(type);
+      }
     });
   });
 
@@ -275,10 +290,10 @@ describe('StorageSettingsComponent', () => {
       await TestBed.configureTestingModule({
         imports: [StorageSettingsComponent, HttpClientTestingModule],
         providers: [
+          provideRouter([]),
           { provide: STORAGE_TYPE, useValue: StorageType.IN_MEMORY },
-          { provide: STORAGE_PROVIDER, useValue: mockStorageProvider },
+          { provide: STORAGE_PROVIDER, useValue: mockStorageProvider }
           // IPFS_CONFIG is optional, so component should still work
-          { provide: Router, useValue: mockRouter }
         ]
       }).compileComponents();
 

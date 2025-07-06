@@ -77,7 +77,7 @@ describe('IPFSStorageService', () => {
     it('should handle IPFS upload failure', async () => {
       httpClientSpy.post.and.returnValue(throwError(() => new Error('IPFS error')));
       
-      await expectAsync(service.write(mockPath, mockData)).toBeRejectedWithError('IPFS error');
+      await expectAsync(service.write(mockPath, mockData)).toBeRejectedWithError('Failed to add to IPFS: IPFS error');
       expect(localCacheSpy.write).toHaveBeenCalled(); // Still writes to local cache
     });
   });
@@ -170,7 +170,7 @@ describe('IPFSStorageService', () => {
 
   describe('isHealthy', () => {
     it('should return true when IPFS client is healthy', async () => {
-      httpClientSpy.get.and.returnValue(of({ Version: '0.1.0' }));
+      httpClientSpy.post.and.returnValue(of({ Version: '0.1.0' }));
       
       const result = await service.isHealthy();
       
@@ -178,7 +178,7 @@ describe('IPFSStorageService', () => {
     });
 
     it('should return false when IPFS client is not healthy', async () => {
-      httpClientSpy.get.and.returnValue(throwError(() => new Error('Network error')));
+      httpClientSpy.post.and.returnValue(throwError(() => new Error('Network error')));
       
       const result = await service.isHealthy();
       
