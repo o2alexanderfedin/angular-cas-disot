@@ -8,6 +8,7 @@ This directory contains the complete changelog for the CAS/DISOT application, or
 
 ### Version Series
 
+- [v2.0.x](./v2.0.x.md) - Major documentation restructuring
 - [v1.2.x](./v1.2.x.md) - Documentation updates and Phase 1 planning
 - [v1.1.x](./v1.1.x.md) - IndexedDB storage and major features
 - [v1.0.x](./v1.0.x.md) - Initial release
@@ -21,6 +22,11 @@ We follow [Semantic Versioning](https://semver.org/):
 - **Patch version (0.0.X)**: Bug fixes and minor improvements
 
 ### Recent Releases
+
+#### v2.0.0 (2025-07-06)
+- Complete documentation restructuring
+- Breaking changes in documentation URLs
+- User guides and deployment docs added
 
 #### v1.2.0 (2025-07-06)
 - Phase 1 IPFS architecture documentation
