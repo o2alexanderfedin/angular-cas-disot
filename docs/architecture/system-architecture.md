@@ -162,11 +162,11 @@ graph TD
 ```mermaid
 graph TD
     subgraph "App Routes"
-        HOME[/ → ContentListComponent]
-        UPLOAD[/upload → ContentUploadComponent]
-        DISOT[/disot → DisotEntryComponent]
-        VERIFY[/verify → SignatureVerificationComponent]
-        SETTINGS[/settings → SettingsComponent]
+        HOME["/ → ContentListComponent"]
+        UPLOAD["/upload → ContentUploadComponent"]
+        DISOT["/disot → DisotEntryComponent"]
+        VERIFY["/verify → SignatureVerificationComponent"]
+        SETTINGS["/settings → SettingsComponent"]
     end
     
     subgraph "Navigation Flow"
