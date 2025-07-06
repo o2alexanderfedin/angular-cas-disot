@@ -8,6 +8,7 @@ This directory contains the complete changelog for the CAS/DISOT application, or
 
 ### Version Series
 
+- [v2.1.x](./v2.1.x.md) - Home page and user experience improvements
 - [v2.0.x](./v2.0.x.md) - Major documentation restructuring
 - [v1.2.x](./v1.2.x.md) - Documentation updates and Phase 1 planning
 - [v1.1.x](./v1.1.x.md) - IndexedDB storage and major features
@@ -22,6 +23,11 @@ We follow [Semantic Versioning](https://semver.org/):
 - **Patch version (0.0.X)**: Bug fixes and minor improvements
 
 ### Recent Releases
+
+#### v2.1.0 (2025-01-06)
+- Comprehensive home page with system explanation
+- Visual workflow and use cases
+- Improved navigation and routing
 
 #### v2.0.0 (2025-07-06)
 - Complete documentation restructuring
