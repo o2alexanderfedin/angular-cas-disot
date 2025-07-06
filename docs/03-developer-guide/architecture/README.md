@@ -23,6 +23,11 @@ Component architecture, smart vs presentational components, and UI patterns.
 ### [Browser Storage Options](./browser-storage.md) 
 Comprehensive analysis of browser storage technologies including localStorage, IndexedDB, Cache API, and OPFS.
 
+## Content Management
+
+### [Metadata Entry Architecture](./metadata/)
+Comprehensive documentation for metadata entries that establish relationships between content items, track authorship, and maintain version history.
+
 ## Security Architecture
 
 ### [Security Overview](./security.md)

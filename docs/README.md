@@ -26,6 +26,7 @@ Technical documentation for developers.
 - [Architecture Deep Dive](./03-developer-guide/architecture/)
   - [Browser Storage Options](./03-developer-guide/architecture/browser-storage.md)
   - [System Design](./03-developer-guide/architecture/system-design.md)
+  - [Metadata Entry Architecture](./03-developer-guide/architecture/metadata/)
 - [Security](./03-developer-guide/security/)
   - [IndexedDB Security](./03-developer-guide/security/indexeddb-security.md)
 - [Maintenance](./03-developer-guide/maintenance/)
