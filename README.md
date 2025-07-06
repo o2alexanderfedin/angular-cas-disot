@@ -7,7 +7,7 @@
 [![Coverage](https://img.shields.io/badge/Coverage-73.81%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
 [![CI/CD](https://github.com/o2alexanderfedin/angular-cas-disot/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v2.5.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.5.0)
+[![Release](https://img.shields.io/badge/Release-v2.5.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.5.1)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -295,6 +295,12 @@ We welcome contributions! Please follow these steps:
 - Ensure all tests pass before submitting PR
 
 ## 🗺 Roadmap
+
+### Version 2.5.1 (Released)
+- [x] Comprehensive documentation update
+- [x] Browser storage and security documentation
+- [x] Code cleanup guide integration
+- [x] Enhanced developer guide structure
 
 ### Version 2.5.0 (Released)
 - [x] Fixed staging deployment conflicts
