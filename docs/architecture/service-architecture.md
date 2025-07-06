@@ -73,8 +73,8 @@ graph TD
     end
     
     subgraph "Services (Injected)"
-        CAS["CasService<br/>@Injectable({providedIn: 'root'})"]
-        DISOT["DisotService<br/>@Injectable({providedIn: 'root'})"]
+        CAS["CasService<br/>@Injectable<br/>({providedIn: 'root'})"]
+        DISOT["DisotService<br/>@Injectable<br/>({providedIn: 'root'})"]
     end
     
     subgraph "Providers"
@@ -305,24 +305,24 @@ sequenceDiagram
 ```mermaid
 graph TD
     subgraph "Content Storage Tests"
-        T1[Upload file → Get hash]
-        T2[Store duplicate → Deduplication works]
-        T3[Retrieve by hash → Get content]
-        T4[List all → Returns array]
+        T1["Upload file → Get hash"]
+        T2["Store duplicate → Deduplication works"]
+        T3["Retrieve by hash → Get content"]
+        T4["List all → Returns array"]
     end
     
     subgraph "DISOT Entry Tests"
-        T5[Create blog post → Stores content first]
-        T6[Sign entry → Verify signature]
-        T7[List entries → Returns all]
-        T8[Invalid key → Error handling]
+        T5["Create blog post → Stores content first"]
+        T6["Sign entry → Verify signature"]
+        T7["List entries → Returns all"]
+        T8["Invalid key → Error handling"]
     end
     
     subgraph "IndexedDB Tests"
-        T9[Init DB → Creates store]
-        T10[Write/Read → Persistence]
-        T11[Clear → Removes all]
-        T12[Init error → Proper handling]
+        T9["Init DB → Creates store"]
+        T10["Write/Read → Persistence"]
+        T11["Clear → Removes all"]
+        T12["Init error → Proper handling"]
     end
 ```
 

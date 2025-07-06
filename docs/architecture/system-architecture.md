@@ -97,9 +97,9 @@ graph TD
     end
     
     subgraph "Service Registration"
-        CAS["@Injectable({providedIn: 'root'})<br/>CasService"]
-        DISOT["@Injectable({providedIn: 'root'})<br/>DisotService"]
-        HASH["@Injectable({providedIn: 'root'})<br/>HashService"]
+        CAS["@Injectable<br/>({providedIn: 'root'})<br/>CasService"]
+        DISOT["@Injectable<br/>({providedIn: 'root'})<br/>DisotService"]
+        HASH["@Injectable<br/>({providedIn: 'root'})<br/>HashService"]
     end
     
     subgraph "Component Injection"
@@ -162,11 +162,11 @@ graph TD
 ```mermaid
 graph TD
     subgraph "App Routes"
-        HOME[/ → ContentListComponent]
-        UPLOAD[/upload → ContentUploadComponent]
-        DISOT[/disot → DisotEntryComponent]
-        VERIFY[/verify → SignatureVerificationComponent]
-        SETTINGS[/settings → SettingsComponent]
+        HOME["/ → ContentListComponent"]
+        UPLOAD["/upload → ContentUploadComponent"]
+        DISOT["/disot → DisotEntryComponent"]
+        VERIFY["/verify → SignatureVerificationComponent"]
+        SETTINGS["/settings → SettingsComponent"]
     end
     
     subgraph "Navigation Flow"
