@@ -1,0 +1,167 @@
+<div class="max-w-4xl mx-auto p-6">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-red-50 border border-red-200 rounded-lg p-4">
+    <p class="text-red-800">{{ error }}</p>
+    <button (click)="refresh()" class="mt-2 text-sm text-red-600 hover:text-red-800">
+      Try Again
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading && !error && metadata && entry">
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold mb-2">Metadata Entry</h1>
+      <div class="flex items-center gap-4 text-sm text-gray-600">
+        <span>ID: {{ entry.id.substring(0, 12) }}...</span>
+        <span>{{ formatTimestamp(entry.timestamp) }}</span>
+        <span *ngIf="isVerified" class="text-green-600">✓ Verified</span>
+        <span *ngIf="!isVerified" class="text-red-600">✗ Unverified</span>
+      </div>
+    </div>
+
+    <!-- Version Information -->
+    <div class="bg-white border rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Version Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Version</label>
+          <p class="text-lg">{{ metadata.version.version }}</p>
+        </div>
+        <div *ngIf="metadata.version.previousVersion">
+          <label class="block text-sm font-medium text-gray-500">Previous Version</label>
+          <a [routerLink]="['/metadata/view', metadata.version.previousVersion]"
+             class="text-blue-500 hover:text-blue-700">
+            {{ metadata.version.previousVersion.substring(0, 12) }}...
+          </a>
+        </div>
+        <div *ngIf="metadata.version.changeDescription">
+          <label class="block text-sm font-medium text-gray-500">Changes</label>
+          <p>{{ metadata.version.changeDescription }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content References -->
+    <div class="bg-white border rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Content References ({{ metadata.references.length }})</h2>
+      <div *ngIf="metadata.references.length === 0" class="text-gray-500">
+        No content references
+      </div>
+      <div class="space-y-3">
+        <div *ngFor="let ref of metadata.references" 
+             class="border rounded p-4 bg-gray-50">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-500">Hash</label>
+              <p class="font-mono text-sm">{{ ref.hash.substring(0, 20) }}...</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500">MIME Type</label>
+              <p>{{ ref.mimeType }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500">Source</label>
+              <p>{{ ref.mimeTypeSource }}</p>
+            </div>
+            <div *ngIf="ref.relationship">
+              <label class="block text-sm font-medium text-gray-500">Relationship</label>
+              <p>{{ ref.relationship }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Authors -->
+    <div class="bg-white border rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Authors ({{ metadata.authors.length }})</h2>
+      <div *ngIf="metadata.authors.length === 0" class="text-gray-500">
+        No authors
+      </div>
+      <div class="space-y-3">
+        <div *ngFor="let author of metadata.authors" 
+             class="border rounded p-4 bg-gray-50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-500">Author Hash</label>
+              <p class="font-mono text-sm">{{ author.authorHash.substring(0, 20) }}...</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500">Role</label>
+              <p>{{ getRoleDisplayName(author.role) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Version History -->
+    <div class="bg-white border rounded-lg p-6 mb-6" *ngIf="versionHistory.length > 1">
+      <h2 class="text-xl font-semibold mb-4">Version History</h2>
+      <div class="space-y-2">
+        <div *ngFor="let version of versionHistory" 
+             class="flex items-center gap-4 p-2 hover:bg-gray-50 rounded"
+             [class.bg-blue-50]="version.id === entry.id">
+          <span class="font-mono text-sm">{{ version.id.substring(0, 12) }}...</span>
+          <span *ngIf="version.metadata && version.metadata['version']">
+            v{{ version.metadata['version']['version'] }}
+          </span>
+          <span class="text-sm text-gray-500">{{ formatTimestamp(version.timestamp) }}</span>
+          <a *ngIf="version.id !== entry.id" 
+             [routerLink]="['/metadata/view', version.id]"
+             class="text-blue-500 hover:text-blue-700 text-sm">
+            View
+          </a>
+          <span *ngIf="version.id === entry.id" class="text-sm text-gray-500">
+            (current)
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Details -->
+    <div class="bg-white border rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Technical Details</h2>
+      <div class="space-y-2 text-sm">
+        <div>
+          <strong>Entry ID:</strong> 
+          <span class="font-mono">{{ entry.id }}</span>
+        </div>
+        <div>
+          <strong>Content Hash:</strong> 
+          <span class="font-mono">{{ entry.contentHash.value }}</span>
+        </div>
+        <div>
+          <strong>Algorithm:</strong> 
+          <span class="font-mono">{{ entry.contentHash.algorithm }}</span>
+        </div>
+        <div>
+          <strong>Public Key:</strong> 
+          <span class="font-mono">{{ entry.signature.publicKey }}</span>
+        </div>
+        <div>
+          <strong>Signature:</strong> 
+          <span class="font-mono">{{ entry.signature.value.substring(0, 40) }}...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-6 flex gap-4">
+      <button routerLink="/metadata" 
+              class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
+        Back to List
+      </button>
+      <button routerLink="/metadata/create" 
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Create New Entry
+      </button>
+    </div>
+  </div>
+</div>

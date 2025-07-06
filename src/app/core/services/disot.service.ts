@@ -3,6 +3,7 @@ import { IDisotService, DisotEntry, DisotEntryType, DisotFilter } from '../domai
 import { ContentHash } from '../domain/interfaces/content.interface';
 import { CasService } from './cas.service';
 import { SignatureService } from './signature.service';
+import { HashService } from './hash.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +13,40 @@ export class DisotService implements IDisotService {
 
   constructor(
     private casService: CasService,
-    private signatureService: SignatureService
+    private signatureService: SignatureService,
+    private hashService: HashService
   ) {}
 
   async createEntry(
-    contentHash: ContentHash,
+    content: ContentHash | any,
     type: DisotEntryType,
     privateKey: string
   ): Promise<DisotEntry> {
     const timestamp = new Date();
     
+    // Handle both ContentHash and direct content (for metadata)
+    let contentHash: ContentHash;
+    let metadata: any;
+    
+    if (this.isContentHash(content)) {
+      contentHash = content;
+    } else {
+      // For metadata and other direct content, hash it
+      const contentData = new TextEncoder().encode(JSON.stringify(content));
+      const hashValue = await this.hashService.hash(contentData);
+      contentHash = {
+        algorithm: 'sha256',
+        value: hashValue
+      };
+      metadata = content;
+    }
+    
     // Create entry data to sign
     const entryData = {
       contentHash,
       type,
-      timestamp: timestamp.toISOString()
+      timestamp: timestamp.toISOString(),
+      ...(metadata && { metadata })
     };
     
     const dataToSign = new TextEncoder().encode(JSON.stringify(entryData));
@@ -37,7 +57,8 @@ export class DisotService implements IDisotService {
       contentHash,
       signature,
       timestamp,
-      type
+      type,
+      ...(metadata && { metadata })
     };
     
     // Store the entry in CAS
@@ -51,11 +72,18 @@ export class DisotService implements IDisotService {
     return entry;
   }
 
+  private isContentHash(content: any): content is ContentHash {
+    return content && 
+           typeof content.algorithm === 'string' && 
+           typeof content.value === 'string';
+  }
+
   async verifyEntry(entry: DisotEntry): Promise<boolean> {
     const entryData = {
       contentHash: entry.contentHash,
       type: entry.type,
-      timestamp: entry.timestamp.toISOString()
+      timestamp: entry.timestamp.toISOString(),
+      ...(entry.metadata && { metadata: entry.metadata })
     };
     
     const dataToVerify = new TextEncoder().encode(JSON.stringify(entryData));

@@ -6,6 +6,8 @@ import { DisotEntryComponent } from './features/disot/disot-entry/disot-entry.co
 import { SignatureVerificationComponent } from './features/disot/signature-verification/signature-verification.component';
 import { StorageSettingsComponent } from './features/settings/storage-settings/storage-settings.component';
 import { MigrationComponent } from './features/settings/migration/migration.component';
+import { MetadataEntryComponent } from './features/metadata/metadata-entry/metadata-entry.component';
+import { MetadataViewComponent } from './features/metadata/metadata-view/metadata-view.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,5 +18,8 @@ export const routes: Routes = [
   { path: 'disot/create', component: DisotEntryComponent },
   { path: 'disot/verify', component: SignatureVerificationComponent },
   { path: 'settings', component: StorageSettingsComponent },
-  { path: 'settings/migration', component: MigrationComponent }
+  { path: 'settings/migration', component: MigrationComponent },
+  { path: 'metadata', redirectTo: '/metadata/create', pathMatch: 'full' },
+  { path: 'metadata/create', component: MetadataEntryComponent },
+  { path: 'metadata/view/:id', component: MetadataViewComponent }
 ];

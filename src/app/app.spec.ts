@@ -52,13 +52,14 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const navLinks = compiled.querySelectorAll('.main-nav a');
     
-    expect(navLinks.length).toBe(6);
+    expect(navLinks.length).toBe(7);
     expect(navLinks[0].textContent).toContain('Home');
     expect(navLinks[1].textContent).toContain('Content List');
     expect(navLinks[2].textContent).toContain('Upload');
     expect(navLinks[3].textContent).toContain('Create Entry');
     expect(navLinks[4].textContent).toContain('Verify');
-    expect(navLinks[5].textContent).toContain('Settings');
+    expect(navLinks[5].textContent).toContain('Metadata');
+    expect(navLinks[6].textContent).toContain('Settings');
   });
 
   it('should have router outlet', () => {
@@ -91,7 +92,8 @@ describe('App', () => {
     expect(navLinks[2].getAttribute('routerLink')).toBe('/content/upload');
     expect(navLinks[3].getAttribute('routerLink')).toBe('/disot/create');
     expect(navLinks[4].getAttribute('routerLink')).toBe('/disot/verify');
-    expect(navLinks[5].getAttribute('routerLink')).toBe('/settings');
+    expect(navLinks[5].getAttribute('routerLink')).toBe('/metadata/create');
+    expect(navLinks[6].getAttribute('routerLink')).toBe('/settings');
   });
 
   it('should have protected title property', () => {
