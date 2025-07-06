@@ -35,4 +35,59 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('CAS/DISOT System');
   });
+
+  it('should have navigation links', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navLinks = compiled.querySelectorAll('.main-nav a');
+    
+    expect(navLinks.length).toBe(6);
+    expect(navLinks[0].textContent).toContain('Home');
+    expect(navLinks[1].textContent).toContain('Content List');
+    expect(navLinks[2].textContent).toContain('Upload');
+    expect(navLinks[3].textContent).toContain('Create Entry');
+    expect(navLinks[4].textContent).toContain('Verify');
+    expect(navLinks[5].textContent).toContain('Settings');
+  });
+
+  it('should have router outlet', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const routerOutlet = compiled.querySelector('router-outlet');
+    
+    expect(routerOutlet).toBeTruthy();
+  });
+
+  it('should have footer', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const footer = compiled.querySelector('.app-footer');
+    
+    expect(footer).toBeTruthy();
+    expect(footer?.textContent).toContain('Decentralized Content Management System');
+  });
+
+  it('should have correct href attributes on nav links', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navLinks = compiled.querySelectorAll('.main-nav a') as NodeListOf<HTMLAnchorElement>;
+    
+    expect(navLinks[0].getAttribute('routerLink')).toBe('/');
+    expect(navLinks[1].getAttribute('routerLink')).toBe('/content');
+    expect(navLinks[2].getAttribute('routerLink')).toBe('/content/upload');
+    expect(navLinks[3].getAttribute('routerLink')).toBe('/disot/create');
+    expect(navLinks[4].getAttribute('routerLink')).toBe('/disot/verify');
+    expect(navLinks[5].getAttribute('routerLink')).toBe('/settings');
+  });
+
+  it('should have protected title property', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    
+    expect((app as any).title).toBe('cas-app');
+  });
 });
