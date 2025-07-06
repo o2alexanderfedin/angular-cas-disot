@@ -9,7 +9,6 @@ describe('HeliaStorageService', () => {
   let mockHelia: any;
   let mockFs: any;
   let mockPathCidStore: any;
-  let originalIndexedDB: any;
 
   // Mock CID class
   class MockCID {
@@ -19,9 +18,6 @@ describe('HeliaStorageService', () => {
   }
 
   beforeEach(() => {
-    // Save original indexedDB
-    originalIndexedDB = window.indexedDB;
-
     // Mock UnixFS
     mockFs = {
       addBytes: jasmine.createSpy('addBytes').and.returnValue(Promise.resolve(new MockCID('bafkreitest123'))),
@@ -38,44 +34,15 @@ describe('HeliaStorageService', () => {
       stop: jasmine.createSpy('stop').and.returnValue(Promise.resolve())
     };
 
-
     // Mock path-CID store
     mockPathCidStore = {
       transaction: jasmine.createSpy('transaction'),
-      close: jasmine.createSpy('close')
+      close: jasmine.createSpy('close'),
+      objectStoreNames: {
+        contains: jasmine.createSpy('contains').and.returnValue(true)
+      },
+      createObjectStore: jasmine.createSpy('createObjectStore')
     };
-
-    // Mock IndexedDB
-    const mockIndexedDB = {
-      open: jasmine.createSpy('open').and.callFake(() => {
-        const request = {
-          onsuccess: null as ((e: any) => void) | null,
-          onerror: null as ((e: any) => void) | null,
-          onupgradeneeded: null as ((e: any) => void) | null,
-          result: mockPathCidStore
-        };
-
-        // Simulate successful open
-        setTimeout(() => {
-          if (request.onsuccess) {
-            request.onsuccess({ target: request });
-          }
-        }, 0);
-
-        return request;
-      }),
-      deleteDatabase: jasmine.createSpy('deleteDatabase').and.returnValue({
-        onsuccess: null as ((e: any) => void) | null,
-        onerror: null as ((e: any) => void) | null
-      })
-    };
-
-    // Replace global indexedDB
-    Object.defineProperty(window, 'indexedDB', {
-      value: mockIndexedDB,
-      writable: true,
-      configurable: true
-    });
 
     TestBed.configureTestingModule({
       providers: [
@@ -86,15 +53,20 @@ describe('HeliaStorageService', () => {
     });
 
     service = TestBed.inject(HeliaStorageService);
-  });
-
-  afterEach(() => {
-    // Restore original indexedDB
-    Object.defineProperty(window, 'indexedDB', {
-      value: originalIndexedDB,
-      writable: true,
-      configurable: true
+    
+    // Override the initialization to prevent actual Helia/IndexedDB calls
+    spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
+      this.helia = mockHelia;
+      this.fs = mockFs;
+      this.pathToCidStore = mockPathCidStore;
+      this.initialized = true;
     });
+    
+    // Override path-CID store methods
+    spyOn(service as any, 'initializePathCidStore').and.returnValue(Promise.resolve());
+    spyOn(service as any, 'getCidForPathPrivate').and.returnValue(Promise.resolve('bafkreitest123'));
+    spyOn(service as any, 'savePathCidMapping').and.returnValue(Promise.resolve());
+    spyOn(service as any, 'deletePathCidMapping').and.returnValue(Promise.resolve());
   });
 
   it('should be created', () => {
@@ -102,15 +74,6 @@ describe('HeliaStorageService', () => {
   });
 
   describe('initialization', () => {
-    beforeEach(() => {
-      // Mock the imports used in initialization
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-    });
 
     it('should initialize Helia on first use', async () => {
       await service.ensureInitialized();
@@ -139,16 +102,6 @@ describe('HeliaStorageService', () => {
 
   describe('write', () => {
     beforeEach(async () => {
-      // Initialize service with mocks
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
-      spyOn(service as any, 'savePathCidMapping').and.returnValue(Promise.resolve());
-      
       await service.ensureInitialized();
     });
 
@@ -181,16 +134,6 @@ describe('HeliaStorageService', () => {
 
   describe('read', () => {
     beforeEach(async () => {
-      // Initialize service with mocks
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
-      spyOn(service as any, 'getCidForPath').and.returnValue(Promise.resolve('bafkreitest123'));
-      
       await service.ensureInitialized();
     });
 
@@ -202,7 +145,7 @@ describe('HeliaStorageService', () => {
         await this.ensureInitialized();
         if (!this.fs) throw new Error('Helia not initialized');
         
-        const cidString = await this.getCidForPath(path);
+        const cidString = await this.getCidForPathPrivate(path);
         if (!cidString) {
           throw new Error(`No content found for path: ${path}`);
         }
@@ -224,12 +167,12 @@ describe('HeliaStorageService', () => {
       const result = await service.read(path);
       
       expect(result).toEqual(new Uint8Array([1, 2, 3, 4, 5, 6]));
-      expect((service as any).getCidForPath).toHaveBeenCalledWith(path);
+      expect((service as any).getCidForPathPrivate).toHaveBeenCalledWith(path);
     });
 
     it('should throw error if path not found', async () => {
       const path = 'non/existent';
-      (service as any).getCidForPath.and.returnValue(Promise.resolve(null));
+      (service as any).getCidForPathPrivate.and.returnValue(Promise.resolve(null));
       
       await expectAsync(service.read(path))
         .toBeRejectedWithError(`No content found for path: ${path}`);
@@ -245,25 +188,18 @@ describe('HeliaStorageService', () => {
 
   describe('exists', () => {
     beforeEach(async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
     });
 
     it('should return true if path exists', async () => {
-      spyOn(service as any, 'getCidForPath').and.returnValue(Promise.resolve('bafkreitest123'));
-      
+      // getCidForPathPrivate is already mocked to return 'bafkreitest123'
       const result = await service.exists('test/file.txt');
       expect(result).toBe(true);
     });
 
     it('should return false if path does not exist', async () => {
-      spyOn(service as any, 'getCidForPath').and.returnValue(Promise.resolve(null));
+      // Override the default mock for this test
+      (service as any).getCidForPathPrivate.and.returnValue(Promise.resolve(null));
       
       const result = await service.exists('non/existent');
       expect(result).toBe(false);
@@ -272,15 +208,6 @@ describe('HeliaStorageService', () => {
 
   describe('delete', () => {
     beforeEach(async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
-      spyOn(service as any, 'deletePathCidMapping').and.returnValue(Promise.resolve());
-      
       await service.ensureInitialized();
     });
 
@@ -295,13 +222,6 @@ describe('HeliaStorageService', () => {
 
   describe('list', () => {
     beforeEach(async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
     });
 
@@ -367,14 +287,12 @@ describe('HeliaStorageService', () => {
 
       mockPathCidStore.transaction.and.returnValue(mockTransaction);
 
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
+      
+      // Override the spies to call through to the real implementation for these tests
+      (service as any).savePathCidMapping.and.callThrough();
+      (service as any).getCidForPathPrivate.and.callThrough();
+      (service as any).deletePathCidMapping.and.callThrough();
     });
 
     it('should save path-CID mapping', async () => {
@@ -417,7 +335,7 @@ describe('HeliaStorageService', () => {
       
       mockObjectStore.get.and.returnValue(getRequest);
       
-      const getPromise = (service as any).getCidForPath(path);
+      const getPromise = (service as any).getCidForPathPrivate(path);
       
       setTimeout(() => {
         if (getRequest.onsuccess) {
@@ -440,7 +358,7 @@ describe('HeliaStorageService', () => {
       
       mockObjectStore.get.and.returnValue(getRequest);
       
-      const getPromise = (service as any).getCidForPath(path);
+      const getPromise = (service as any).getCidForPathPrivate(path);
       
       setTimeout(() => {
         if (getRequest.onsuccess) {
@@ -478,13 +396,6 @@ describe('HeliaStorageService', () => {
 
   describe('getStats', () => {
     beforeEach(async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
       spyOn(service, 'list').and.returnValue(Promise.resolve(['path1', 'path2', 'path3']));
       
       await service.ensureInitialized();
@@ -503,13 +414,6 @@ describe('HeliaStorageService', () => {
 
   describe('isHealthy', () => {
     it('should return true when initialized', async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
       
       const result = await service.isHealthy();
@@ -517,6 +421,11 @@ describe('HeliaStorageService', () => {
     });
 
     it('should return false when not initialized', async () => {
+      // Reset the initialized state and make initialize fail
+      (service as any).initialized = false;
+      (service as any).initPromise = undefined;
+      (service as any).initialize.and.returnValue(Promise.reject(new Error('Not initialized')));
+      
       const result = await service.isHealthy();
       expect(result).toBe(false);
     });
@@ -531,13 +440,6 @@ describe('HeliaStorageService', () => {
 
   describe('ngOnDestroy', () => {
     beforeEach(async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = mockPathCidStore;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
     });
 
@@ -568,48 +470,42 @@ describe('HeliaStorageService', () => {
 
   describe('error handling', () => {
     it('should handle initialization errors', async () => {
-      spyOn(service as any, 'initialize').and.returnValue(Promise.reject(new Error('Helia initialization failed')));
+      // Reset the service to test initialization failure
+      (service as any).initialized = false;
+      (service as any).initPromise = undefined;
+      (service as any).initialize.and.returnValue(Promise.reject(new Error('Helia initialization failed')));
       
       await expectAsync(service.ensureInitialized()).toBeRejectedWithError('Helia initialization failed');
     });
 
     it('should throw error when store not initialized for save', async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = null;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
+      (service as any).pathToCidStore = null;
+      
+      // Override the spy to call through to the real implementation
+      (service as any).savePathCidMapping.and.callThrough();
       
       await expectAsync((service as any).savePathCidMapping('test', 'cid'))
         .toBeRejectedWithError('Path-CID store not initialized');
     });
 
     it('should throw error when store not initialized for get', async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = null;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
+      (service as any).pathToCidStore = null;
       
-      await expectAsync((service as any).getCidForPath('test'))
+      // Override the spy to call through to the real implementation
+      (service as any).getCidForPathPrivate.and.callThrough();
+      
+      await expectAsync((service as any).getCidForPathPrivate('test'))
         .toBeRejectedWithError('Path-CID store not initialized');
     });
 
     it('should throw error when store not initialized for delete', async () => {
-      spyOn(service as any, 'initialize').and.callFake(async function(this: any) {
-        this.helia = mockHelia;
-        this.fs = mockFs;
-        this.pathToCidStore = null;
-        this.initialized = true;
-      });
-      
       await service.ensureInitialized();
+      (service as any).pathToCidStore = null;
+      
+      // Override the spy to call through to the real implementation
+      (service as any).deletePathCidMapping.and.callThrough();
       
       await expectAsync((service as any).deletePathCidMapping('test'))
         .toBeRejectedWithError('Path-CID store not initialized');

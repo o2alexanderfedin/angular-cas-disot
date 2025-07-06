@@ -37,6 +37,7 @@ export class IPFSMigrationService {
 
   private cancelSubject = new Subject<void>();
   private isRunning = false;
+  private isCancelled = false;
 
   progress$ = this.progressSubject.asObservable();
 
@@ -61,6 +62,7 @@ export class IPFSMigrationService {
     }
 
     this.isRunning = true;
+    this.isCancelled = false;
     this.cancelSubject = new Subject<void>();
 
     const {
@@ -91,7 +93,7 @@ export class IPFSMigrationService {
       // Process in batches
       for (let i = 0; i < pathsToMigrate.length; i += batchSize) {
         // Check for cancellation
-        if (this.cancelSubject.closed) {
+        if (this.isCancelled) {
           this.updateProgress({ status: 'failed' });
           break;
         }
@@ -139,18 +141,13 @@ export class IPFSMigrationService {
     skipExisting: boolean,
     deleteAfterMigration: boolean
   ): Promise<void> {
-    const currentProgress = this.progressSubject.value;
-
     try {
       // Update current item
       this.updateProgress({ currentItem: path });
 
       // Check if already exists in target
       if (skipExisting && await targetProvider.exists(path)) {
-        this.updateProgress({
-          processedItems: currentProgress.processedItems + 1,
-          successfulItems: currentProgress.successfulItems + 1
-        });
+        this.incrementProgress(true);
         return;
       }
 
@@ -165,18 +162,31 @@ export class IPFSMigrationService {
         await this.currentStorageProvider.delete(path);
       }
 
-      // Update progress
+      // Update progress with success
+      this.incrementProgress(true);
+    } catch (error) {
+      // Update progress with error
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.incrementProgress(false, { path, error: errorMessage });
+    }
+  }
+
+  /**
+   * Increment progress counters atomically
+   */
+  private incrementProgress(success: boolean, error?: { path: string; error: string }): void {
+    const currentProgress = this.progressSubject.value;
+    
+    if (success) {
       this.updateProgress({
         processedItems: currentProgress.processedItems + 1,
         successfulItems: currentProgress.successfulItems + 1
       });
-    } catch (error) {
-      // Update progress with error
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    } else {
       this.updateProgress({
         processedItems: currentProgress.processedItems + 1,
         failedItems: currentProgress.failedItems + 1,
-        errors: [...currentProgress.errors, { path, error: errorMessage }]
+        errors: error ? [...currentProgress.errors, error] : currentProgress.errors
       });
     }
   }
@@ -186,6 +196,7 @@ export class IPFSMigrationService {
    */
   cancelMigration(): void {
     if (this.isRunning) {
+      this.isCancelled = true;
       this.cancelSubject.next();
       this.cancelSubject.complete();
     }
