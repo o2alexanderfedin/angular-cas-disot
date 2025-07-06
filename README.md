@@ -1,6 +1,7 @@
 # CAS/DISOT - Decentralized Content Management System
 
 [![Angular](https://img.shields.io/badge/Angular-v20-red.svg)](https://angular.io/)
+[![Node.js](https://img.shields.io/badge/Node.js-v20.19%2B%20%7C%20v22.12%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.8-blue.svg)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/Tests-199%20total-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![Coverage](https://img.shields.io/badge/Coverage-73.5%25-yellow.svg)](https://codecov.io/gh/o2alexanderfedin/angular-cas-disot)
@@ -71,9 +72,11 @@ A decentralized content management system implementing Content Addressable Stora
 ## 🛠 Installation
 
 ### Prerequisites
-- Node.js v18+ (or v20+ recommended)
+- **Node.js v20.19+ or v22.12+** (required for Angular CLI v20)
 - npm v9+
 - Git
+
+> **⚠️ Important**: Angular CLI v20 requires Node.js v20.19+ or v22.12+. Earlier versions are not supported.
 
 ### Setup
 

@@ -54,7 +54,7 @@ graph TD
 
 ### **1. Continuous Integration (CI)**
 - **Triggers**: Push to `master`/`develop`, Pull Requests
-- **Node Versions**: 18.x, 20.x (matrix testing)
+- **Node Versions**: 20.x, 22.x (matrix testing)
 - **Steps**:
   - ✅ Checkout code
   - ✅ Install dependencies
