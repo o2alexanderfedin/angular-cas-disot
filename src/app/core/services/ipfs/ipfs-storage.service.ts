@@ -5,6 +5,7 @@ import { IStorageProvider } from '../../domain/interfaces/storage.interface';
 import { IPFSConfig } from '../../domain/interfaces/ipfs.interface';
 import { IPFSClient } from './ipfs-client.service';
 import { IndexedDbStorageService } from '../indexed-db-storage.service';
+import { IPFSShareLinkService } from './ipfs-share-link.service';
 
 export const IPFS_CONFIG = 'IPFS_CONFIG';
 
@@ -20,7 +21,8 @@ export class IPFSStorageService implements IStorageProvider {
   constructor(
     @Inject(IPFS_CONFIG) config: IPFSConfig,
     http: HttpClient,
-    localCache: IndexedDbStorageService
+    localCache: IndexedDbStorageService,
+    private shareLinkService: IPFSShareLinkService
   ) {
     this.ipfsClient = new IPFSClient(http, config);
     this.localCache = localCache;
@@ -144,5 +146,36 @@ export class IPFSStorageService implements IStorageProvider {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Generate a shareable link for content
+   */
+  generateShareLink(path: string, filename?: string): string | null {
+    const cid = this.getCidForPath(path);
+    if (!cid) {
+      return null;
+    }
+    
+    return this.shareLinkService.generateShareLink(cid, { filename });
+  }
+
+  /**
+   * Generate multiple share links for different gateways
+   */
+  generateMultipleShareLinks(path: string, filename?: string): string[] {
+    const cid = this.getCidForPath(path);
+    if (!cid) {
+      return [];
+    }
+    
+    return this.shareLinkService.generateMultipleShareLinks(cid, { filename });
+  }
+
+  /**
+   * Get share link service for advanced operations
+   */
+  getShareLinkService(): IPFSShareLinkService {
+    return this.shareLinkService;
   }
 }

@@ -7,6 +7,7 @@ import { LocalStorageService } from './core/services/local-storage.service';
 import { IndexedDbStorageService } from './core/services/indexed-db-storage.service';
 import { IPFSStorageService, IPFS_CONFIG } from './core/services/ipfs/ipfs-storage.service';
 import { HeliaStorageService } from './core/services/helia/helia-storage.service';
+import { IPFSShareLinkService } from './core/services/ipfs/ipfs-share-link.service';
 import { DEFAULT_IPFS_CONFIG } from './core/services/ipfs/ipfs.config';
 
 describe('App', () => {
@@ -20,6 +21,7 @@ describe('App', () => {
         IndexedDbStorageService,
         IPFSStorageService,
         HeliaStorageService,
+        IPFSShareLinkService,
         { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
         { provide: STORAGE_TYPE, useValue: StorageType.IN_MEMORY },
         {

@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HeliaStorageService } from './helia-storage.service';
+import { IPFSShareLinkService } from '../ipfs/ipfs-share-link.service';
+import { IPFS_CONFIG } from '../ipfs/ipfs-storage.service';
+import { DEFAULT_IPFS_CONFIG } from '../ipfs/ipfs.config';
 
 describe('HeliaStorageService', () => {
   let service: HeliaStorageService;
@@ -75,7 +78,11 @@ describe('HeliaStorageService', () => {
     });
 
     TestBed.configureTestingModule({
-      providers: [HeliaStorageService]
+      providers: [
+        HeliaStorageService,
+        IPFSShareLinkService,
+        { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG }
+      ]
     });
 
     service = TestBed.inject(HeliaStorageService);

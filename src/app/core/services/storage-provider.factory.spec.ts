@@ -10,6 +10,7 @@ import { LocalStorageService } from './local-storage.service';
 import { IndexedDbStorageService } from './indexed-db-storage.service';
 import { IPFSStorageService, IPFS_CONFIG } from './ipfs/ipfs-storage.service';
 import { HeliaStorageService } from './helia/helia-storage.service';
+import { IPFSShareLinkService } from './ipfs/ipfs-share-link.service';
 import { DEFAULT_IPFS_CONFIG } from './ipfs/ipfs.config';
 
 describe('StorageProviderFactory', () => {
@@ -109,6 +110,7 @@ describe('StorageProviderFactory', () => {
           IndexedDbStorageService,
           IPFSStorageService,
           HeliaStorageService,
+          IPFSShareLinkService,
           { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
           { provide: STORAGE_TYPE, useValue: StorageType.IN_MEMORY },
           {
@@ -131,6 +133,7 @@ describe('StorageProviderFactory', () => {
           IndexedDbStorageService,
           IPFSStorageService,
           HeliaStorageService,
+          IPFSShareLinkService,
           { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
           { provide: STORAGE_TYPE, useValue: StorageType.INDEXED_DB },
           {
@@ -153,6 +156,7 @@ describe('StorageProviderFactory', () => {
           IndexedDbStorageService,
           IPFSStorageService,
           HeliaStorageService,
+          IPFSShareLinkService,
           { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
           // Provide null as STORAGE_TYPE to test default behavior
           { provide: STORAGE_TYPE, useValue: null },

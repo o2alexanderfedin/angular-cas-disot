@@ -1,10 +1,13 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, Inject } from '@angular/core';
 import { createHelia, type Helia } from 'helia';
 import { unixfs, type UnixFS } from '@helia/unixfs';
 import { IDBBlockstore } from 'blockstore-idb';
 import { IDBDatastore } from 'datastore-idb';
 import itAll from 'it-all';
 import { IStorageProvider } from '../../domain/interfaces/storage.interface';
+import { IPFSShareLinkService } from '../ipfs/ipfs-share-link.service';
+import { IPFS_CONFIG } from '../ipfs/ipfs-storage.service';
+import { IPFSConfig } from '../../domain/interfaces/ipfs.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +22,13 @@ export class HeliaStorageService implements IStorageProvider, OnDestroy {
   private pathToCidStore?: IDBDatabase;
   private readonly PATH_CID_DB = 'helia-path-mappings';
   private readonly PATH_CID_STORE = 'pathCidMappings';
+
+  constructor(
+    private shareLinkService: IPFSShareLinkService,
+    @Inject(IPFS_CONFIG) _config: IPFSConfig
+  ) {
+    // Config is injected for potential future use
+  }
 
   async ensureInitialized(): Promise<void> {
     if (this.initialized) return;
@@ -107,7 +117,7 @@ export class HeliaStorageService implements IStorageProvider, OnDestroy {
 
     try {
       // Get CID from path mapping
-      const cidString = await this.getCidForPath(path);
+      const cidString = await this.getCidForPathPrivate(path);
       if (!cidString) {
         throw new Error(`No content found for path: ${path}`);
       }
@@ -139,7 +149,7 @@ export class HeliaStorageService implements IStorageProvider, OnDestroy {
   async exists(path: string): Promise<boolean> {
     await this.ensureInitialized();
     
-    const cidString = await this.getCidForPath(path);
+    const cidString = await this.getCidForPathPrivate(path);
     return cidString !== null;
   }
 
@@ -186,7 +196,7 @@ export class HeliaStorageService implements IStorageProvider, OnDestroy {
     });
   }
 
-  private async getCidForPath(path: string): Promise<string | null> {
+  private async getCidForPathPrivate(path: string): Promise<string | null> {
     if (!this.pathToCidStore) throw new Error('Path-CID store not initialized');
 
     return new Promise((resolve, reject) => {
@@ -246,6 +256,54 @@ export class HeliaStorageService implements IStorageProvider, OnDestroy {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Generate a shareable link for content
+   */
+  async generateShareLink(path: string, filename?: string): Promise<string | null> {
+    const cid = await this.getCidForPath(path);
+    if (!cid) {
+      return null;
+    }
+    
+    return this.shareLinkService.generateShareLink(cid, { filename });
+  }
+
+  /**
+   * Generate multiple share links for different gateways
+   */
+  async generateMultipleShareLinks(path: string, filename?: string): Promise<string[]> {
+    const cid = await this.getCidForPath(path);
+    if (!cid) {
+      return [];
+    }
+    
+    return this.shareLinkService.generateMultipleShareLinks(cid, { filename });
+  }
+
+  /**
+   * Get CID for a given path
+   */
+  async getCidForPath(path: string): Promise<string | null> {
+    await this.ensureInitialized();
+    return await this.getCidForPathInternal(path);
+  }
+
+  private async getCidForPathInternal(path: string): Promise<string | null> {
+    if (!this.pathToCidStore) throw new Error('Path-CID store not initialized');
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.pathToCidStore!.transaction([this.PATH_CID_STORE], 'readonly');
+      const store = transaction.objectStore(this.PATH_CID_STORE);
+      const request = store.get(path);
+      
+      request.onsuccess = () => {
+        const result = request.result;
+        resolve(result ? result.cid : null);
+      };
+      request.onerror = () => reject(request.error);
+    });
   }
 
   ngOnDestroy(): void {

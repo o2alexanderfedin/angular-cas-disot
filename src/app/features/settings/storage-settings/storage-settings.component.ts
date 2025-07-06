@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { SharedModule } from '../../../shared/shared-module';
 import { StorageType, STORAGE_TYPE, STORAGE_PROVIDER } from '../../../core/services/storage-provider.factory';
 import { IStorageProvider } from '../../../core/domain/interfaces/storage.interface';
@@ -11,7 +12,7 @@ import { IPFSConfig } from '../../../core/domain/interfaces/ipfs.interface';
 @Component({
   selector: 'app-storage-settings',
   standalone: true,
-  imports: [CommonModule, SharedModule, FormsModule],
+  imports: [CommonModule, SharedModule, FormsModule, RouterLink],
   template: `
     <div class="storage-settings">
       <h2>Storage Settings</h2>
@@ -120,6 +121,11 @@ import { IPFSConfig } from '../../../core/domain/interfaces/ipfs.interface';
           <button (click)="clearStorage()" class="danger-button">
             Clear All Local Data
           </button>
+          <a *ngIf="canMigrate()" routerLink="/settings/migration" class="migration-link">
+            <button class="migrate-button">
+              Migrate to IPFS/Helia →
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -288,6 +294,25 @@ import { IPFSConfig } from '../../../core/domain/interfaces/ipfs.interface';
       color: #e74c3c;
       font-weight: bold;
     }
+
+    .migration-link {
+      text-decoration: none;
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    .migrate-button {
+      padding: 10px 20px;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .migrate-button:hover {
+      background-color: #9b59b6;
+    }
   `]
 })
 export class StorageSettingsComponent implements OnInit {
@@ -415,5 +440,10 @@ export class StorageSettingsComponent implements OnInit {
       default:
         return 'Unknown';
     }
+  }
+
+  canMigrate(): boolean {
+    return this.currentStorageType === StorageType.IN_MEMORY || 
+           this.currentStorageType === StorageType.INDEXED_DB;
   }
 }

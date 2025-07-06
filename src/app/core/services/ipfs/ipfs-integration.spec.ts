@@ -4,6 +4,7 @@ import { IPFSClient } from './ipfs-client.service';
 import { IPFSStorageService, IPFS_CONFIG } from './ipfs-storage.service';
 import { IPFSUploadQueueService } from './ipfs-upload-queue.service';
 import { IPFSCIDMappingService } from './ipfs-cid-mapping.service';
+import { IPFSShareLinkService } from './ipfs-share-link.service';
 import { IndexedDbStorageService } from '../indexed-db-storage.service';
 import { DEFAULT_IPFS_CONFIG } from './ipfs.config';
 import { StorageType, STORAGE_TYPE, STORAGE_PROVIDER, storageProviderFactory } from '../storage-provider.factory';
@@ -18,7 +19,8 @@ describe('IPFS Integration Tests', () => {
         providers: [
           { provide: IPFS_CONFIG, useValue: DEFAULT_IPFS_CONFIG },
           IndexedDbStorageService,
-          LocalStorageService
+          LocalStorageService,
+          IPFSShareLinkService
         ]
       });
     });
@@ -35,7 +37,7 @@ describe('IPFS Integration Tests', () => {
 
     it('should create IPFSStorageService with all dependencies', () => {
       TestBed.configureTestingModule({
-        providers: [IPFSStorageService]
+        providers: [IPFSStorageService, IPFSShareLinkService]
       });
       
       const service = TestBed.inject(IPFSStorageService);
@@ -44,7 +46,7 @@ describe('IPFS Integration Tests', () => {
 
     it('should create IPFSUploadQueueService', () => {
       TestBed.configureTestingModule({
-        providers: [IPFSStorageService, IPFSUploadQueueService]
+        providers: [IPFSStorageService, IPFSShareLinkService, IPFSUploadQueueService]
       });
       
       const queueService = TestBed.inject(IPFSUploadQueueService);
@@ -70,6 +72,7 @@ describe('IPFS Integration Tests', () => {
           LocalStorageService,
           IndexedDbStorageService,
           IPFSStorageService,
+          IPFSShareLinkService,
           HeliaStorageService
         ]
       });
@@ -109,6 +112,7 @@ describe('IPFS Integration Tests', () => {
             LocalStorageService,
             IndexedDbStorageService,
             IPFSStorageService,
+            IPFSShareLinkService,
             HeliaStorageService,
             { provide: STORAGE_TYPE, useValue: type },
             {
@@ -135,6 +139,7 @@ describe('IPFS Integration Tests', () => {
           IndexedDbStorageService,
           IPFSClient,
           IPFSStorageService,
+          IPFSShareLinkService,
           IPFSUploadQueueService,
           IPFSCIDMappingService
         ]

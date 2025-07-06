@@ -31,10 +31,16 @@ The application follows Clean Architecture principles with clear separation of c
 4. **HashService** - SHA-256 hashing via Web Crypto API
 5. **IndexedDbStorageService** - Persistent browser storage implementation
 6. **CoverageService** - Code coverage data provider for display
+7. **IPFSStorageService** - IPFS integration with local caching
+8. **HeliaStorageService** - Browser-native IPFS using Helia
+9. **IPFSShareLinkService** - Generate shareable IPFS gateway URLs
+10. **IPFSMigrationService** - Migrate existing content to IPFS/Helia
 
 ## Storage Providers
 - **InMemoryStorageService** - Default, data lost on refresh
 - **IndexedDbStorageService** - Persistent browser storage
+- **IPFSStorageService** - Distributed storage using IPFS network (requires local node)
+- **HeliaStorageService** - Browser-native IPFS implementation
 - Configurable via Settings page
 
 ## Testing
@@ -42,8 +48,8 @@ The application follows Clean Architecture principles with clear separation of c
 - Run tests with `npm test`
 - Run tests with coverage: `npm test:coverage`
 - All tests run in ChromeHeadless mode
-- Current status: 108/108 tests passing ✅
-- Code coverage: 73.81% statements, 83.13% functions
+- Current status: 384/402 tests passing (18 failures in test setup)
+- Code coverage: 78.08% statements, 82.23% functions
 
 ## Features
 ### Content Management
@@ -70,12 +76,26 @@ The application follows Clean Architecture principles with clear separation of c
 
 ## Important Notes
 1. **Cryptography**: The SignatureService uses a mock implementation. For production, replace with proper secp256k1 library.
-2. **Storage**: IndexedDB storage is now implemented for persistence.
+2. **Storage**: Multiple storage providers available including IPFS and Helia for distributed storage.
 3. **TypeScript**: Strict mode enabled with unused code detection (noUnusedLocals, noUnusedParameters)
 4. **Deployment**: Staging deployment fixed with proper base-href and sequential deployment strategy
+5. **IPFS**: For local IPFS node, configure CORS headers and use proxy in development
+6. **Migration**: Content can be migrated from local storage to IPFS/Helia via the migration UI
 
 ## Recent Updates
-### v2.5.0 (Latest)
+### v3.0.0 - Phase 1 IPFS Integration (Latest)
+1. ✅ Implemented IPFS storage provider with HTTP API client
+2. ✅ Added Helia (browser-native IPFS) storage provider
+3. ✅ Created hybrid storage with local caching
+4. ✅ Implemented upload queue with persistence and retry logic
+5. ✅ Added CID mapping service for content tracking
+6. ✅ Created share link generation for IPFS gateway URLs
+7. ✅ Built migration service for existing content
+8. ✅ Enhanced settings UI with storage health indicators
+9. ✅ Added migration UI for bulk content transfer
+10. ✅ Comprehensive test coverage for all new features
+
+### v2.5.0
 1. ✅ Fixed staging deployment conflicts
 2. ✅ Corrected base-href path for staging environment
 3. ✅ Enabled TypeScript strict unused code detection
