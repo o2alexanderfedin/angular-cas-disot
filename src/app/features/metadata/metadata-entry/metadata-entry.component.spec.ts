@@ -5,8 +5,10 @@ import { Router } from '@angular/router';
 import { MetadataEntryComponent } from './metadata-entry.component';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
+import { HashSelectionService } from '../../../core/services/hash-selection.service';
 import { AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
+import { ContentHash } from '../../../core/domain/interfaces/content.interface';
 
 describe('MetadataEntryComponent', () => {
   let component: MetadataEntryComponent;
@@ -18,6 +20,7 @@ describe('MetadataEntryComponent', () => {
   beforeEach(async () => {
     const metadataSpy = jasmine.createSpyObj('MetadataService', ['createMetadataEntry']);
     const signatureSpy = jasmine.createSpyObj('SignatureService', ['generateKeyPair']);
+    const hashSpy = jasmine.createSpyObj('HashSelectionService', ['searchHashes', 'formatFileSize']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -27,7 +30,8 @@ describe('MetadataEntryComponent', () => {
       ],
       providers: [
         { provide: MetadataService, useValue: metadataSpy },
-        { provide: SignatureService, useValue: signatureSpy }
+        { provide: SignatureService, useValue: signatureSpy },
+        { provide: HashSelectionService, useValue: hashSpy }
       ]
     }).compileComponents();
 
@@ -200,5 +204,64 @@ describe('MetadataEntryComponent', () => {
     await component.onSubmit();
 
     expect(component.error).toBe('Creation failed');
+  });
+
+  describe('Hash Selection', () => {
+    it('should open hash selection modal', () => {
+      // Act
+      component.openHashSelector(0);
+
+      // Assert
+      expect(component.showHashSelectionModal).toBe(true);
+      expect(component.currentReferenceIndex).toBe(0);
+    });
+
+    it('should close hash selection modal', () => {
+      // Arrange
+      component.showHashSelectionModal = true;
+      component.currentReferenceIndex = 0;
+
+      // Act
+      component.closeHashSelector();
+
+      // Assert
+      expect(component.showHashSelectionModal).toBe(false);
+      expect(component.currentReferenceIndex).toBe(-1);
+    });
+
+    it('should populate hash field when hash is selected', () => {
+      // Arrange
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'abc123def456'
+      };
+      component.currentReferenceIndex = 0;
+
+      // Act
+      component.onHashSelected(mockHash);
+
+      // Assert
+      const referenceControl = component.references.at(0);
+      expect(referenceControl.get('hash')?.value).toBe('abc123def456');
+      expect(component.showHashSelectionModal).toBe(false);
+      expect(component.currentReferenceIndex).toBe(-1);
+    });
+
+    it('should not populate hash field if no reference index is set', () => {
+      // Arrange
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'abc123def456'
+      };
+      component.currentReferenceIndex = -1;
+      const originalValue = component.references.at(0).get('hash')?.value;
+
+      // Act
+      component.onHashSelected(mockHash);
+
+      // Assert
+      const referenceControl = component.references.at(0);
+      expect(referenceControl.get('hash')?.value).toBe(originalValue);
+    });
   });
 });

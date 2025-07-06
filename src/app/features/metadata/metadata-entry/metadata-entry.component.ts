@@ -5,11 +5,13 @@ import { Router } from '@angular/router';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
 import { createMetadataContent, AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
+import { ContentHash } from '../../../core/domain/interfaces/content.interface';
+import { HashSelectionModalComponent } from '../../../shared/components/hash-selection-modal/hash-selection-modal.component';
 
 @Component({
   selector: 'app-metadata-entry',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HashSelectionModalComponent],
   templateUrl: './metadata-entry.component.html'
 })
 export class MetadataEntryComponent implements OnInit {
@@ -17,6 +19,8 @@ export class MetadataEntryComponent implements OnInit {
   keyPair: { publicKey: string; privateKey: string } | null = null;
   error: string = '';
   submitting = false;
+  showHashSelectionModal = false;
+  currentReferenceIndex = -1;
 
   authorRoles = Object.values(AuthorRole);
 
@@ -89,6 +93,26 @@ export class MetadataEntryComponent implements OnInit {
     } catch (error) {
       this.error = 'Failed to generate key pair';
     }
+  }
+
+  openHashSelector(referenceIndex: number) {
+    this.currentReferenceIndex = referenceIndex;
+    this.showHashSelectionModal = true;
+  }
+
+  closeHashSelector() {
+    this.showHashSelectionModal = false;
+    this.currentReferenceIndex = -1;
+  }
+
+  onHashSelected(hash: ContentHash) {
+    if (this.currentReferenceIndex >= 0) {
+      const referenceControl = this.references.at(this.currentReferenceIndex);
+      referenceControl.patchValue({
+        hash: hash.value
+      });
+    }
+    this.closeHashSelector();
   }
 
   async onSubmit() {
