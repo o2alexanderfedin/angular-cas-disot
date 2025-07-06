@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.5-blue.svg)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/Tests-108%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v1.2.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v1.2.0)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.0.0)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -242,6 +242,14 @@ We welcome contributions! Please follow these steps:
 
 ## 🗺 Roadmap
 
+### Version 2.0.0 (Released)
+- [x] Complete documentation restructuring
+- [x] Numbered, audience-based folder organization
+- [x] Separated current docs from future roadmap
+- [x] Added user guides and deployment documentation
+- [x] Fixed all 390 cross-references and navigation links
+- [x] Created comprehensive changelog and resources sections
+
 ### Version 1.2.0 (Released)
 - [x] Phase 1 IPFS Integration Architecture documented
 - [x] Detailed implementation guide with code examples
@@ -290,7 +298,7 @@ We welcome contributions! Please follow these steps:
 - [ ] WebSocket support
 
 ### Version 2.0.0 (Long-term)
-- [ ] IPFS integration - [📄 Architecture](docs/architecture/phase1-ipfs-architecture.md) | [🔨 Implementation](docs/architecture/phase1-implementation-guide.md) | [🗺️ Roadmap](docs/architecture/phase1-roadmap.md)
+- [ ] IPFS integration - [📄 Architecture](docs/06-roadmap/phases/phase-1-ipfs/architecture.md) | [🔨 Implementation](docs/06-roadmap/phases/phase-1-ipfs/implementation.md) | [🗺️ Roadmap](docs/06-roadmap/phases/phase-1-ipfs/roadmap.md)
 - [ ] Blockchain anchoring
 - [ ] P2P synchronization
 - [ ] Mobile applications
