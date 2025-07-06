@@ -4,6 +4,77 @@
   padding: 2rem;
 }
 
+.ai-hive-disclaimer-top {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    animation: shimmer 3s infinite;
+  }
+  
+  .ai-built {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .ai-description {
+    margin: 0 auto;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 700px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .ai-link {
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    
+    &::after {
+      content: '✨';
+      margin-left: 0.5rem;
+      display: inline-block;
+      animation: sparkle 2s ease-in-out infinite;
+      font-size: 1.2em;
+    }
+    
+    &:hover {
+      border-bottom-color: white;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
 .hero-section {
   text-align: center;
   padding: 3rem 0;
@@ -350,55 +421,6 @@
   padding: 2rem;
   border-top: 1px solid #e9ecef;
   margin-top: 3rem;
-  
-  .ai-hive-disclaimer {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #f5f3ff 0%, #e9e6ff 100%);
-    border-radius: 0.75rem;
-    
-    .ai-built {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.1rem;
-      color: #333;
-      font-weight: 500;
-    }
-    
-    .ai-description {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.5;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    .ai-link {
-      color: #667eea;
-      font-weight: 600;
-      text-decoration: none;
-      position: relative;
-      
-      &::after {
-        content: '✨';
-        margin-left: 0.25rem;
-        display: inline-block;
-        animation: sparkle 2s ease-in-out infinite;
-      }
-      
-      &:hover {
-        color: #5a67d8;
-        text-decoration: underline;
-      }
-    }
-  }
-  
-  .footer-divider {
-    width: 80px;
-    height: 1px;
-    background: #e9ecef;
-    margin: 0 auto 1.5rem;
-  }
   
   p {
     color: #666;
