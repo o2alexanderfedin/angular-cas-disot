@@ -3,11 +3,11 @@
 [![Angular](https://img.shields.io/badge/Angular-v20-red.svg)](https://angular.io/)
 [![Node.js](https://img.shields.io/badge/Node.js-v20.19%2B%20%7C%20v22.12%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.8-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-108%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-73.81%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
+[![Tests](https://img.shields.io/badge/Tests-402%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-78.08%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
 [![CI/CD](https://github.com/o2alexanderfedin/angular-cas-disot/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v2.5.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.5.1)
+[![Release](https://img.shields.io/badge/Release-v3.0.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/3.0.1)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -18,7 +18,7 @@ A decentralized content management system implementing Content Addressable Stora
 - **Automatic Deduplication**: Identical content is stored only once
 - **Content Integrity**: Hash verification ensures content hasn't been tampered with
 - **Metadata Support**: Store additional information alongside content
-- **Multiple Storage Providers**: In-memory and IndexedDB storage options
+- **Multiple Storage Providers**: In-memory, IndexedDB, IPFS, and Helia (browser-native IPFS)
 
 ### DISOT (Decentralized Immutable Source of Truth)
 - **Digital Signatures**: Create cryptographically signed entries
@@ -37,12 +37,20 @@ A decentralized content management system implementing Content Addressable Stora
 - **Modal Selection**: Elegant content selection with preview capability
 - **Previous Entries**: View and preview historical DISOT entries
 
-### New in v2.5.0
-- **Fixed Staging Deployment**: Resolved Git conflicts with sequential deployment
-- **TypeScript Strict Mode**: Enabled unused code detection
-- **Dynamic Coverage Display**: Real-time coverage percentage on home page
-- **Improved CI/CD**: Sequential deployment strategy prevents conflicts
-- **Code Cleanup**: Removed unused dependencies and code
+### New in v3.0.1
+- **Fixed CI Test Failures**: Resolved race conditions and test mocking issues
+- **Budget Adjustment**: Increased bundle size limits for Helia dependencies
+- **Test Coverage**: All 402 tests now passing with 78.08% code coverage
+
+### New in v3.0.0 - IPFS Integration
+- **IPFS Storage Provider**: Distributed storage using external IPFS node
+- **Helia Storage Provider**: Browser-native IPFS implementation with IndexedDB
+- **Content Migration**: Migrate existing content from local storage to IPFS/Helia
+- **Share Links**: Generate shareable IPFS gateway URLs for content
+- **Upload Queue**: Persistent queue with retry logic for IPFS uploads
+- **Health Monitoring**: Real-time IPFS node health status indicators
+- **Hybrid Storage**: Local caching with distributed IPFS backend
+- **Migration UI**: Bulk content transfer with progress tracking
 
 ## 📋 Table of Contents
 
@@ -212,11 +220,11 @@ npm test
 Executes unit tests via [Karma](https://karma-runner.github.io) in headless Chrome.
 
 ### Test Coverage
-The project maintains high test coverage with 108 tests across all components and services:
-- Statements: 73.81%
-- Functions: 83.13%
-- Branches: 53.1%
-- Lines: 75.5%
+The project maintains high test coverage with 402 tests across all components and services:
+- Statements: 78.08%
+- Functions: 82.23%
+- Branches: 65.28%
+- Lines: 78.42%
 - All tests passing ✅
 
 ### Test Structure
@@ -296,6 +304,22 @@ We welcome contributions! Please follow these steps:
 
 ## 🗺 Roadmap
 
+### Version 3.0.1 (Released)
+- [x] Fixed CI test failures in IPFS integration
+- [x] Resolved race conditions in migration service
+- [x] Fixed test mocking issues
+- [x] Increased bundle size budget for Helia
+
+### Version 3.0.0 (Released) - IPFS Integration Phase 1
+- [x] IPFS storage provider with HTTP API client
+- [x] Helia browser-native IPFS implementation
+- [x] Content migration service with progress tracking
+- [x] Share link generation for IPFS gateways
+- [x] Upload queue with persistence and retry logic
+- [x] Health monitoring for IPFS nodes
+- [x] Migration UI with bulk transfer capability
+- [x] Comprehensive test coverage (402 tests)
+
 ### Version 2.5.1 (Released)
 - [x] Comprehensive documentation update
 - [x] Browser storage and security documentation
@@ -307,11 +331,6 @@ We welcome contributions! Please follow these steps:
 - [x] Enabled TypeScript strict mode
 - [x] Added dynamic code coverage display
 - [x] Improved CI/CD pipeline
-
-### Version 2.4.0 (Released)
-- [x] Removed unused code and dependencies
-- [x] Added CoverageService
-- [x] Improved build scripts
 
 ### Version 2.0.0 (Released)
 - [x] Complete documentation restructuring
@@ -362,17 +381,25 @@ We welcome contributions! Please follow these steps:
 - [x] Blog post support in DISOT
 - [x] Previous entry previews
 
-### Version 1.2.0 (Future)
+### Version 3.1.0 (Future)
+- [ ] IPFS pinning service integration
+- [ ] Advanced IPFS gateway configuration
+- [ ] Content encryption for IPFS
+- [ ] IPNS (InterPlanetary Name System) support
+- [ ] P2P content discovery
+
+### Version 3.2.0 (Future)
 - [ ] User authentication
 - [ ] Permission management
 - [ ] API endpoints
-- [ ] WebSocket support
+- [ ] WebSocket support for real-time updates
 
-### Version 2.0.0 (Long-term)
-- [ ] IPFS integration - [📄 Architecture](docs/06-roadmap/phases/phase-1-ipfs/architecture.md) | [🔨 Implementation](docs/06-roadmap/phases/phase-1-ipfs/implementation.md) | [🗺️ Roadmap](docs/06-roadmap/phases/phase-1-ipfs/roadmap.md)
-- [ ] Blockchain anchoring
-- [ ] P2P synchronization
-- [ ] Mobile applications
+### Version 4.0.0 (Long-term)
+- [ ] Blockchain anchoring for IPFS hashes
+- [ ] Smart contract integration
+- [ ] Decentralized identity (DID) support
+- [ ] Mobile applications with IPFS support
+- [ ] Advanced P2P synchronization
 
 ## 📄 License
 

@@ -48,8 +48,8 @@ The application follows Clean Architecture principles with clear separation of c
 - Run tests with `npm test`
 - Run tests with coverage: `npm test:coverage`
 - All tests run in ChromeHeadless mode
-- Current status: 384/402 tests passing (18 failures in test setup)
-- Code coverage: 78.08% statements, 82.23% functions
+- Current status: 402/402 tests passing (all tests fixed)
+- Code coverage: 78.08% statements, 82.23% functions, 65.28% branches
 
 ## Features
 ### Content Management
@@ -83,7 +83,16 @@ The application follows Clean Architecture principles with clear separation of c
 6. **Migration**: Content can be migrated from local storage to IPFS/Helia via the migration UI
 
 ## Recent Updates
-### v3.0.0 - Phase 1 IPFS Integration (Latest)
+### v3.0.1 - CI Fixes and Budget Adjustment (Latest)
+1. ✅ Fixed race condition in IPFSMigrationService progress tracking
+2. ✅ Resolved Helia storage service test mocking issues
+3. ✅ Fixed IPFS storage service test expectations
+4. ✅ Fixed migration component DOM structure expectations
+5. ✅ Fixed storage settings component router dependencies
+6. ✅ Increased bundle size budget from 1MB to 2MB for Helia
+7. ✅ All 402 tests now passing with 78.08% coverage
+
+### v3.0.0 - Phase 1 IPFS Integration
 1. ✅ Implemented IPFS storage provider with HTTP API client
 2. ✅ Added Helia (browser-native IPFS) storage provider
 3. ✅ Created hybrid storage with local caching
