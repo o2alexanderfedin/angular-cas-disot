@@ -4,7 +4,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v20.19%2B%20%7C%20v22.12%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.8-blue.svg)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/Tests-199%20total-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-73.5%25-yellow.svg)](https://codecov.io/gh/o2alexanderfedin/angular-cas-disot)
+[![Coverage](https://img.shields.io/badge/Coverage-73.5%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
 [![CI/CD](https://github.com/o2alexanderfedin/angular-cas-disot/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Release](https://img.shields.io/badge/Release-v2.3.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.3.0)
@@ -64,9 +64,12 @@ A decentralized content management system implementing Content Addressable Stora
 🚀 **https://o2alexanderfedin.github.io/angular-cas-disot**
 
 ### **Staging Environment**
-🎭 **https://o2alexanderfedin.github.io/angular-cas-disot-staging**
+🎭 **https://o2alexanderfedin.github.io/angular-cas-disot/staging**
 
-> **Note**: The staging environment is automatically updated with the latest changes from the `develop` branch, while production is updated from the `master` branch and tagged releases.
+### **Coverage Reports**
+📊 **https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/**
+
+> **Note**: Both environments are currently updated from the `master` branch. The staging environment provides a testing ground for validating changes before they go live.
 - [Roadmap](#-roadmap)
 
 ## 🛠 Installation
@@ -175,8 +178,8 @@ This project uses a comprehensive CI/CD pipeline with automated deployments to G
 ### **Automatic Deployments**
 
 #### **Staging Environment**
-- **Trigger**: Push to `develop` branch  
-- **URL**: https://o2alexanderfedin.github.io/angular-cas-disot-staging
+- **Trigger**: Push to `master` branch  
+- **URL**: https://o2alexanderfedin.github.io/angular-cas-disot/staging
 - **Purpose**: Integration testing and review
 
 #### **Production Environment**
