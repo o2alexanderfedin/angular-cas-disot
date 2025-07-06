@@ -22,6 +22,57 @@
 .hero-subtitle {
   font-size: 1.25rem;
   opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  
+  .button-icon {
+    font-size: 1.1rem;
+  }
+  
+  &.primary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+  }
+  
+  &.secondary {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    border-color: rgba(255, 255, 255, 0.9);
+    
+    &:hover {
+      background: white;
+      color: #5a67d8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
 }
 
 .intro-section {
