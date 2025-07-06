@@ -24,7 +24,12 @@ Step-by-step guides for using the application.
 Technical documentation for developers.
 - [Setup & Installation](./03-developer-guide/setup/)
 - [Architecture Deep Dive](./03-developer-guide/architecture/)
-- [Implementation Details](./03-developer-guide/implementation/)
+  - [Browser Storage Options](./03-developer-guide/architecture/browser-storage.md)
+  - [System Design](./03-developer-guide/architecture/system-design.md)
+- [Security](./03-developer-guide/security/)
+  - [IndexedDB Security](./03-developer-guide/security/indexeddb-security.md)
+- [Maintenance](./03-developer-guide/maintenance/)
+  - [Code Cleanup Guide](./03-developer-guide/maintenance/code-cleanup-guide.md)
 - [Testing](./03-developer-guide/testing/)
 - [Contributing](./03-developer-guide/contributing.md)
 
@@ -85,6 +90,9 @@ Version history and release notes.
 - ✅ API Reference
 - ✅ Testing Guide
 - ✅ Phase 1 Roadmap
+- ✅ Browser Storage Analysis
+- ✅ Security Documentation
+- ✅ Code Maintenance Guide
 - 🚧 User Guide (In Progress)
 - 🚧 Deployment Guide (In Progress)
 - 📝 Phase 2 & 3 Planning
