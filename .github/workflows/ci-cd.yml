@@ -96,11 +96,11 @@ jobs:
       
       - name: 'Build for ${{ matrix.environment.name }}'
         if: |
-          (matrix.environment.name == 'staging' && github.ref == 'refs/heads/develop') ||
+          (matrix.environment.name == 'staging' && github.ref == 'refs/heads/master') ||
           (matrix.environment.name == 'production' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')))
         run: |
           echo "🏗️  Building ${{ matrix.environment.name }} environment..."
-          ng build --configuration production --base-href "${{ matrix.environment.base_href }}"
+          npx ng build --configuration production --base-href "${{ matrix.environment.base_href }}"
           
           # Create 404.html for SPA routing support
           cp dist/cas-app/browser/index.html dist/cas-app/browser/404.html
@@ -120,7 +120,7 @@ jobs:
       
       - name: 'Upload Build Artifacts'
         if: |
-          (matrix.environment.name == 'staging' && github.ref == 'refs/heads/develop') ||
+          (matrix.environment.name == 'staging' && github.ref == 'refs/heads/master') ||
           (matrix.environment.name == 'production' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')))
         uses: actions/upload-artifact@v4
         with:
@@ -136,10 +136,10 @@ jobs:
     name: '🚀 Deploy to Staging'
     runs-on: ubuntu-latest
     needs: [test, build]
-    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment:
       name: staging
-      url: https://o2alexanderfedin.github.io/angular-cas-disot-staging
+      url: https://o2alexanderfedin.github.io/angular-cas-disot/staging
     
     steps:
       - name: 'Checkout Code'
@@ -166,7 +166,7 @@ jobs:
             🚀 Deploy staging from ${{ github.ref_name }}@${{ github.sha }}
             
             - Environment: staging
-            - Source: develop branch  
+            - Source: master branch  
             - Commit: ${{ github.sha }}
             - Author: ${{ github.actor }}
             - Workflow: ${{ github.run_id }}
