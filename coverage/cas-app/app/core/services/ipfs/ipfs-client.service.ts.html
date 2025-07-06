@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/features/content/content-upload/content-upload.component.ts</title>
+    <title>Code coverage report for app/core/services/ipfs/ipfs-client.service.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/features/content/content-upload</a> content-upload.component.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/core/services/ipfs</a> ipfs-client.service.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">51.78% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/39</span>
+                <span class='fraction'>29/56</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">68.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>11/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">40.74% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>11/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">56% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>36/36</span>
+                <span class='fraction'>28/50</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -219,186 +219,7 @@
 <a name='L154'></a><a href='#L154'>154</a>
 <a name='L155'></a><a href='#L155'>155</a>
 <a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a>
-<a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a>
-<a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a>
-<a name='L172'></a><a href='#L172'>172</a>
-<a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a>
-<a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a>
-<a name='L184'></a><a href='#L184'>184</a>
-<a name='L185'></a><a href='#L185'>185</a>
-<a name='L186'></a><a href='#L186'>186</a>
-<a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a>
-<a name='L190'></a><a href='#L190'>190</a>
-<a name='L191'></a><a href='#L191'>191</a>
-<a name='L192'></a><a href='#L192'>192</a>
-<a name='L193'></a><a href='#L193'>193</a>
-<a name='L194'></a><a href='#L194'>194</a>
-<a name='L195'></a><a href='#L195'>195</a>
-<a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a>
-<a name='L198'></a><a href='#L198'>198</a>
-<a name='L199'></a><a href='#L199'>199</a>
-<a name='L200'></a><a href='#L200'>200</a>
-<a name='L201'></a><a href='#L201'>201</a>
-<a name='L202'></a><a href='#L202'>202</a>
-<a name='L203'></a><a href='#L203'>203</a>
-<a name='L204'></a><a href='#L204'>204</a>
-<a name='L205'></a><a href='#L205'>205</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L157'></a><a href='#L157'>157</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -408,272 +229,307 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../../shared/shared-module';
-import { CasService } from '../../../core/services/cas.service';
-import { ContentHash } from '../../../core/domain/interfaces/content.interface';
-import { Router } from '@angular/router';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError, of } from 'rxjs';
+import { map, catchError, timeout } from 'rxjs/operators';
+import { IIPFSClient } from './ipfs-client.interface';
+import { IPFSConfig, IPFSUploadResult } from '../../domain/interfaces/ipfs.interface';
+import { IPFS_CONFIG } from './ipfs-storage.service';
 &nbsp;
-@Component({
-  selector: 'app-content-upload',
-  standalone: true,
-  imports: [CommonModule, SharedModule],
-  template: `
-    &lt;div class="content-upload"&gt;
-      &lt;h2&gt;Upload Content to CAS&lt;/h2&gt;
-      
-      &lt;div class="upload-area"&gt;
-        &lt;input 
-          type="file" 
-          #fileInput
-          (change)="onFileSelected($event)"
-          [disabled]="isUploading"
-          class="file-input"
-        /&gt;
-        
-        &lt;div *ngIf="selectedFile" class="file-info"&gt;
-          &lt;p&gt;Selected: {{ selectedFile.name }}&lt;/p&gt;
-          &lt;p&gt;Size: {{ formatFileSize(selectedFile.size) }}&lt;/p&gt;
-          &lt;p&gt;Type: {{ selectedFile.type || 'Unknown' }}&lt;/p&gt;
-        &lt;/div&gt;
-&nbsp;
-        &lt;button 
-          (click)="uploadFile()"
-          [disabled]="!selectedFile || isUploading"
-          class="upload-button"
-        &gt;
-          {{ isUploading ? 'Uploading...' : 'Upload to CAS' }}
-        &lt;/button&gt;
-&nbsp;
-        &lt;div *ngIf="errorMessage" class="error-message"&gt;
-          {{ errorMessage }}
-        &lt;/div&gt;
-&nbsp;
-        &lt;div *ngIf="uploadedHash" class="success-message"&gt;
-          &lt;h3&gt;Content Stored Successfully!&lt;/h3&gt;
-          &lt;p&gt;Algorithm: {{ uploadedHash.algorithm }}&lt;/p&gt;
-          &lt;p&gt;Hash: &lt;code&gt;{{ uploadedHash.value }}&lt;/code&gt;&lt;/p&gt;
-          &lt;button (click)="navigateToContentList()" class="view-content-button"&gt;
-            View All Content
-          &lt;/button&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  `,
-  styles: [`
-    .content-upload {
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-&nbsp;
-    .upload-area {
-      border: 2px dashed #ccc;
-      border-radius: 8px;
-      padding: 30px;
-      text-align: center;
-      background-color: #f9f9f9;
-    }
-&nbsp;
-    .file-input {
-      margin-bottom: 20px;
-    }
-&nbsp;
-    .file-info {
-      margin: 20px 0;
-      padding: 15px;
-      background-color: #e9ecef;
-      border-radius: 4px;
-      text-align: left;
-    }
-&nbsp;
-    .file-info p {
-      margin: 5px 0;
-    }
-&nbsp;
-    .upload-button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-&nbsp;
-    .upload-button:disabled {
-      background-color: #6c757d;
-      cursor: not-allowed;
-    }
-&nbsp;
-    .error-message {
-      color: #dc3545;
-      margin-top: 15px;
-      padding: 10px;
-      background-color: #f8d7da;
-      border-radius: 4px;
-    }
-&nbsp;
-    .success-message {
-      color: #155724;
-      margin-top: 15px;
-      padding: 15px;
-      background-color: #d4edda;
-      border-radius: 4px;
-      text-align: left;
-    }
-&nbsp;
-    .success-message code {
-      background-color: #e9ecef;
-      padding: 2px 4px;
-      border-radius: 3px;
-      font-family: monospace;
-      word-break: break-all;
-    }
-&nbsp;
-    .view-content-button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 15px;
-    }
-&nbsp;
-    .view-content-button:hover {
-      background-color: #218838;
-    }
-  `]
-})
-export class ContentUploadComponent {
-  @Output() contentStored = new EventEmitter&lt;ContentHash&gt;();
-&nbsp;
-  selectedFile: File | null = null;
-  uploadedHash: ContentHash | null = null;
-  isUploading = false;
-  errorMessage = '';
+@Injectable()
+export class IPFSClient implements IIPFSClient {
+  private config: IPFSConfig;
+  private baseUrl: string;
 &nbsp;
   constructor(
-    private casService: CasService,
-    private router: Router
-  ) {}
-&nbsp;
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files &amp;&amp; input.files.length &gt; 0) {
-      this.selectedFile = input.files[0];
-      this.errorMessage = '';
-      this.uploadedHash = null;
+    private http: HttpClient,
+    @Inject(IPFS_CONFIG) config: IPFSConfig
+  ) {
+    this.config = config;
+    
+    // Validate configuration
+    if (config.mode === 'api') {
+      // API mode can use proxy (empty apiEndpoint) or explicit endpoint
+      this.baseUrl = config.apiEndpoint ? config.apiEndpoint + '/api/v0' : '/api/v0';
+    } else if (config.mode === 'gateway') {
+      // Gateway mode - read only
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (!config.gateway) {
+<span class="cstat-no" title="statement not covered" >        throw new Error('Invalid IPFS configuration: gateway URL required for gateway mode');</span>
+      }
+      this.baseUrl = config.gateway;
+    } else {
+      throw new Error('Invalid IPFS configuration: unsupported mode');
     }
   }
 &nbsp;
-  async uploadFile(): Promise&lt;void&gt; {
-    if (!this.selectedFile) {
-      this.errorMessage = 'Please select a file';
-      return;
+  add(data: Uint8Array): Observable&lt;IPFSUploadResult&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.mode === 'gateway') {
+<span class="cstat-no" title="statement not covered" >      return throwError(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >new Error('Gateway mode does not support uploads'))</span>;</span>
     }
 &nbsp;
-    this.isUploading = true;
-    this.errorMessage = '';
+    const formData = new FormData();
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    formData.append('file', blob);
 &nbsp;
-    try {
-      const fileData = await this.readFileAsArrayBuffer(this.selectedFile);
-      const content = { data: new Uint8Array(fileData) };
-      
-      this.uploadedHash = await this.casService.store(content);
-      this.contentStored.emit(this.uploadedHash);
-    } catch (error) {
-      this.errorMessage = `Upload failed: ${error instanceof Error ? error.message : <span class="branch-1 cbranch-no" title="branch not covered" >'Unknown error'}</span>`;
-    } finally {
-      this.isUploading = false;
+    return this.http.post&lt;any&gt;(`${this.baseUrl}/add`, formData, {
+      params: { pin: 'true' },
+      headers: {
+        // Let browser handle Content-Type for FormData
+      }
+    }).pipe(
+      timeout(this.config.timeout),
+      map(response =&gt; ({
+        cid: response.Hash,
+        size: response.Size || data.length,
+        timestamp: new Date(),
+        pinned: true
+      })),
+      catchError(error =&gt; {
+        console.error('IPFS add failed:', error);
+        return throwError(() =&gt; new Error(`Failed to add to IPFS: ${error.message}`));
+      })
+    );
+  }
+&nbsp;
+  get(cid: string): Observable&lt;Uint8Array&gt; {
+    let url: string;
+    
+    if (this.config.mode === 'api') {
+      // Use API endpoint
+      return this.http.post(`${this.baseUrl}/cat`, null, {
+        params: { arg: cid },
+        responseType: 'arraybuffer'
+      }).pipe(
+        timeout(this.config.timeout),
+        map(buffer =&gt; new Uint8Array(buffer)),
+        catchError(<span class="fstat-no" title="function not covered" >error </span>=&gt; {
+<span class="cstat-no" title="statement not covered" >          console.error('IPFS get failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >          return throwError(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >new Error(`Failed to get from IPFS: ${error.message}`))</span>;</span>
+        })
+      );
+    } else {
+      // Use gateway
+      url = `${this.config.gateway}/ipfs/${cid}`;
+      return this.http.get(url, {
+        responseType: 'arraybuffer'
+      }).pipe(
+        timeout(this.config.timeout),
+        map(<span class="fstat-no" title="function not covered" >buffer </span>=&gt; <span class="cstat-no" title="statement not covered" >new Uint8Array(buffer))</span>,
+        catchError(<span class="fstat-no" title="function not covered" >error </span>=&gt; {
+<span class="cstat-no" title="statement not covered" >          console.error('IPFS gateway get failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >          return throwError(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >new Error(`Failed to get from IPFS gateway: ${error.message}`))</span>;</span>
+        })
+      );
     }
   }
 &nbsp;
-  private readFileAsArrayBuffer(file: File): Promise&lt;ArrayBuffer&gt; {
-    return new Promise((resolve, reject) =&gt; {
-      const reader = new FileReader();
-      reader.onload = () =&gt; resolve(reader.result as ArrayBuffer);
-      reader.onerror = () =&gt; reject(new Error('Failed to read file'));
-      reader.readAsArrayBuffer(file);
-    });
+<span class="fstat-no" title="function not covered" >  pin(</span>cid: string): Observable&lt;boolean&gt; {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.mode === 'gateway') {</span>
+<span class="cstat-no" title="statement not covered" >      return throwError(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >new Error('Gateway mode does not support pinning'))</span>;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return this.http.post&lt;any&gt;(`${this.baseUrl}/pin/add`, null, {</span>
+      params: { arg: cid }
+    }).pipe(
+      timeout(this.config.timeout),
+      map(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >true)</span>,
+      catchError(<span class="fstat-no" title="function not covered" >error </span>=&gt; {
+<span class="cstat-no" title="statement not covered" >        console.error('IPFS pin failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >        return of(false);</span>
+      })
+    );
   }
 &nbsp;
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+<span class="fstat-no" title="function not covered" >  unpin(</span>cid: string): Observable&lt;boolean&gt; {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.mode === 'gateway') {</span>
+<span class="cstat-no" title="statement not covered" >      return throwError(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >new Error('Gateway mode does not support unpinning'))</span>;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return this.http.post&lt;any&gt;(`${this.baseUrl}/pin/rm`, null, {</span>
+      params: { arg: cid }
+    }).pipe(
+      timeout(this.config.timeout),
+      map(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >true)</span>,
+      catchError(<span class="fstat-no" title="function not covered" >error </span>=&gt; {
+<span class="cstat-no" title="statement not covered" >        console.error('IPFS unpin failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >        return of(false);</span>
+      })
+    );
   }
 &nbsp;
-  navigateToContentList(): void {
-    this.router.navigate(['/content']);
+  isHealthy(): Observable&lt;boolean&gt; {
+    if (this.config.mode === 'api') {
+      return this.http.post&lt;any&gt;(`${this.baseUrl}/version`, null, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).pipe(
+        timeout(5000),
+        map(() =&gt; true),
+        catchError((error) =&gt; {
+          console.error('IPFS health check failed:', error);
+          return of(false);
+        })
+      );
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+      // For gateway, just check if we can reach it
+<span class="cstat-no" title="statement not covered" >      return this.http.head(this.config.gateway).pipe(</span>
+        timeout(5000),
+        map(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >true)</span>,
+        catchError(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >of(false))</span>
+      );
+    }
+  }
+&nbsp;
+  getType(): string {
+    return this.config.mode;
   }
 }</pre></td></tr></table></pre>
 

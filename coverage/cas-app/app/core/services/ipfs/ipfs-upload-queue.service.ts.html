@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/core/services/indexed-db-storage.service.ts</title>
+    <title>Code coverage report for app/core/services/ipfs/ipfs-upload-queue.service.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">app/core/services</a> indexed-db-storage.service.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/core/services/ipfs</a> ipfs-upload-queue.service.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.19% </span>
+                <span class="strong">97.59% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>104/107</span>
+                <span class='fraction'>81/83</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.65% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>38/38</span>
+                <span class='fraction'>22/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.16% </span>
+                <span class="strong">97.53% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>103/106</span>
+                <span class='fraction'>79/81</span>
             </div>
         
             
@@ -272,429 +272,423 @@
 <a name='L207'></a><a href='#L207'>207</a>
 <a name='L208'></a><a href='#L208'>208</a>
 <a name='L209'></a><a href='#L209'>209</a>
-<a name='L210'></a><a href='#L210'>210</a>
-<a name='L211'></a><a href='#L211'>211</a>
-<a name='L212'></a><a href='#L212'>212</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L210'></a><a href='#L210'>210</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">30x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">42x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">78x</span>
+<span class="cline-any cline-yes">69x</span>
+<span class="cline-any cline-yes">69x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">59x</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">110x</span>
+<span class="cline-any cline-yes">110x</span>
+<span class="cline-any cline-yes">110x</span>
+<span class="cline-any cline-yes">110x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@angular/core';
-import { IStorageProvider } from '../domain/interfaces/storage.interface';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { IPFSStorageService } from './ipfs-storage.service';
+&nbsp;
+export interface UploadQueueItem {
+  id: string;
+  path: string;
+  data: Uint8Array;
+  status: 'pending' | 'uploading' | 'completed' | 'failed';
+  progress: number;
+  cid?: string;
+  error?: string;
+  timestamp: Date;
+}
+&nbsp;
+export interface UploadQueueStatus {
+  total: number;
+  pending: number;
+  uploading: number;
+  completed: number;
+  failed: number;
+}
 &nbsp;
 @Injectable({
   providedIn: 'root'
 })
-export class IndexedDbStorageService implements IStorageProvider {
-  private dbName = 'cas-storage';
-  private storeName = 'content';
-  private version = 1;
-  private db: IDBDatabase | null = null;
-  private initializationError: Error | null = null;
-  private initializationPromise: Promise&lt;void&gt;;
+export class IPFSUploadQueueService {
+  private queue: Map&lt;string, UploadQueueItem&gt; = new Map();
+  private queueSubject = new BehaviorSubject&lt;UploadQueueItem[]&gt;([]);
+  private statusSubject = new BehaviorSubject&lt;UploadQueueStatus&gt;({
+    total: 0,
+    pending: 0,
+    uploading: 0,
+    completed: 0,
+    failed: 0
+  });
+  
+  private uploadProgressSubject = new Subject&lt;UploadQueueItem&gt;();
+  private maxConcurrentUploads = 3;
+  private activeUploads = 0;
+  private autoProcess = true;
+  
+  queue$ = this.queueSubject.asObservable();
+  status$ = this.statusSubject.asObservable();
+  uploadProgress$ = this.uploadProgressSubject.asObservable();
 &nbsp;
-  constructor() {
-    this.initializationPromise = this.initializeDb().catch(() =&gt; {
-      // Silently catch initialization errors - they will be handled in ensureDb
-    });
+  constructor(private ipfsStorage: IPFSStorageService) {}
+&nbsp;
+  /**
+   * Enable or disable automatic processing (useful for testing)
+   */
+  setAutoProcess(enabled: boolean): void {
+    this.autoProcess = enabled;
+    if (enabled) {
+      this.processQueue();
+    }
   }
 &nbsp;
-  private async initializeDb(): Promise&lt;void&gt; {
-    return new Promise&lt;void&gt;((resolve, reject) =&gt; {
-      const request = indexedDB.open(this.dbName, this.version);
-&nbsp;
-      request.onerror = () =&gt; {
-        const error = new Error('Failed to open IndexedDB');
-        this.initializationError = error;
-        reject(error);
-      };
-&nbsp;
-      request.onsuccess = (event) =&gt; {
-        this.db = (event.target as IDBOpenDBRequest).result;
-        resolve();
-      };
-&nbsp;
-      request.onupgradeneeded = (event) =&gt; {
-        const db = (event.target as IDBOpenDBRequest).result;
-        
-        if (!db.objectStoreNames.contains(this.storeName)) {
-          db.createObjectStore(this.storeName);
-        }
-      };
-    }).catch((error) =&gt; {
-      this.initializationError = error;
-      throw error;
-    });
-  }
-&nbsp;
-  private async ensureDb(): Promise&lt;IDBDatabase&gt; {
-    if (this.initializationError) {
-      throw new Error('IndexedDB not available');
+  /**
+   * Add a file to the upload queue
+   */
+  addToQueue(path: string, data: Uint8Array): string {
+    const id = this.generateId();
+    const item: UploadQueueItem = {
+      id,
+      path,
+      data,
+      status: 'pending',
+      progress: 0,
+      timestamp: new Date()
+    };
+    
+    this.queue.set(id, item);
+    this.updateQueueState();
+    if (this.autoProcess) {
+      this.processQueue();
     }
     
-    if (!this.db) {
-      try {
-        await this.initializationPromise;
-      } catch (error) {
-<span class="cstat-no" title="statement not covered" >        throw new Error('IndexedDB not available');</span>
+    return id;
+  }
+&nbsp;
+  /**
+   * Add multiple files to the queue
+   */
+  addMultipleToQueue(files: Array&lt;{ path: string; data: Uint8Array }&gt;): string[] {
+    const ids = files.map(file =&gt; this.addToQueue(file.path, file.data));
+    return ids;
+  }
+&nbsp;
+  /**
+   * Cancel an upload
+   */
+  cancelUpload(id: string): void {
+    const item = this.queue.get(id);
+    if (item &amp;&amp; item.status === 'pending') {
+      this.queue.delete(id);
+      this.updateQueueState();
+    }
+  }
+&nbsp;
+  /**
+   * Clear completed uploads from the queue
+   */
+  clearCompleted(): void {
+    Array.from(this.queue.entries()).forEach(([id, item]) =&gt; {
+      if (item.status === 'completed') {
+        this.queue.delete(id);
       }
+    });
+    this.updateQueueState();
+  }
+&nbsp;
+  /**
+   * Retry failed uploads
+   */
+  retryFailed(): void {
+    Array.from(this.queue.values()).forEach(item =&gt; {
+      if (item.status === 'failed') {
+        item.status = 'pending';
+        item.progress = 0;
+        delete item.error;
+      }
+    });
+    this.updateQueueState();
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.autoProcess) {
+<span class="cstat-no" title="statement not covered" >      this.processQueue();</span>
     }
-    
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.db) {
-<span class="cstat-no" title="statement not covered" >      throw new Error('IndexedDB not available');</span>
+  }
+&nbsp;
+  /**
+   * Get upload item by ID
+   */
+  getUpload(id: string): UploadQueueItem | undefined {
+    return this.queue.get(id);
+  }
+&nbsp;
+  private async processQueue(): Promise&lt;void&gt; {
+    if (this.activeUploads &gt;= this.maxConcurrentUploads) {
+      return;
     }
-    return this.db;
+&nbsp;
+    const pendingItems = Array.from(this.queue.values())
+      .filter(item =&gt; item.status === 'pending')
+      .sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; <span class="cstat-no" title="statement not covered" >a.timestamp.getTime() - b.timestamp.getTime())</span>;
+&nbsp;
+    if (pendingItems.length === 0) {
+      return;
+    }
+&nbsp;
+    const item = pendingItems[0];
+    await this.uploadItem(item);
   }
 &nbsp;
-  async read(path: string): Promise&lt;Uint8Array&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.get(path);
+  private async uploadItem(item: UploadQueueItem): Promise&lt;void&gt; {
+    try {
+      this.activeUploads++;
+      item.status = 'uploading';
+      item.progress = 0;
+      this.updateQueueState();
+      this.uploadProgressSubject.next(item);
 &nbsp;
-      request.onsuccess = () =&gt; {
-        const result = request.result;
-        if (result &amp;&amp; result instanceof Uint8Array) {
-          resolve(result);
-        } else <span class="missing-if-branch" title="if path not taken" >I</span>if (result) {
-          // Handle legacy data that might be stored differently
-<span class="cstat-no" title="statement not covered" >          resolve(new Uint8Array(result));</span>
-        } else {
-          reject(new Error(`Path not found: ${path}`));
+      // Simulate progress updates
+      const progressInterval = setInterval(() =&gt; {
+        if (item.progress &lt; 90) {
+          item.progress += Math.random() * 20;
+          this.uploadProgressSubject.next(item);
         }
-      };
+      }, 500);
 &nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error(`Failed to read path: ${path}`));
-      };
-    });
-  }
-&nbsp;
-  async write(path: string, data: Uint8Array): Promise&lt;void&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readwrite');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.put(data, path);
-&nbsp;
-      request.onsuccess = () =&gt; {
-        resolve();
-      };
-&nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error(`Failed to write path: ${path}`));
-      };
-    });
-  }
-&nbsp;
-  async exists(path: string): Promise&lt;boolean&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.count(path);
-&nbsp;
-      request.onsuccess = () =&gt; {
-        resolve(request.result &gt; 0);
-      };
-&nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error(`Failed to check existence: ${path}`));
-      };
-    });
-  }
-&nbsp;
-  async list(): Promise&lt;string[]&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.getAllKeys();
-&nbsp;
-      request.onsuccess = () =&gt; {
-        const keys = request.result;
-        resolve(keys.map(key =&gt; String(key)));
-      };
-&nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error('Failed to list paths'));
-      };
-    });
-  }
-&nbsp;
-  async delete(path: string): Promise&lt;void&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readwrite');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.delete(path);
-&nbsp;
-      request.onsuccess = () =&gt; {
-        resolve();
-      };
-&nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error(`Failed to delete path: ${path}`));
-      };
-    });
-  }
-&nbsp;
-  async clear(): Promise&lt;void&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readwrite');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.clear();
-&nbsp;
-      request.onsuccess = () =&gt; {
-        resolve();
-      };
-&nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error('Failed to clear storage'));
-      };
-    });
-  }
-&nbsp;
-  async getSize(): Promise&lt;number&gt; {
-    const db = await this.ensureDb();
-    
-    return new Promise((resolve, reject) =&gt; {
-      const transaction = db.transaction([this.storeName], 'readonly');
-      const store = transaction.objectStore(this.storeName);
-      let totalSize = 0;
+      await this.ipfsStorage.write(item.path, item.data);
       
-      const request = store.openCursor();
+      clearInterval(progressInterval);
       
-      request.onsuccess = (event) =&gt; {
-        const cursor = (event.target as IDBRequest).result;
-        if (cursor) {
-          if (cursor.value instanceof Uint8Array) {
-            totalSize += cursor.value.byteLength;
-          }
-          cursor.continue();
-        } else {
-          resolve(totalSize);
-        }
-      };
+      item.status = 'completed';
+      item.progress = 100;
+      item.cid = this.ipfsStorage.getCidForPath(item.path);
+      this.uploadProgressSubject.next(item);
+      
+    } catch (error) {
+      item.status = 'failed';
+      item.error = error instanceof Error ? error.message : <span class="branch-1 cbranch-no" title="branch not covered" >'Upload failed';</span>
+      this.uploadProgressSubject.next(item);
+    } finally {
+      this.activeUploads--;
+      this.updateQueueState();
+      
+      // Process next item in queue
+      setTimeout(() =&gt; this.processQueue(), 100);
+    }
+  }
 &nbsp;
-      request.onerror = () =&gt; {
-        reject(new Error('Failed to calculate storage size'));
-      };
-    });
+  private updateQueueState(): void {
+    const items = Array.from(this.queue.values());
+    this.queueSubject.next(items);
+    
+    const status: UploadQueueStatus = {
+      total: items.length,
+      pending: items.filter(i =&gt; i.status === 'pending').length,
+      uploading: items.filter(i =&gt; i.status === 'uploading').length,
+      completed: items.filter(i =&gt; i.status === 'completed').length,
+      failed: items.filter(i =&gt; i.status === 'failed').length
+    };
+    
+    this.statusSubject.next(status);
+  }
+&nbsp;
+  private generateId(): string {
+    return `upload-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }</pre></td></tr></table></pre>
 
@@ -705,14 +699,14 @@ export class IndexedDbStorageService implements IStorageProvider {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2025-07-06T19:01:44.420Z
             </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../../../../sorter.js"></script>
+        <script src="../../../../block-navigation.js"></script>
     </body>
 </html>
     

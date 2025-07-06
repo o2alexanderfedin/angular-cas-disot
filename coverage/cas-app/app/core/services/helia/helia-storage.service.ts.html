@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/features/disot/signature-verification/signature-verification.component.ts</title>
+    <title>Code coverage report for app/core/services/helia/helia-storage.service.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/features/disot/signature-verification</a> signature-verification.component.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/core/services/helia</a> helia-storage.service.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">57.93% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/32</span>
+                <span class='fraction'>84/145</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">61.9% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>13/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">55% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>22/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">59.05% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/31</span>
+                <span class='fraction'>75/127</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -363,236 +363,28 @@
 <a name='L298'></a><a href='#L298'>298</a>
 <a name='L299'></a><a href='#L299'>299</a>
 <a name='L300'></a><a href='#L300'>300</a>
-<a name='L301'></a><a href='#L301'>301</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a>
+<a name='L312'></a><a href='#L312'>312</a>
+<a name='L313'></a><a href='#L313'>313</a>
+<a name='L314'></a><a href='#L314'>314</a>
+<a name='L315'></a><a href='#L315'>315</a>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a>
+<a name='L319'></a><a href='#L319'>319</a>
+<a name='L320'></a><a href='#L320'>320</a>
+<a name='L321'></a><a href='#L321'>321</a>
+<a name='L322'></a><a href='#L322'>322</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -607,361 +399,632 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared-module';
-import { DisotService } from '../../../core/services/disot.service';
-import { DisotEntry } from '../../../core/domain/interfaces/disot.interface';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable, OnDestroy, Inject } from '@angular/core';
+import { createHelia, type Helia } from 'helia';
+import { unixfs, type UnixFS } from '@helia/unixfs';
+import { IDBBlockstore } from 'blockstore-idb';
+import { IDBDatastore } from 'datastore-idb';
+import itAll from 'it-all';
+import { IStorageProvider } from '../../domain/interfaces/storage.interface';
+import { IPFSShareLinkService } from '../ipfs/ipfs-share-link.service';
+import { IPFS_CONFIG } from '../ipfs/ipfs-storage.service';
+import { IPFSConfig } from '../../domain/interfaces/ipfs.interface';
 &nbsp;
-@Component({
-  selector: 'app-signature-verification',
-  standalone: true,
-  imports: [CommonModule, SharedModule, FormsModule],
-  template: `
-    &lt;div class="signature-verification"&gt;
-      &lt;h2&gt;Signature Verification&lt;/h2&gt;
-      
-      &lt;div class="lookup-section"&gt;
-        &lt;h3&gt;Verify by Entry ID&lt;/h3&gt;
-        &lt;div class="id-input-group"&gt;
-          &lt;input 
-            type="text" 
-            #entryIdInput
-            placeholder="Enter DISOT entry ID..."
-            class="id-input"
-            [disabled]="isVerifying"
-          /&gt;
-          &lt;button 
-            (click)="verifyById(entryIdInput.value)"
-            [disabled]="isVerifying"
-            class="lookup-button"
-          &gt;
-            Load &amp; Verify
-          &lt;/button&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-&nbsp;
-      &lt;div *ngIf="disotEntry" class="entry-section"&gt;
-        &lt;h3&gt;Entry Details&lt;/h3&gt;
-        &lt;div class="entry-info"&gt;
-          &lt;div class="info-row"&gt;
-            &lt;span class="label"&gt;Entry ID:&lt;/span&gt;
-            &lt;code&gt;{{ disotEntry.id }}&lt;/code&gt;
-          &lt;/div&gt;
-          &lt;div class="info-row"&gt;
-            &lt;span class="label"&gt;Type:&lt;/span&gt;
-            &lt;span&gt;{{ formatEntryType(disotEntry.type) }}&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div class="info-row"&gt;
-            &lt;span class="label"&gt;Timestamp:&lt;/span&gt;
-            &lt;span&gt;{{ formatTimestamp(disotEntry.timestamp) }}&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div class="info-row"&gt;
-            &lt;span class="label"&gt;Content Hash:&lt;/span&gt;
-            &lt;code&gt;{{ disotEntry.contentHash.value }}&lt;/code&gt;
-          &lt;/div&gt;
-          &lt;div class="info-row"&gt;
-            &lt;span class="label"&gt;Public Key:&lt;/span&gt;
-            &lt;code&gt;{{ disotEntry.signature.publicKey }}&lt;/code&gt;
-          &lt;/div&gt;
-          &lt;div class="info-row"&gt;
-            &lt;span class="label"&gt;Signature:&lt;/span&gt;
-            &lt;code&gt;{{ disotEntry.signature.value }}&lt;/code&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-&nbsp;
-        &lt;button 
-          (click)="verifySignature()"
-          [disabled]="isVerifying"
-          class="verify-button"
-        &gt;
-          {{ isVerifying ? 'Verifying...' : 'Verify Signature' }}
-        &lt;/button&gt;
-      &lt;/div&gt;
-&nbsp;
-      &lt;div *ngIf="!disotEntry &amp;&amp; !errorMessage" class="no-entry"&gt;
-        &lt;p&gt;No entry loaded. Enter an entry ID above or select an entry from the list.&lt;/p&gt;
-      &lt;/div&gt;
-&nbsp;
-      &lt;div *ngIf="errorMessage" class="error-message"&gt;
-        {{ errorMessage }}
-      &lt;/div&gt;
-&nbsp;
-      &lt;div *ngIf="verificationResult !== null" class="verification-result" 
-           [class.valid]="verificationResult" 
-           [class.invalid]="!verificationResult"&gt;
-        &lt;div class="result-icon"&gt;
-          &lt;span *ngIf="verificationResult"&gt;✓&lt;/span&gt;
-          &lt;span *ngIf="!verificationResult"&gt;✗&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div class="result-text"&gt;
-          &lt;h3&gt;{{ verificationResult ? 'Signature Valid' : 'Signature Invalid' }}&lt;/h3&gt;
-          &lt;p&gt;{{ verificationResult 
-            ? 'The signature has been successfully verified.' 
-            : 'The signature verification failed. The entry may have been tampered with.' }}&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  `,
-  styles: [`
-    .signature-verification {
-      padding: 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-&nbsp;
-    .lookup-section, .entry-section {
-      margin-bottom: 25px;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-    }
-&nbsp;
-    .lookup-section h3, .entry-section h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      color: #333;
-    }
-&nbsp;
-    .id-input-group {
-      display: flex;
-      gap: 10px;
-    }
-&nbsp;
-    .id-input {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-&nbsp;
-    .lookup-button {
-      padding: 10px 20px;
-      background-color: #17a2b8;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-&nbsp;
-    .lookup-button:hover:not(:disabled) {
-      background-color: #138496;
-    }
-&nbsp;
-    .entry-info {
-      background-color: white;
-      padding: 15px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-&nbsp;
-    .info-row {
-      display: flex;
-      margin-bottom: 10px;
-      align-items: flex-start;
-    }
-&nbsp;
-    .info-row:last-child {
-      margin-bottom: 0;
-    }
-&nbsp;
-    .label {
-      font-weight: bold;
-      min-width: 120px;
-      margin-right: 10px;
-    }
-&nbsp;
-    .info-row code {
-      background-color: #e9ecef;
-      padding: 2px 4px;
-      border-radius: 3px;
-      font-family: monospace;
-      font-size: 12px;
-      word-break: break-all;
-    }
-&nbsp;
-    .verify-button {
-      width: 100%;
-      padding: 12px;
-      font-size: 18px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-&nbsp;
-    .verify-button:hover:not(:disabled) {
-      background-color: #0056b3;
-    }
-&nbsp;
-    .verify-button:disabled {
-      background-color: #6c757d;
-      cursor: not-allowed;
-    }
-&nbsp;
-    .no-entry {
-      text-align: center;
-      padding: 40px;
-      color: #666;
-      font-style: italic;
-    }
-&nbsp;
-    .error-message {
-      padding: 15px;
-      background-color: #f8d7da;
-      color: #721c24;
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-&nbsp;
-    .verification-result {
-      padding: 20px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-&nbsp;
-    .verification-result.valid {
-      background-color: #d4edda;
-      color: #155724;
-    }
-&nbsp;
-    .verification-result.invalid {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-&nbsp;
-    .result-icon {
-      font-size: 48px;
-      font-weight: bold;
-    }
-&nbsp;
-    .result-text h3 {
-      margin: 0 0 10px 0;
-    }
-&nbsp;
-    .result-text p {
-      margin: 0;
-    }
-  `]
+@Injectable({
+  providedIn: 'root'
 })
-export class SignatureVerificationComponent {
-  @Input() disotEntry: DisotEntry | null = null;
+export class HeliaStorageService implements IStorageProvider, OnDestroy {
+  private helia?: Helia;
+  private fs?: UnixFS;
+  private initialized = false;
+  private initPromise?: Promise&lt;void&gt;;
+  
+  // Path to CID mapping stored in IndexedDB
+  private pathToCidStore?: IDBDatabase;
+  private readonly PATH_CID_DB = 'helia-path-mappings';
+  private readonly PATH_CID_STORE = 'pathCidMappings';
 &nbsp;
-  isVerifying = false;
-  verificationResult: boolean | null = null;
-  errorMessage = '';
+  constructor(
+    private shareLinkService: IPFSShareLinkService,
+    @Inject(IPFS_CONFIG) _config: IPFSConfig
+  ) {
+    // Config is injected for potential future use
+  }
 &nbsp;
-  constructor(private disotService: DisotService) {}
-&nbsp;
-  async verifyById(entryId: string): Promise&lt;void&gt; {
-    if (!entryId.trim()) {
-      this.errorMessage = 'Please enter an entry ID';
-      return;
+  async ensureInitialized(): Promise&lt;void&gt; {
+    if (this.initialized) return;
+    
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.initPromise) {
+<span class="cstat-no" title="statement not covered" >      await this.initPromise;</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
-    this.isVerifying = true;
-    this.errorMessage = '';
-    this.verificationResult = null;
+    this.initPromise = this.initialize();
+    await this.initPromise;
+  }
+&nbsp;
+  private <span class="fstat-no" title="function not covered" >async </span>initialize(): Promise&lt;void&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      // Create separate IndexedDB stores for Helia
+      const blockstore = <span class="cstat-no" title="statement not covered" >new IDBBlockstore('helia-blocks');</span>
+      const datastore = <span class="cstat-no" title="statement not covered" >new IDBDatastore('helia-data');</span>
+&nbsp;
+      // Open both stores
+<span class="cstat-no" title="statement not covered" >      await blockstore.open();</span>
+<span class="cstat-no" title="statement not covered" >      await datastore.open();</span>
+&nbsp;
+      // Create Helia instance
+<span class="cstat-no" title="statement not covered" >      this.helia = await createHelia({</span>
+        blockstore,
+        datastore
+        // libp2p is optional and defaults to creating a new node
+      });
+&nbsp;
+      // Create UnixFS instance
+<span class="cstat-no" title="statement not covered" >      this.fs = unixfs(this.helia);</span>
+&nbsp;
+      // Initialize path-to-CID mapping database
+<span class="cstat-no" title="statement not covered" >      await this.initializePathCidStore();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      this.initialized = true;</span>
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to initialize Helia:', error);</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error('Helia initialization failed');</span>
+    }
+  }
+&nbsp;
+  private <span class="fstat-no" title="function not covered" >async </span>initializePathCidStore(): Promise&lt;void&gt; {
+<span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
+      const request = <span class="cstat-no" title="statement not covered" >indexedDB.open(this.PATH_CID_DB, 1);</span>
+      
+<span class="cstat-no" title="statement not covered" >      request.onerror = <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >reject(request.error);</span></span>
+<span class="cstat-no" title="statement not covered" >      request.onsuccess = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        this.pathToCidStore = request.result;</span>
+<span class="cstat-no" title="statement not covered" >        resolve();</span>
+      };
+      
+<span class="cstat-no" title="statement not covered" >      request.onupgradeneeded = <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
+        const db = (<span class="cstat-no" title="statement not covered" >event.target as IDBOpenDBRequest).result;</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!db.objectStoreNames.contains(this.PATH_CID_STORE)) {</span>
+          const store = <span class="cstat-no" title="statement not covered" >db.createObjectStore(this.PATH_CID_STORE, { keyPath: 'path' });</span>
+<span class="cstat-no" title="statement not covered" >          store.createIndex('cid', 'cid', { unique: false });</span>
+<span class="cstat-no" title="statement not covered" >          store.createIndex('timestamp', 'timestamp', { unique: false });</span>
+        }
+      };
+    });
+  }
+&nbsp;
+  async write(path: string, data: Uint8Array): Promise&lt;void&gt; {
+    await this.ensureInitialized();
+    if (!this.fs) throw new Error('Helia not initialized');
 &nbsp;
     try {
-      this.disotEntry = await this.disotService.getEntry(entryId);
-      await this.verifySignature();
+      // Add content to Helia
+      const cid = await this.fs.addBytes(data);
+      
+      // Store path-to-CID mapping
+      await this.savePathCidMapping(path, cid.toString());
+      
+      console.log(`Stored ${path} in Helia with CID: ${cid}`);
     } catch (error) {
-      this.errorMessage = `Failed to load entry: ${error instanceof Error ? error.message : 'Unknown error'}`;
-      this.disotEntry = null;
-    } finally {
-      this.isVerifying = false;
+      console.error('Failed to write to Helia:', error);
+      throw error;
     }
   }
 &nbsp;
-  async verifySignature(): Promise&lt;void&gt; {
-    if (!this.disotEntry) {
-      this.errorMessage = 'No entry to verify';
-      return;
-    }
-&nbsp;
-    this.isVerifying = true;
-    this.errorMessage = '';
-    this.verificationResult = null;
+  async read(path: string): Promise&lt;Uint8Array&gt; {
+    await this.ensureInitialized();
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.fs) <span class="cstat-no" title="statement not covered" >throw new Error('Helia not initialized');</span>
 &nbsp;
     try {
-      this.verificationResult = await this.disotService.verifyEntry(this.disotEntry);
+      // Get CID from path mapping
+      const cidString = await this.getCidForPathPrivate(path);
+      if (!cidString) {
+        throw new Error(`No content found for path: ${path}`);
+      }
+&nbsp;
+      // Convert string back to CID
+      const { CID } = await import('multiformats/cid');
+      const cid = CID.parse(cidString);
+&nbsp;
+      // Read content from Helia
+      const chunks = <span class="cstat-no" title="statement not covered" >await itAll(this.fs.cat(cid));</span>
+      
+      // Concatenate chunks into single Uint8Array
+      const totalLength = <span class="cstat-no" title="statement not covered" >chunks.reduce(<span class="fstat-no" title="function not covered" >(s</span>um: number, chunk: Uint8Array) =&gt; <span class="cstat-no" title="statement not covered" >sum + chunk.length,</span> 0);</span>
+      const result = <span class="cstat-no" title="statement not covered" >new Uint8Array(totalLength);</span>
+      let offset = <span class="cstat-no" title="statement not covered" >0;</span>
+      
+<span class="cstat-no" title="statement not covered" >      for (const chunk of chunks) {</span>
+<span class="cstat-no" title="statement not covered" >        result.set(chunk, offset);</span>
+<span class="cstat-no" title="statement not covered" >        offset += chunk.length;</span>
+      }
+      
+<span class="cstat-no" title="statement not covered" >      return result;</span>
     } catch (error) {
-      this.errorMessage = `Verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
-      this.verificationResult = null;
-    } finally {
-      this.isVerifying = false;
+      console.error('Failed to read from Helia:', error);
+      throw error;
     }
   }
 &nbsp;
-  formatEntryType(type: string): string {
-    return type.replace(/_/g, ' ').replace(/\b\w/g, l =&gt; l.toUpperCase());
+  async exists(path: string): Promise&lt;boolean&gt; {
+    await this.ensureInitialized();
+    
+    const cidString = await this.getCidForPathPrivate(path);
+    return cidString !== null;
   }
 &nbsp;
-  formatTimestamp(date: Date): string {
-    return new Date(date).toLocaleString();
+  async delete(path: string): Promise&lt;void&gt; {
+    await this.ensureInitialized();
+    
+    // Remove path mapping
+    await this.deletePathCidMapping(path);
+    
+    // Note: We don't delete the actual block from Helia
+    // as it might be referenced by other paths or needed for deduplication
+  }
+&nbsp;
+  async list(): Promise&lt;string[]&gt; {
+    await this.ensureInitialized();
+    if (!this.pathToCidStore) return [];
+&nbsp;
+    return new Promise((resolve, reject) =&gt; {
+      const transaction = this.pathToCidStore!.transaction([this.PATH_CID_STORE], 'readonly');
+      const store = transaction.objectStore(this.PATH_CID_STORE);
+      const request = store.getAllKeys();
+      
+      request.onsuccess = () =&gt; resolve(request.result as string[]);
+      request.onerror = <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >reject(request.error);</span>
+    });
+  }
+&nbsp;
+  // Path-to-CID mapping methods
+  private async savePathCidMapping(path: string, cid: string): Promise&lt;void&gt; {
+    if (!this.pathToCidStore) throw new Error('Path-CID store not initialized');
+&nbsp;
+    return new Promise((resolve, reject) =&gt; {
+      const transaction = this.pathToCidStore!.transaction([this.PATH_CID_STORE], 'readwrite');
+      const store = transaction.objectStore(this.PATH_CID_STORE);
+      
+      const request = store.put({
+        path,
+        cid,
+        timestamp: new Date().toISOString()
+      });
+      
+      request.onsuccess = () =&gt; resolve();
+      request.onerror = <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >reject(request.error);</span>
+    });
+  }
+&nbsp;
+  private async getCidForPathPrivate(path: string): Promise&lt;string | null&gt; {
+    if (!this.pathToCidStore) throw new Error('Path-CID store not initialized');
+&nbsp;
+    return new Promise((resolve, reject) =&gt; {
+      const transaction = this.pathToCidStore!.transaction([this.PATH_CID_STORE], 'readonly');
+      const store = transaction.objectStore(this.PATH_CID_STORE);
+      const request = store.get(path);
+      
+      request.onsuccess = () =&gt; {
+        const result = request.result;
+        resolve(result ? result.cid : null);
+      };
+      request.onerror = <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >reject(request.error);</span>
+    });
+  }
+&nbsp;
+  private async deletePathCidMapping(path: string): Promise&lt;void&gt; {
+    if (!this.pathToCidStore) throw new Error('Path-CID store not initialized');
+&nbsp;
+    return new Promise((resolve, reject) =&gt; {
+      const transaction = this.pathToCidStore!.transaction([this.PATH_CID_STORE], 'readwrite');
+      const store = transaction.objectStore(this.PATH_CID_STORE);
+      const request = store.delete(path);
+      
+      request.onsuccess = () =&gt; resolve();
+      request.onerror = <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >reject(request.error);</span>
+    });
+  }
+&nbsp;
+  /**
+   * Get storage statistics
+   */
+  async getStats(): Promise&lt;{
+    blockCount: number;
+    totalSize: number;
+    pathCount: number;
+  }&gt; {
+    await this.ensureInitialized();
+    
+    const pathCount = (await this.list()).length;
+    
+    // Note: Getting accurate block count and size from Helia/IDB is complex
+    // This is a simplified version
+    return {
+      blockCount: 0, // Would need to query IDB blockstore
+      totalSize: 0,  // Would need to sum all block sizes
+      pathCount
+    };
+  }
+&nbsp;
+  /**
+   * Check if Helia is healthy
+   */
+  async isHealthy(): Promise&lt;boolean&gt; {
+    try {
+      await this.ensureInitialized();
+      return this.initialized &amp;&amp; this.helia !== undefined;
+    } catch {
+      return false;
+    }
+  }
+&nbsp;
+  /**
+   * Generate a shareable link for content
+   */
+<span class="fstat-no" title="function not covered" >  async </span>generateShareLink(path: string, filename?: string): Promise&lt;string | null&gt; {
+    const cid = <span class="cstat-no" title="statement not covered" >await this.getCidForPath(path);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!cid) {</span>
+<span class="cstat-no" title="statement not covered" >      return null;</span>
+    }
+    
+<span class="cstat-no" title="statement not covered" >    return this.shareLinkService.generateShareLink(cid, { filename });</span>
+  }
+&nbsp;
+  /**
+   * Generate multiple share links for different gateways
+   */
+<span class="fstat-no" title="function not covered" >  async </span>generateMultipleShareLinks(path: string, filename?: string): Promise&lt;string[]&gt; {
+    const cid = <span class="cstat-no" title="statement not covered" >await this.getCidForPath(path);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!cid) {</span>
+<span class="cstat-no" title="statement not covered" >      return [];</span>
+    }
+    
+<span class="cstat-no" title="statement not covered" >    return this.shareLinkService.generateMultipleShareLinks(cid, { filename });</span>
+  }
+&nbsp;
+  /**
+   * Get CID for a given path
+   */
+<span class="fstat-no" title="function not covered" >  async </span>getCidForPath(path: string): Promise&lt;string | null&gt; {
+<span class="cstat-no" title="statement not covered" >    await this.ensureInitialized();</span>
+<span class="cstat-no" title="statement not covered" >    return await this.getCidForPathInternal(path);</span>
+  }
+&nbsp;
+  private <span class="fstat-no" title="function not covered" >async </span>getCidForPathInternal(path: string): Promise&lt;string | null&gt; {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.pathToCidStore) <span class="cstat-no" title="statement not covered" >throw new Error('Path-CID store not initialized');</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
+      const transaction = <span class="cstat-no" title="statement not covered" >this.pathToCidStore!.transaction([this.PATH_CID_STORE], 'readonly');</span>
+      const store = <span class="cstat-no" title="statement not covered" >transaction.objectStore(this.PATH_CID_STORE);</span>
+      const request = <span class="cstat-no" title="statement not covered" >store.get(path);</span>
+      
+<span class="cstat-no" title="statement not covered" >      request.onsuccess = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+        const result = <span class="cstat-no" title="statement not covered" >request.result;</span>
+<span class="cstat-no" title="statement not covered" >        resolve(result ? result.cid : null);</span>
+      };
+<span class="cstat-no" title="statement not covered" >      request.onerror = <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >reject(request.error);</span></span>
+    });
+  }
+&nbsp;
+  ngOnDestroy(): void {
+    // Close Helia node when service is destroyed
+    if (this.helia) {
+      this.helia.stop().catch(error =&gt; {
+        console.error('Error stopping Helia:', error);
+      });
+    }
+    
+    // Close path-CID database
+    if (this.pathToCidStore) {
+      this.pathToCidStore.close();
+    }
   }
 }</pre></td></tr></table></pre>
 

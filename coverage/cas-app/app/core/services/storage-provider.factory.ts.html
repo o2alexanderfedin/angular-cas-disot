@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.53% </span>
+                <span class="strong">63.15% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/13</span>
+                <span class='fraction'>12/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">53.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/10</span>
+                <span class='fraction'>8/15</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.53% </span>
+                <span class="strong">63.15% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/13</span>
+                <span class='fraction'>12/19</span>
             </div>
         
             
@@ -103,7 +103,28 @@
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -113,6 +134,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,12 +143,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -134,8 +163,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -147,22 +185,32 @@
 import { IStorageProvider } from '../domain/interfaces/storage.interface';
 import { LocalStorageService } from './local-storage.service';
 import { IndexedDbStorageService } from './indexed-db-storage.service';
+import { IPFSStorageService } from './ipfs/ipfs-storage.service';
+import { HeliaStorageService } from './helia/helia-storage.service';
 &nbsp;
 export const STORAGE_PROVIDER = new InjectionToken&lt;IStorageProvider&gt;('storage.provider');
 &nbsp;
 export enum StorageType {
   IN_MEMORY = 'in-memory',
-  INDEXED_DB = 'indexed-db'
+  INDEXED_DB = 'indexed-db',
+  IPFS = 'ipfs',
+  HELIA = 'helia'
 }
 &nbsp;
 export function storageProviderFactory(
   localStorageService: LocalStorageService,
   indexedDbService: IndexedDbStorageService,
+  ipfsStorageService: IPFSStorageService,
+  heliaStorageService: HeliaStorageService,
   storageType: StorageType = StorageType.IN_MEMORY
 ): IStorageProvider {
   switch (storageType) {
     case StorageType.INDEXED_DB:
       return indexedDbService;
+    case StorageType.IPFS:
+      return ipfsStorageService;
+    case StorageType.HELIA:
+      return heliaStorageService;
     case StorageType.IN_MEMORY:
     default:
       return localStorageService;
@@ -172,11 +220,20 @@ export function storageProviderFactory(
 export const STORAGE_TYPE = new InjectionToken&lt;StorageType&gt;('storage.type');
 &nbsp;
 export function <span class="fstat-no" title="function not covered" >getStorageType(</span>): StorageType {
-  // Check if IndexedDB is available
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof window !== 'undefined' &amp;&amp; 'indexedDB' in window) {</span>
-    // Check user preference from localStorage
+  // Check user preference from localStorage
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof window !== 'undefined') {</span>
     const savedPreference = <span class="cstat-no" title="statement not covered" >localStorage.getItem('cas-storage-type');</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (savedPreference === StorageType.INDEXED_DB) {</span>
+    
+    // Return saved preference if it's a valid storage type
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (savedPreference === StorageType.INDEXED_DB || </span>
+        savedPreference === StorageType.IPFS ||
+        savedPreference === StorageType.HELIA ||
+        savedPreference === StorageType.IN_MEMORY) {
+<span class="cstat-no" title="statement not covered" >      return savedPreference as StorageType;</span>
+    }
+    
+    // Check if IndexedDB is available for default
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if ('indexedDB' in window) {</span>
 <span class="cstat-no" title="statement not covered" >      return StorageType.INDEXED_DB;</span>
     }
   }
@@ -190,7 +247,7 @@ export function <span class="fstat-no" title="function not covered" >getStorageT
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-06T08:35:10.066Z
+                at 2025-07-06T19:01:44.420Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
