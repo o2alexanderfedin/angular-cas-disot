@@ -112,15 +112,10 @@ describe('SignatureVerificationComponent', () => {
 
     component.disotEntry = mockEntry;
     disotService.verifyEntry.and.returnValue(Promise.resolve(true));
-    
-    spyOn(component.verificationComplete, 'emit');
 
     await component.verifySignature();
 
-    expect(component.verificationComplete.emit).toHaveBeenCalledWith({
-      entry: mockEntry,
-      isValid: true
-    });
+    expect(component.verificationResult).toBe(true);
   });
 
   it('should handle verification errors', async () => {

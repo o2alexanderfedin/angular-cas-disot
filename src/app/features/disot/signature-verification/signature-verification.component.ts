@@ -1,14 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared-module';
 import { DisotService } from '../../../core/services/disot.service';
 import { DisotEntry } from '../../../core/domain/interfaces/disot.interface';
-
-interface VerificationResult {
-  entry: DisotEntry;
-  isValid: boolean;
-}
 
 @Component({
   selector: 'app-signature-verification',
@@ -248,7 +243,6 @@ interface VerificationResult {
 })
 export class SignatureVerificationComponent {
   @Input() disotEntry: DisotEntry | null = null;
-  @Output() verificationComplete = new EventEmitter<VerificationResult>();
 
   isVerifying = false;
   verificationResult: boolean | null = null;
@@ -289,10 +283,6 @@ export class SignatureVerificationComponent {
 
     try {
       this.verificationResult = await this.disotService.verifyEntry(this.disotEntry);
-      this.verificationComplete.emit({
-        entry: this.disotEntry,
-        isValid: this.verificationResult
-      });
     } catch (error) {
       this.errorMessage = `Verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
       this.verificationResult = null;

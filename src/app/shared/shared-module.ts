@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ContentSelectionModalComponent } from './components/content-selection-modal/content-selection-modal.component';
 
 @NgModule({
@@ -8,13 +8,11 @@ import { ContentSelectionModalComponent } from './components/content-selection-m
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     ContentSelectionModalComponent
   ],
   exports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     ContentSelectionModalComponent
   ]
 })
