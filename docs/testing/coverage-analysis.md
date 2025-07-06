@@ -1,6 +1,6 @@
 # Coverage Analysis
 
-[← Testing Guide](./testing-guide.md) | [Home](../../README.md)
+[⬅️ Testing Guide](./testing-guide.md) | [🏠 Home](../../README.md)
 
 ## Current Coverage Status
 
@@ -164,4 +164,4 @@ To reach 90%+ coverage:
 
 ---
 
-[← Testing Guide](./testing-guide.md) | [↑ Top](#coverage-analysis) | [Home](../../README.md)
+[⬅️ Testing Guide](./testing-guide.md) | [⬆️ Top](#coverage-analysis) | [🏠 Home](../../README.md)

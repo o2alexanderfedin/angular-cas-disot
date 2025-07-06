@@ -1,6 +1,6 @@
 # Layout Components
 
-[← DISOT Components](./disot-components.md) | [Home](../README.md) | [Service Reference →](../services/README.md)
+[⬅️ DISOT Components](./disot-components.md) | [🏠 Home](../README.md) | [Service Reference ➡️](../services/README.md)
 
 ## Table of Contents
 
@@ -402,4 +402,4 @@ graph TD
 
 ---
 
-[← DISOT Components](./disot-components.md) | [↑ Top](#layout-components) | [Home](../README.md) | [Service Reference →](../services/README.md)
+[⬅️ DISOT Components](./disot-components.md) | [⬆️ Top](#layout-components) | [🏠 Home](../README.md) | [Service Reference ➡️](../services/README.md)

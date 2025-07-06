@@ -1,6 +1,6 @@
 # Component Reference
 
-[← Models API](../api/models.md) | [Home](../README.md) | [Next: Content Components →](./content-components.md)
+[⬅️ Models API](../api/models.md) | [🏠 Home](../README.md) | [Content Components ➡️](./content-components.md)
 
 ## Table of Contents
 
@@ -138,4 +138,4 @@ graph TD
 
 ---
 
-[← Models API](../api/models.md) | [↑ Top](#component-reference) | [Home](../README.md) | [Next: Content Components →](./content-components.md)
+[⬅️ Models API](../api/models.md) | [⬆️ Top](#component-reference) | [🏠 Home](../README.md) | [Content Components ➡️](./content-components.md)

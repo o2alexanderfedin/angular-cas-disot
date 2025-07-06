@@ -1,6 +1,6 @@
 # Interfaces API Reference
 
-[← Services API](./services.md) | [Home](../README.md) | [Next: Models API →](./models.md)
+[⬅️ Services API](./services.md) | [🏠 Home](../README.md) | [Models API ➡️](./models.md)
 
 ## Table of Contents
 
@@ -328,4 +328,4 @@ graph TD
 
 ---
 
-[← Services API](./services.md) | [↑ Top](#interfaces-api-reference) | [Home](../README.md) | [Next: Models API →](./models.md)
+[⬅️ Services API](./services.md) | [⬆️ Top](#interfaces-api-reference) | [🏠 Home](../README.md) | [Models API ➡️](./models.md)

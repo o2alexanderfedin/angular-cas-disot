@@ -1,6 +1,6 @@
 # Service Reference
 
-[← Layout Components](../components/layout-components.md) | [Home](../README.md)
+[⬅️ Layout Components](../components/layout-components.md) | [🏠 Home](../README.md)
 
 ## Table of Contents
 
@@ -388,4 +388,4 @@ export class CasService implements IContentStorage {
 
 ---
 
-[← Layout Components](../components/layout-components.md) | [↑ Top](#service-reference) | [Home](../README.md)
+[⬅️ Layout Components](../components/layout-components.md) | [⬆️ Top](#service-reference) | [🏠 Home](../README.md)

@@ -1,6 +1,6 @@
 # System Architecture 🏛️
 
-[← Architecture Overview](./overview.md) | [Home](../README.md) | [Next: Data Flow →](./data-flow.md)
+[⬅️ Architecture Overview](./overview.md) | [🏠 Home](../README.md) | [Data Flow ➡️](./data-flow.md)
 
 ## Table of Contents
 
@@ -309,4 +309,4 @@ graph TD
 
 ---
 
-[← Architecture Overview](./overview.md) | [↑ Top](#system-architecture) | [Home](../README.md) | [Next: Data Flow →](./data-flow.md)
+[⬅️ Architecture Overview](./overview.md) | [⬆️ Top](#system-architecture) | [🏠 Home](../README.md) | [Data Flow ➡️](./data-flow.md)

@@ -1,6 +1,6 @@
 # Security Architecture
 
-[← Service Architecture](./service-architecture.md) | [Home](../README.md) | [API Reference →](../api/README.md)
+[⬅️ Service Architecture](./service-architecture.md) | [🏠 Home](../README.md) | [API Reference ➡️](../api/README.md)
 
 ## Table of Contents
 
@@ -471,4 +471,4 @@ graph TD
 
 ---
 
-[← Service Architecture](./service-architecture.md) | [↑ Top](#security-architecture) | [Home](../README.md) | [API Reference →](../api/README.md)
+[⬅️ Service Architecture](./service-architecture.md) | [⬆️ Top](#security-architecture) | [🏠 Home](../README.md) | [API Reference ➡️](../api/README.md)
