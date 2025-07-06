@@ -17,9 +17,16 @@ This guide covers everything you need to deploy the CAS/DISOT application to pro
 
 ```bash
 # Build for production
-npm run build
+npm run build:production
 
-# Output is in dist/cas-app/
+# Build for staging
+npm run build:staging
+
+# Preview builds locally
+npm run preview:production  # Port 4202
+npm run preview:staging     # Port 4201
+
+# Output is in dist/cas-app/browser/
 # Ready for static hosting!
 ```
 
@@ -37,15 +44,38 @@ npm run build
 - Kubernetes
 - Cloud Run
 
+### Deployment Environments
+
+#### Production
+- URL: https://o2alexanderfedin.github.io/angular-cas-disot/
+- Base href: `/angular-cas-disot/`
+- Branch: `master` or version tags
+- Deployment: Automatic via GitHub Actions
+
+#### Staging
+- URL: https://o2alexanderfedin.github.io/angular-cas-disot/staging/
+- Base href: `/angular-cas-disot/staging/`
+- Branch: `master`
+- Deployment: Automatic after production succeeds
+
+### CI/CD Pipeline
+
+The project uses GitHub Actions for automated deployment:
+1. Tests run on all pushes and PRs
+2. Production deploys on `master` push or version tags
+3. Staging deploys after production succeeds (avoids conflicts)
+4. Coverage reports included in deployments
+
 ### Production Checklist
 
 - [ ] Environment variables configured
 - [ ] Production build created
 - [ ] Security headers set
-- [ ] HTTPS enabled
+- [ ] HTTPS enabled (automatic on GitHub Pages)
 - [ ] Error tracking configured
 - [ ] Analytics setup (optional)
-- [ ] Backup strategy defined
+- [ ] Code coverage meets targets
+- [ ] TypeScript strict mode passing
 
 ---
 

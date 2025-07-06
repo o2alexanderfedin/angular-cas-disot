@@ -8,6 +8,7 @@ This directory contains the complete changelog for the CAS/DISOT application, or
 
 ### Version Series
 
+- [v2.x.x](./v2.x.x.md) - CI/CD improvements and code cleanup (v2.4.0+)
 - [v2.1.x](./v2.1.x.md) - Home page and user experience improvements
 - [v2.0.x](./v2.0.x.md) - Major documentation restructuring
 - [v1.2.x](./v1.2.x.md) - Documentation updates and Phase 1 planning
@@ -24,6 +25,18 @@ We follow [Semantic Versioning](https://semver.org/):
 
 ### Recent Releases
 
+#### v2.5.0 (2025-07-06)
+- Fixed staging deployment conflicts
+- Corrected staging base-href path
+- Enabled TypeScript strict mode
+- Sequential CI/CD deployments
+
+#### v2.4.0 (2025-07-06)
+- Dynamic code coverage display
+- Removed unused code and dependencies
+- Added CoverageService
+- Improved build scripts
+
 #### v2.1.0 (2025-01-06)
 - Comprehensive home page with system explanation
 - Visual workflow and use cases
@@ -34,19 +47,16 @@ We follow [Semantic Versioning](https://semver.org/):
 - Breaking changes in documentation URLs
 - User guides and deployment docs added
 
+#### v1.2.1 (2025-07-06)
+- Enhanced developer documentation
+- Browser storage analysis
+- IndexedDB security documentation
+- Code cleanup guide
+
 #### v1.2.0 (2025-07-06)
 - Phase 1 IPFS architecture documentation
 - Story point-based roadmap
 - AI development focus
-
-#### v1.1.4 (2025-07-06)
-- Consistent navigation emojis
-- Documentation improvements
-
-#### v1.1.0 (2025-07-05)
-- IndexedDB storage provider
-- Enhanced content preview
-- Modal content selection
 
 ---
 

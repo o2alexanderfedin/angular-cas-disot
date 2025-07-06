@@ -3,11 +3,11 @@
 [![Angular](https://img.shields.io/badge/Angular-v20-red.svg)](https://angular.io/)
 [![Node.js](https://img.shields.io/badge/Node.js-v20.19%2B%20%7C%20v22.12%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.8-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-199%20total-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-73.5%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
+[![Tests](https://img.shields.io/badge/Tests-108%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-73.81%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
 [![CI/CD](https://github.com/o2alexanderfedin/angular-cas-disot/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v2.3.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.3.0)
+[![Release](https://img.shields.io/badge/Release-v2.5.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/v2.5.1)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -37,13 +37,12 @@ A decentralized content management system implementing Content Addressable Stora
 - **Modal Selection**: Elegant content selection with preview capability
 - **Previous Entries**: View and preview historical DISOT entries
 
-### New in v1.1.0
-- **IndexedDB Storage**: Persistent browser-based storage implementation
-- **Enhanced Content Preview**: Auto-detect content types and manual format selection
-- **Modal Content Selection**: Improved UX with preview in selection dialog
-- **Blog Post Creation**: Direct blog post creation in DISOT entries
-- **Previous Entry Previews**: View content from historical entries
-- **Storage Provider Selection**: Runtime configuration of storage backend
+### New in v2.5.0
+- **Fixed Staging Deployment**: Resolved Git conflicts with sequential deployment
+- **TypeScript Strict Mode**: Enabled unused code detection
+- **Dynamic Coverage Display**: Real-time coverage percentage on home page
+- **Improved CI/CD**: Sequential deployment strategy prevents conflicts
+- **Code Cleanup**: Removed unused dependencies and code
 
 ## 📋 Table of Contents
 
@@ -214,8 +213,10 @@ Executes unit tests via [Karma](https://karma-runner.github.io) in headless Chro
 
 ### Test Coverage
 The project maintains high test coverage with 108 tests across all components and services:
-- Services: 47 tests
-- Components: 61 tests
+- Statements: 73.81%
+- Functions: 83.13%
+- Branches: 53.1%
+- Lines: 75.5%
 - All tests passing ✅
 
 ### Test Structure
@@ -294,6 +295,23 @@ We welcome contributions! Please follow these steps:
 - Ensure all tests pass before submitting PR
 
 ## 🗺 Roadmap
+
+### Version 2.5.1 (Released)
+- [x] Comprehensive documentation update
+- [x] Browser storage and security documentation
+- [x] Code cleanup guide integration
+- [x] Enhanced developer guide structure
+
+### Version 2.5.0 (Released)
+- [x] Fixed staging deployment conflicts
+- [x] Enabled TypeScript strict mode
+- [x] Added dynamic code coverage display
+- [x] Improved CI/CD pipeline
+
+### Version 2.4.0 (Released)
+- [x] Removed unused code and dependencies
+- [x] Added CoverageService
+- [x] Improved build scripts
 
 ### Version 2.0.0 (Released)
 - [x] Complete documentation restructuring
