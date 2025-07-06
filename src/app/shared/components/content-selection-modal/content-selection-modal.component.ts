@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CasService } from '../../../core/services/cas.service';
+import { ContentPreviewService } from '../../../core/services/content-preview.service';
 import { ContentHash, ContentMetadata } from '../../../core/domain/interfaces/content.interface';
 
 interface ContentItem {
@@ -21,7 +22,7 @@ interface ContentItem {
     <div class="modal-backdrop" (click)="close()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
-          <h2>Select Content for DISOT Entry</h2>
+          <h2>{{ title }}</h2>
           <button class="close-button" (click)="close()">×</button>
         </div>
         
@@ -31,7 +32,7 @@ interface ContentItem {
               type="text" 
               [(ngModel)]="searchTerm"
               (ngModelChange)="filterContent()"
-              placeholder="Search by hash..."
+              placeholder="{{ searchPlaceholder }}"
               class="search-input"
             />
           </div>
@@ -49,7 +50,7 @@ interface ContentItem {
               <div class="item-clickable">
                 <div class="item-header">
                   <span class="algorithm">{{ item.hash.algorithm | uppercase }}</span>
-                  <span class="size">{{ formatFileSize(item.metadata.size || 0) }}</span>
+                  <span class="size">{{ previewService.formatFileSize(item.metadata.size || 0) }}</span>
                 </div>
                 <div class="hash-value">
                   <code>{{ item.hash.value }}</code>
@@ -61,7 +62,7 @@ interface ContentItem {
               </div>
               
               <div class="preview-section" *ngIf="item.previewData">
-                <div class="preview-controls">
+                <div class="preview-controls" *ngIf="!simplePreview">
                   <label>Preview as: </label>
                   <select [(ngModel)]="item.previewType" (change)="updatePreview(item)" class="preview-type-select">
                     <option value="text">Text</option>
@@ -82,10 +83,11 @@ interface ContentItem {
               
               <div class="item-actions">
                 <button 
+                  *ngIf="selectable"
                   (click)="selectContent(item.hash); $event.stopPropagation()" 
                   class="select-button"
                 >
-                  Select
+                  {{ selectButtonText }}
                 </button>
                 <button 
                   (click)="togglePreview(item); $event.stopPropagation()" 
@@ -352,7 +354,14 @@ interface ContentItem {
     }
   `]
 })
-export class ContentSelectionModalComponent {
+export class ContentSelectionModalComponent implements OnInit {
+  @Input() title = 'Select Content';
+  @Input() searchPlaceholder = 'Search by hash...';
+  @Input() selectable = true;
+  @Input() selectButtonText = 'Select';
+  @Input() simplePreview = false;
+  @Input() filterByContentType?: string;
+  
   @Output() contentSelected = new EventEmitter<ContentHash>();
   @Output() closed = new EventEmitter<void>();
 
@@ -361,7 +370,12 @@ export class ContentSelectionModalComponent {
   searchTerm = '';
   isLoading = false;
 
-  constructor(private casService: CasService) {
+  constructor(
+    private casService: CasService,
+    public previewService: ContentPreviewService
+  ) {}
+
+  ngOnInit(): void {
     this.loadContent();
   }
 
@@ -391,14 +405,25 @@ export class ContentSelectionModalComponent {
   }
 
   filterContent(): void {
-    if (!this.searchTerm) {
-      this.filteredItems = [...this.contentItems];
-    } else {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredItems = this.contentItems.filter(item =>
-        item.hash.value.toLowerCase().includes(term)
+    let items = [...this.contentItems];
+    
+    // Filter by content type if specified
+    if (this.filterByContentType) {
+      items = items.filter(item => 
+        item.metadata.contentType === this.filterByContentType
       );
     }
+    
+    // Filter by search term
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      items = items.filter(item =>
+        item.hash.value.toLowerCase().includes(term) ||
+        (item.metadata.contentType && item.metadata.contentType.toLowerCase().includes(term))
+      );
+    }
+    
+    this.filteredItems = items;
   }
 
   selectContent(hash: ContentHash): void {
@@ -446,36 +471,7 @@ export class ContentSelectionModalComponent {
   }
 
   private detectContentType(data: Uint8Array): string {
-    // Check for common file signatures
-    if (data.length >= 4) {
-      const header = Array.from(data.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join('');
-      
-      // PNG
-      if (header === '89504e47') return 'image/png';
-      // JPEG
-      if (header.startsWith('ffd8ff')) return 'image/jpeg';
-      // GIF
-      if (header.startsWith('47494638')) return 'image/gif';
-      // PDF
-      if (header === '25504446') return 'application/pdf';
-    }
-    
-    // Try to decode as text
-    try {
-      const text = new TextDecoder('utf-8', { fatal: true }).decode(data.slice(0, 1000));
-      
-      // Check if it's JSON
-      try {
-        JSON.parse(text);
-        return 'application/json';
-      } catch {
-        // Not JSON, but is text
-        return 'text/plain';
-      }
-    } catch {
-      // Not valid UTF-8, treat as binary
-      return 'application/octet-stream';
-    }
+    return this.previewService.detectContentType(data);
   }
 
   private getInitialPreviewType(detectedType: string, data: Uint8Array): 'text' | 'json' | 'hex' | 'base64' | 'image' {
@@ -498,69 +494,21 @@ export class ContentSelectionModalComponent {
   }
 
   private updatePreviewData(item: ContentItem, data: Uint8Array): void {
-    const maxSize = 1000;
-    
-    switch (item.previewType) {
-      case 'text':
-        try {
-          const text = new TextDecoder().decode(data);
-          item.previewData = text.length > maxSize 
-            ? text.substring(0, maxSize) + '...' 
-            : text;
-        } catch {
-          item.previewData = 'Unable to decode as text';
-        }
-        break;
-        
-      case 'json':
-        try {
-          const text = new TextDecoder().decode(data);
-          const json = JSON.parse(text);
-          item.previewData = JSON.stringify(json, null, 2);
-          if (item.previewData.length > maxSize) {
-            item.previewData = item.previewData.substring(0, maxSize) + '...';
-          }
-        } catch {
-          item.previewData = 'Invalid JSON';
-        }
-        break;
-        
-      case 'hex':
-        const hexBytes = Math.min(data.length, 256);
-        item.previewData = Array.from(data.slice(0, hexBytes))
-          .map(b => b.toString(16).padStart(2, '0'))
-          .join(' ')
-          .toUpperCase();
-        if (data.length > hexBytes) {
-          item.previewData += ' ...';
-        }
-        break;
-        
-      case 'base64':
-        const base64Bytes = Math.min(data.length, 1000);
-        item.previewData = btoa(String.fromCharCode(...data.slice(0, base64Bytes)));
-        if (data.length > base64Bytes) {
-          item.previewData += '...';
-        }
-        break;
-        
-      case 'image':
-        // Create data URL for image
-        const blob = new Blob([data]);
-        const reader = new FileReader();
-        reader.onload = () => {
-          item.previewData = reader.result as string;
-        };
-        reader.readAsDataURL(blob);
-        break;
+    if (item.previewType === 'image') {
+      // Special handling for images - need async data URL creation
+      const blob = new Blob([data]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        item.previewData = reader.result as string;
+      };
+      reader.readAsDataURL(blob);
+    } else if (item.previewType) {
+      // Use preview service for other formats
+      item.previewData = this.previewService.generatePreview(
+        data, 
+        item.previewType as 'text' | 'json' | 'hex' | 'base64'
+      );
     }
   }
 
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
 }

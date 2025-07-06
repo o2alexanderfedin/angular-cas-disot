@@ -6,12 +6,12 @@ import { MetadataService } from '../../../core/services/metadata/metadata.servic
 import { SignatureService } from '../../../core/services/signature.service';
 import { createMetadataContent, AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
-import { HashSelectionModalComponent } from '../../../shared/components/hash-selection-modal/hash-selection-modal.component';
+import { ContentSelectionModalComponent } from '../../../shared/components/content-selection-modal/content-selection-modal.component';
 
 @Component({
   selector: 'app-metadata-entry',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HashSelectionModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, ContentSelectionModalComponent],
   templateUrl: './metadata-entry.component.html'
 })
 export class MetadataEntryComponent implements OnInit {

@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { MetadataEntryComponent } from './metadata-entry.component';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
-import { HashSelectionService } from '../../../core/services/hash-selection.service';
 import { AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
@@ -20,7 +19,6 @@ describe('MetadataEntryComponent', () => {
   beforeEach(async () => {
     const metadataSpy = jasmine.createSpyObj('MetadataService', ['createMetadataEntry']);
     const signatureSpy = jasmine.createSpyObj('SignatureService', ['generateKeyPair']);
-    const hashSpy = jasmine.createSpyObj('HashSelectionService', ['searchHashes', 'formatFileSize']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -30,8 +28,7 @@ describe('MetadataEntryComponent', () => {
       ],
       providers: [
         { provide: MetadataService, useValue: metadataSpy },
-        { provide: SignatureService, useValue: signatureSpy },
-        { provide: HashSelectionService, useValue: hashSpy }
+        { provide: SignatureService, useValue: signatureSpy }
       ]
     }).compileComponents();
 

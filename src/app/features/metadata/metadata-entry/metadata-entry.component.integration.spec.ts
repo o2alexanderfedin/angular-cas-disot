@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MetadataEntryComponent } from './metadata-entry.component';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
-import { HashSelectionService } from '../../../core/services/hash-selection.service';
+import { CasService } from '../../../core/services/cas.service';
 import { AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
@@ -15,17 +15,16 @@ describe('MetadataEntryComponent Integration Tests', () => {
   let fixture: ComponentFixture<MetadataEntryComponent>;
   let metadataService: jasmine.SpyObj<MetadataService>;
   let signatureService: jasmine.SpyObj<SignatureService>;
-  let hashSelectionService: jasmine.SpyObj<HashSelectionService>;
+  let casService: jasmine.SpyObj<CasService>;
   let router: Router;
 
   beforeEach(async () => {
     const metadataSpy = jasmine.createSpyObj('MetadataService', ['createMetadataEntry']);
     const signatureSpy = jasmine.createSpyObj('SignatureService', ['generateKeyPair']);
-    const hashSpy = jasmine.createSpyObj('HashSelectionService', [
-      'getAvailableHashes',
-      'searchHashes',
-      'formatFileSize',
-      'getPreviewData'
+    const casSpy = jasmine.createSpyObj('CasService', [
+      'getAllContent',
+      'getMetadata',
+      'retrieve'
     ]);
 
     await TestBed.configureTestingModule({
@@ -37,7 +36,7 @@ describe('MetadataEntryComponent Integration Tests', () => {
       providers: [
         { provide: MetadataService, useValue: metadataSpy },
         { provide: SignatureService, useValue: signatureSpy },
-        { provide: HashSelectionService, useValue: hashSpy }
+        { provide: CasService, useValue: casSpy }
       ]
     }).compileComponents();
 
@@ -45,12 +44,11 @@ describe('MetadataEntryComponent Integration Tests', () => {
     component = fixture.componentInstance;
     metadataService = TestBed.inject(MetadataService) as jasmine.SpyObj<MetadataService>;
     signatureService = TestBed.inject(SignatureService) as jasmine.SpyObj<SignatureService>;
-    hashSelectionService = TestBed.inject(HashSelectionService) as jasmine.SpyObj<HashSelectionService>;
+    casService = TestBed.inject(CasService) as jasmine.SpyObj<CasService>;
     router = TestBed.inject(Router);
     
     // Setup default mock responses
-    hashSelectionService.searchHashes.and.returnValue(Promise.resolve([]));
-    hashSelectionService.formatFileSize.and.callFake((size: number) => `${size} bytes`);
+    casService.getAllContent.and.returnValue(Promise.resolve([]));
     
     fixture.detectChanges();
   });
@@ -175,7 +173,7 @@ describe('MetadataEntryComponent Integration Tests', () => {
 
   it('should handle hash selection modal errors gracefully', async () => {
     // Arrange
-    hashSelectionService.searchHashes.and.returnValue(
+    casService.getAllContent.and.returnValue(
       Promise.reject(new Error('Service unavailable'))
     );
 

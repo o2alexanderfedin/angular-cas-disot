@@ -170,10 +170,14 @@
     </div>
   </form>
 
-  <!-- Hash Selection Modal -->
-  <app-hash-selection-modal 
+  <!-- Content Selection Modal for Hash Selection -->
+  <app-content-selection-modal 
     *ngIf="showHashSelectionModal"
-    (hashSelected)="onHashSelected($event)"
+    [title]="'Select Content Hash'"
+    [searchPlaceholder]="'Search by hash or content type...'"
+    [selectButtonText]="'Select'"
+    [simplePreview]="true"
+    (contentSelected)="onHashSelected($event)"
     (closed)="closeHashSelector()">
-  </app-hash-selection-modal>
+  </app-content-selection-modal>
 </div>
