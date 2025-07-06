@@ -51,7 +51,13 @@ jobs:
       
       - name: 'Generate Coverage Report'
         if: matrix.node-version == '22.x'
-        run: npm run test:coverage
+        run: |
+          npm run test:coverage
+          echo "Coverage files generated:"
+          find ./coverage -type f -name "*.info" -o -name "*.lcov" -o -name "*.xml" || echo "No LCOV files found"
+          
+          echo "Final coverage files:"
+          ls -la ./coverage/
       
       - name: 'Upload Coverage to Codecov'
         if: matrix.node-version == '22.x'
@@ -60,7 +66,7 @@ jobs:
           directory: ./coverage
           flags: unittests
           name: coverage-${{ github.sha }}
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
   # ============================================================================

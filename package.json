@@ -11,7 +11,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --browsers=ChromeHeadless --watch=false",
     "test:watch": "ng test",
-    "test:coverage": "ng test --code-coverage --browsers=ChromeHeadless --watch=false",
+    "test:coverage": "ng test --code-coverage --browsers=ChromeHeadless --watch=false && npm run coverage:lcov",
+    "coverage:lcov": "node scripts/generate-lcov.js",
     "preview:staging": "npm run build:staging && npx http-server dist/cas-app/browser -p 4201 -o",
     "preview:production": "npm run build:production && npx http-server dist/cas-app/browser -p 4202 -o"
   },

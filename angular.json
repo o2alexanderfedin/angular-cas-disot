@@ -90,7 +90,12 @@
             "styles": [
               "src/styles.scss"
             ],
-            "codeCoverage": true
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "src/test.ts",
+              "src/**/*.spec.ts",
+              "src/**/*.d.ts"
+            ]
           }
         },
         "deploy": {

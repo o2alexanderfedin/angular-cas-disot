@@ -20,14 +20,15 @@ module.exports = function (config) {
     },
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage'),
-      subdir: '.',
       reporters: [
-        { type: 'html', subdir: 'cas-app' },
+        { type: 'html', subdir: 'html' },
         { type: 'text-summary' },
-        { type: 'lcov' }
-      ]
+        { type: 'lcovonly', file: 'lcov.info' },
+        { type: 'cobertura', file: 'cobertura-coverage.xml' }
+      ],
+      fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml', 'coverage'],
+    reporters: ['progress', 'kjhtml'],
     browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeHeadlessCI: {
