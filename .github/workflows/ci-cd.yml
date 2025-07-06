@@ -115,6 +115,24 @@ jobs:
             echo "📊 Including coverage report in deployment..."
             mkdir -p dist/cas-app/browser/coverage
             cp -r ./coverage/* dist/cas-app/browser/coverage/
+            
+            # Create redirect from /coverage/ to /coverage/cas-app/
+            cat > dist/cas-app/browser/coverage/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Code Coverage Report</title>
+            <meta http-equiv="refresh" content="0; url=./cas-app/">
+            <script>
+              window.location.href = './cas-app/';
+            </script>
+          </head>
+          <body>
+            <p>Redirecting to coverage report... <a href="./cas-app/">Click here if not redirected</a></p>
+          </body>
+          </html>
+          EOF
+            
             echo "Coverage report available at: ${{ matrix.environment.name == 'production' && 'https://o2alexanderfedin.github.io/angular-cas-disot/coverage/' || 'https://o2alexanderfedin.github.io/angular-cas-disot-staging/coverage/' }}"
           fi
           
