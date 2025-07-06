@@ -1,6 +1,6 @@
 # Testing Guide
 
-[← Documentation](../README.md) | [Home](../../README.md)
+[⬅️ Documentation](../README.md) | [🏠 Home](../../README.md)
 
 ## Table of Contents
 
@@ -378,4 +378,4 @@ Before committing code, ensure:
 
 ---
 
-[← Documentation](../README.md) | [↑ Top](#testing-guide) | [Home](../../README.md)
+[⬅️ Documentation](../README.md) | [⬆️ Top](#testing-guide) | [🏠 Home](../../README.md)

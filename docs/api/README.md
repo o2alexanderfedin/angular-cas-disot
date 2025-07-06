@@ -1,6 +1,6 @@
 # API Reference
 
-[← Security Architecture](../architecture/security.md) | [Home](../README.md) | [Next: Services API →](./services.md)
+[⬅️ Security Architecture](../architecture/security.md) | [🏠 Home](../README.md) | [Services API ➡️](./services.md)
 
 ## Table of Contents
 
@@ -111,4 +111,4 @@ classDiagram
 
 ---
 
-[← Security Architecture](../architecture/security.md) | [↑ Top](#api-reference) | [Home](../README.md) | [Next: Services API →](./services.md)
+[⬅️ Security Architecture](../architecture/security.md) | [⬆️ Top](#api-reference) | [🏠 Home](../README.md) | [Services API ➡️](./services.md)

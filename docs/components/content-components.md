@@ -1,6 +1,6 @@
 # Content Components
 
-[← Component Overview](./README.md) | [Home](../README.md) | [Next: DISOT Components →](./disot-components.md)
+[⬅️ Component Overview](./README.md) | [🏠 Home](../README.md) | [DISOT Components ➡️](./disot-components.md)
 
 ## Table of Contents
 
@@ -422,4 +422,4 @@ describe('ContentListComponent', () => {
 
 ---
 
-[← Component Overview](./README.md) | [↑ Top](#content-components) | [Home](../README.md) | [Next: DISOT Components →](./disot-components.md)
+[⬅️ Component Overview](./README.md) | [⬆️ Top](#content-components) | [🏠 Home](../README.md) | [DISOT Components ➡️](./disot-components.md)

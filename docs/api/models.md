@@ -1,6 +1,6 @@
 # Models API Reference
 
-[← Interfaces API](./interfaces.md) | [Home](../README.md) | [Component Reference →](../components/README.md)
+[⬅️ Interfaces API](./interfaces.md) | [🏠 Home](../README.md) | [Component Reference ➡️](../components/README.md)
 
 ## Table of Contents
 
@@ -316,4 +316,4 @@ graph TD
 
 ---
 
-[← Interfaces API](./interfaces.md) | [↑ Top](#models-api-reference) | [Home](../README.md) | [Component Reference →](../components/README.md)
+[⬅️ Interfaces API](./interfaces.md) | [⬆️ Top](#models-api-reference) | [🏠 Home](../README.md) | [Component Reference ➡️](../components/README.md)

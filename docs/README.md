@@ -58,4 +58,4 @@ graph TD
 
 ---
 
-[Next: Architecture Overview →](./architecture/overview.md)
+[Architecture Overview ➡️](./architecture/overview.md)

@@ -1,6 +1,6 @@
 # Project Structure Guide
 
-[← Documentation](../README.md) | [Home](../../README.md)
+[⬅️ Documentation](../README.md) | [🏠 Home](../../README.md)
 
 ## Overview
 
@@ -194,4 +194,4 @@ This automatically creates:
 
 ---
 
-[← Documentation](../README.md) | [↑ Top](#project-structure-guide) | [Home](../../README.md)
+[⬅️ Documentation](../README.md) | [⬆️ Top](#project-structure-guide) | [🏠 Home](../../README.md)

@@ -1,6 +1,6 @@
 # Service Architecture 🔧
 
-[← Component Architecture](./component-architecture.md) | [Home](../README.md) | [Next: Security Architecture →](./security.md)
+[⬅️ Component Architecture](./component-architecture.md) | [🏠 Home](../README.md) | [Security Architecture ➡️](./security.md)
 
 ## Table of Contents
 
@@ -352,4 +352,4 @@ graph TD
 
 ---
 
-[← Component Architecture](./component-architecture.md) | [↑ Top](#service-architecture) | [Home](../README.md) | [Next: Security Architecture →](./security.md)
+[⬅️ Component Architecture](./component-architecture.md) | [⬆️ Top](#service-architecture) | [🏠 Home](../README.md) | [Security Architecture ➡️](./security.md)

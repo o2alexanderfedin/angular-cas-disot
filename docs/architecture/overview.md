@@ -1,6 +1,6 @@
 # Architecture Overview 🏗️
 
-[← Home](../README.md) | [Next: System Architecture →](./system-architecture.md)
+[🏠 Home](../README.md) | [System Architecture ➡️](./system-architecture.md)
 
 ## Table of Contents
 
@@ -167,4 +167,4 @@ graph TD
 
 ---
 
-[← Home](../README.md) | [↑ Top](#architecture-overview) | [Next: System Architecture →](./system-architecture.md)
+[🏠 Home](../README.md) | [⬆️ Top](#architecture-overview) | [System Architecture ➡️](./system-architecture.md)

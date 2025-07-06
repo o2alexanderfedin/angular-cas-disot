@@ -1,6 +1,6 @@
 # Data Flow Architecture 🌊
 
-[← System Architecture](./system-architecture.md) | [Home](../README.md) | [Next: Component Architecture →](./component-architecture.md)
+[⬅️ System Architecture](./system-architecture.md) | [🏠 Home](../README.md) | [Component Architecture ➡️](./component-architecture.md)
 
 ## Table of Contents
 
@@ -430,4 +430,4 @@ graph TD
 
 ---
 
-[← System Architecture](./system-architecture.md) | [↑ Top](#data-flow-architecture) | [Home](../README.md) | [Next: Component Architecture →](./component-architecture.md)
+[⬅️ System Architecture](./system-architecture.md) | [⬆️ Top](#data-flow-architecture) | [🏠 Home](../README.md) | [Component Architecture ➡️](./component-architecture.md)
