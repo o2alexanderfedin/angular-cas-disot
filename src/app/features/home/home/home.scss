@@ -351,6 +351,55 @@
   border-top: 1px solid #e9ecef;
   margin-top: 3rem;
   
+  .ai-hive-disclaimer {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f5f3ff 0%, #e9e6ff 100%);
+    border-radius: 0.75rem;
+    
+    .ai-built {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: #333;
+      font-weight: 500;
+    }
+    
+    .ai-description {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.5;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .ai-link {
+      color: #667eea;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      
+      &::after {
+        content: '✨';
+        margin-left: 0.25rem;
+        display: inline-block;
+        animation: sparkle 2s ease-in-out infinite;
+      }
+      
+      &:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .footer-divider {
+    width: 80px;
+    height: 1px;
+    background: #e9ecef;
+    margin: 0 auto 1.5rem;
+  }
+  
   p {
     color: #666;
   }
@@ -363,5 +412,16 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
   }
 }
