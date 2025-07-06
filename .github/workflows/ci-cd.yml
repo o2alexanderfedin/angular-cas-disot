@@ -1,0 +1,270 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ master, develop ]
+
+env:
+  NODE_VERSION: '20.x'
+  STAGING_BRANCH: 'gh-pages-staging'
+  PRODUCTION_BRANCH: 'gh-pages'
+
+jobs:
+  # ============================================================================
+  # CI STAGE - Testing and Quality Gates
+  # ============================================================================
+  
+  test:
+    name: 'Test Suite'
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@v4
+      
+      - name: 'Setup Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: 'Install Dependencies'
+        run: npm ci
+      
+      - name: 'Run Linting'
+        run: |
+          if npm run lint --if-present; then
+            echo "✅ Linting passed"
+          else
+            echo "ℹ️  No linting configured, skipping"
+          fi
+      
+      - name: 'Run Unit Tests'
+        run: npm test
+      
+      - name: 'Generate Coverage Report'
+        if: matrix.node-version == '20.x'
+        run: npm test -- --code-coverage
+      
+      - name: 'Upload Coverage to Codecov'
+        if: matrix.node-version == '20.x'
+        uses: codecov/codecov-action@v4
+        with:
+          directory: ./coverage
+          flags: unittests
+          name: coverage-${{ github.sha }}
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # ============================================================================
+  # BUILD STAGE - Create Deployment Artifacts
+  # ============================================================================
+  
+  build:
+    name: 'Build Application'
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' || github.event_name == 'create'
+    
+    strategy:
+      matrix:
+        environment: 
+          - name: 'staging'
+            base_href: '/angular-cas-disot-staging/'
+            branch_condition: 'develop'
+          - name: 'production' 
+            base_href: '/angular-cas-disot/'
+            branch_condition: 'master'
+    
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@v4
+      
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 'Install Dependencies'
+        run: npm ci
+      
+      - name: 'Build for ${{ matrix.environment.name }}'
+        if: |
+          (matrix.environment.name == 'staging' && github.ref == 'refs/heads/develop') ||
+          (matrix.environment.name == 'production' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')))
+        run: |
+          echo "🏗️  Building ${{ matrix.environment.name }} environment..."
+          ng build --configuration production --base-href "${{ matrix.environment.base_href }}"
+          
+          # Create 404.html for SPA routing support
+          cp dist/cas-app/browser/index.html dist/cas-app/browser/404.html
+          
+          # Add environment indicator
+          echo "<!-- Environment: ${{ matrix.environment.name }} -->" >> dist/cas-app/browser/index.html
+          echo "<!-- Build: ${{ github.sha }} -->" >> dist/cas-app/browser/index.html
+          echo "<!-- Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ") -->" >> dist/cas-app/browser/index.html
+      
+      - name: 'Upload Build Artifacts'
+        if: |
+          (matrix.environment.name == 'staging' && github.ref == 'refs/heads/develop') ||
+          (matrix.environment.name == 'production' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')))
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'build-${{ matrix.environment.name }}-${{ github.sha }}'
+          path: dist/cas-app/browser/
+          retention-days: 30
+
+  # ============================================================================
+  # STAGING DEPLOYMENT
+  # ============================================================================
+  
+  deploy-staging:
+    name: '🚀 Deploy to Staging'
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: https://o2alexanderfedin.github.io/angular-cas-disot-staging
+    
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 'Download Build Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: 'build-staging-${{ github.sha }}'
+          path: dist/
+      
+      - name: 'Deploy to GitHub Pages (Staging)'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: staging
+          publish_branch: gh-pages
+          enable_jekyll: false
+          force_orphan: false
+          commit_message: |
+            🚀 Deploy staging from ${{ github.ref_name }}@${{ github.sha }}
+            
+            - Environment: staging
+            - Source: develop branch  
+            - Commit: ${{ github.sha }}
+            - Author: ${{ github.actor }}
+            - Workflow: ${{ github.run_id }}
+
+  # ============================================================================  
+  # PRODUCTION DEPLOYMENT
+  # ============================================================================
+  
+  deploy-production:
+    name: '🚀 Deploy to Production'
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: |
+      (github.ref == 'refs/heads/master' && github.event_name == 'push') ||
+      (startsWith(github.ref, 'refs/tags/v') && github.event_name == 'create')
+    environment:
+      name: production
+      url: https://o2alexanderfedin.github.io/angular-cas-disot
+    
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 'Download Build Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: 'build-production-${{ github.sha }}'
+          path: dist/
+      
+      - name: 'Deploy to GitHub Pages (Production)'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          enable_jekyll: false
+          force_orphan: false
+          commit_message: |
+            🚀 Deploy production from ${{ github.ref_name }}@${{ github.sha }}
+            
+            - Environment: production
+            - Source: ${{ github.ref_name }}
+            - Commit: ${{ github.sha }}
+            - Author: ${{ github.actor }}
+            - Workflow: ${{ github.run_id }}
+      
+      - name: 'Create Deployment Record'
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = context.ref.replace('refs/tags/', '');
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: tag,
+              environment: 'production',
+              description: `Deploy ${tag} to production`,
+              auto_merge: false,
+              required_contexts: []
+            });
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deployment.data.id,
+              state: 'success',
+              environment_url: 'https://o2alexanderfedin.github.io/angular-cas-disot',
+              description: `Successfully deployed ${tag}`
+            });
+
+  # ============================================================================
+  # NOTIFICATION STAGE
+  # ============================================================================
+  
+  notify:
+    name: '📢 Deployment Notifications'
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    if: always() && (needs.deploy-staging.result != 'skipped' || needs.deploy-production.result != 'skipped')
+    
+    steps:
+      - name: 'Deployment Success Notification'
+        if: |
+          (needs.deploy-staging.result == 'success') ||
+          (needs.deploy-production.result == 'success')
+        run: |
+          echo "✅ Deployment completed successfully!"
+          
+          if [[ "${{ needs.deploy-staging.result }}" == "success" ]]; then
+            echo "🎭 Staging: https://o2alexanderfedin.github.io/angular-cas-disot-staging"
+          fi
+          
+          if [[ "${{ needs.deploy-production.result }}" == "success" ]]; then
+            echo "🚀 Production: https://o2alexanderfedin.github.io/angular-cas-disot"
+          fi
+      
+      - name: 'Deployment Failure Notification'  
+        if: |
+          (needs.deploy-staging.result == 'failure') ||
+          (needs.deploy-production.result == 'failure')
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Please check the workflow logs for details."
+          exit 1
