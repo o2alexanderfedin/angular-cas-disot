@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <div class="app-container">
       <header class="app-header">
-        <h1>CAS - Content Addressable Storage</h1>
+        <h1>CAS/DISOT System</h1>
         <nav class="main-nav">
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
           <a routerLink="/content" routerLinkActive="active">Content List</a>
-          <a routerLink="/upload" routerLinkActive="active">Upload</a>
+          <a routerLink="/content/upload" routerLinkActive="active">Upload</a>
           <a routerLink="/disot/create" routerLinkActive="active">Create Entry</a>
           <a routerLink="/disot/verify" routerLinkActive="active">Verify</a>
           <a routerLink="/settings" routerLinkActive="active">Settings</a>
