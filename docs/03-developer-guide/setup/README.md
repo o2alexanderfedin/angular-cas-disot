@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md)
-
----
-
 # Development Setup 🛠️
+
+[⬅️ Developer Guide](../) | [🏠 Documentation Home](../../)
 
 This section contains guides for setting up your development environment for the CAS/DISOT Angular application.
 
@@ -138,4 +136,4 @@ npm install
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#development-setup-)
+[⬅️ Developer Guide](../) | [⬆️ Top](#development-setup-) | [🏠 Documentation Home](../../)

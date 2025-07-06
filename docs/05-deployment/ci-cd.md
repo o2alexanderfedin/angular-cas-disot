@@ -1,8 +1,6 @@
-[← Back to Deployment Guide](./README.md)
-
----
-
 # CI/CD Pipeline Documentation
+
+[⬅️ Deployment Guide](../) | [🏠 Documentation Home](../../)
 
 > **Document Version**: 1.0  
 > **Last Updated**: January 2025  
@@ -154,4 +152,4 @@ npx gh-pages -d dist/cas-app/browser
 
 ---
 
-[← Back to Deployment Guide](./README.md) | [Top of Page](#cicd-pipeline-documentation)
+[⬅️ Deployment Guide](../) | [⬆️ Top](#cicd-pipeline-documentation) | [🏠 Documentation Home](../../)

@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md) | [System Design](./system-design.md) | [API Design](./api-design.md)
-
----
-
 # Browser Storage Options for Angular Applications
+
+[⬅️ Architecture](../) | [🏠 Documentation Home](../../../)
 
 > **Document Version**: 1.0  
 > **Last Updated**: January 2025  
@@ -241,8 +239,6 @@ The browser storage landscape offers diverse options for Angular applications, e
 
 For optimal Angular application development, implement a layered storage strategy that leverages multiple storage mechanisms based on specific use cases, ensuring robust fallback mechanisms and proper error handling across all supported browsers and platforms.
 
----
-
 ## Related Documentation
 
 - [System Design](./system-design.md) - Overall system architecture and patterns
@@ -251,7 +247,7 @@ For optimal Angular application development, implement a layered storage strateg
 - [IndexedDB Security](../security/indexeddb-security.md) - Detailed IndexedDB security analysis
 - [Testing Strategy](../testing/testing-strategy.md) - Testing browser storage implementations
 
-## Quick Links
+## External Resources
 
 - [MDN Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
 - [MDN IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
@@ -261,4 +257,4 @@ For optimal Angular application development, implement a layered storage strateg
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#browser-storage-options-for-angular-applications) | [Next: API Design →](./api-design.md)
+[⬅️ Architecture](../) | [⬆️ Top](#browser-storage-options-for-angular-applications) | [🏠 Documentation Home](../../../)

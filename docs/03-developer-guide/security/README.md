@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md)
-
----
-
 # Security Documentation 🔒
+
+[⬅️ Developer Guide](../) | [🏠 Documentation Home](../../)
 
 This section contains comprehensive security documentation for the CAS/DISOT Angular application.
 
@@ -76,4 +74,4 @@ Web Crypto API usage, key management, encryption/decryption patterns, and digita
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#security-documentation-)
+[⬅️ Developer Guide](../) | [⬆️ Top](#security-documentation-) | [🏠 Documentation Home](../../)

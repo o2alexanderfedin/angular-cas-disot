@@ -1,8 +1,6 @@
-[← Back to Developer Guide](../README.md) | [Security Best Practices](./best-practices.md) | [Authentication](./authentication.md)
-
----
-
 # IndexedDB Security & Isolation
+
+[⬅️ Security](../) | [🏠 Documentation Home](../../../)
 
 > **Document Version**: 1.0  
 > **Last Updated**: January 2025  
@@ -632,8 +630,6 @@ Different Origins:
 - [ ] Regular security reviews
 - [ ] Monitor storage usage
 
----
-
 ## Related Documentation
 
 - [Browser Storage Options](../architecture/browser-storage.md) - Comprehensive storage technology overview
@@ -642,7 +638,7 @@ Different Origins:
 - [System Design](../architecture/system-design.md) - Overall system architecture
 - [Testing Strategy](../testing/testing-strategy.md) - Security testing approaches
 
-## Quick Links
+## External Resources
 
 - [MDN Same-Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)
 - [MDN IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
@@ -652,4 +648,4 @@ Different Origins:
 
 ---
 
-[← Back to Developer Guide](../README.md) | [Top of Page](#indexeddb-security--isolation) | [Next: Best Practices →](./best-practices.md)
+[⬅️ Security](../) | [⬆️ Top](#indexeddb-security--isolation) | [🏠 Documentation Home](../../../)
