@@ -54,20 +54,9 @@ jobs:
         run: |
           npm run test:coverage
           echo "Coverage files generated:"
-          find ./coverage -type f -name "*.info" -o -name "*.lcov" -o -name "*.xml" || echo "No LCOV files found"
+          find ./coverage -type f -name "*.html" | head -10
           
-          echo "Final coverage files:"
-          ls -la ./coverage/
-      
-      - name: 'Upload Coverage to Codecov'
-        if: matrix.node-version == '22.x'
-        uses: codecov/codecov-action@v4
-        with:
-          directory: ./coverage
-          flags: unittests
-          name: coverage-${{ github.sha }}
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+          echo "Coverage report will be included in deployment"
 
   # ============================================================================
   # BUILD STAGE - Create Deployment Artifacts
@@ -102,6 +91,9 @@ jobs:
       - name: 'Install Dependencies'
         run: npm ci
       
+      - name: 'Generate Coverage for Deployment'
+        run: npm run test:coverage
+      
       - name: 'Build for ${{ matrix.environment.name }}'
         if: |
           (matrix.environment.name == 'staging' && github.ref == 'refs/heads/develop') ||
@@ -112,6 +104,14 @@ jobs:
           
           # Create 404.html for SPA routing support
           cp dist/cas-app/browser/index.html dist/cas-app/browser/404.html
+          
+          # Include coverage report in deployment
+          if [ -d "./coverage" ]; then
+            echo "📊 Including coverage report in deployment..."
+            mkdir -p dist/cas-app/browser/coverage
+            cp -r ./coverage/* dist/cas-app/browser/coverage/
+            echo "Coverage report available at: ${{ matrix.environment.name == 'production' && 'https://o2alexanderfedin.github.io/angular-cas-disot/coverage/' || 'https://o2alexanderfedin.github.io/angular-cas-disot-staging/coverage/' }}"
+          fi
           
           # Add environment indicator
           echo "<!-- Environment: ${{ matrix.environment.name }} -->" >> dist/cas-app/browser/index.html

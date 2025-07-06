@@ -21,10 +21,8 @@ module.exports = function (config) {
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage'),
       reporters: [
-        { type: 'html', subdir: 'html' },
-        { type: 'text-summary' },
-        { type: 'lcovonly', file: 'lcov.info' },
-        { type: 'cobertura', file: 'cobertura-coverage.xml' }
+        { type: 'html' },
+        { type: 'text-summary' }
       ],
       fixWebpackSourcePaths: true
     },
