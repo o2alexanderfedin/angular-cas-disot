@@ -37,15 +37,10 @@ constructor(
 Stores content and returns its hash.
 
 ```mermaid
-graph TD
-    INPUT[Content]
-    HASH[Generate Hash]
-    STORE[Store by Hash]
-    OUTPUT[ContentHash]
-    
-    INPUT --> HASH
-    HASH --> STORE
-    STORE --> OUTPUT
+graph LR
+    INPUT[Content] --> HASH[Generate Hash]
+    HASH --> STORE[Store by Hash]
+    STORE --> OUTPUT[ContentHash]
 ```
 
 **Signature:**
@@ -77,15 +72,10 @@ const hash = await casService.store(content);
 Retrieves content by its hash.
 
 ```mermaid
-graph TD
-    INPUT[ContentHash]
-    PATH[Generate Path]
-    READ[Read Content]
-    OUTPUT[Content]
-    
-    INPUT --> PATH
-    PATH --> READ
-    READ --> OUTPUT
+graph LR
+    INPUT[ContentHash] --> PATH[Generate Path]
+    PATH --> READ[Read Content]
+    READ --> OUTPUT[Content]
 ```
 
 **Signature:**
@@ -225,15 +215,10 @@ export class HashService implements IHashService
 Generates SHA-256 hash of data.
 
 ```mermaid
-graph TD
-    INPUT[Uint8Array]
-    SHA256[SHA-256]
-    HEX[Hex Encode]
-    OUTPUT[string]
-    
-    INPUT --> SHA256
-    SHA256 --> HEX
-    HEX --> OUTPUT
+graph LR
+    INPUT[Uint8Array] --> SHA256[SHA-256]
+    SHA256 --> HEX[Hex Encode]
+    HEX --> OUTPUT[string]
 ```
 
 **Signature:**
