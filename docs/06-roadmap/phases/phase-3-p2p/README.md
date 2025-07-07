@@ -41,26 +41,35 @@ Phase 3 introduces true peer-to-peer capabilities to the CAS/DISOT system, enabl
 
 ## Architecture Components
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                     Browser A                           │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
-│  │   CAS    │  │   IPFS   │  │ Identity │  │   P2P   │ │
-│  │ Storage  │  │ (Phase 1)│  │ Manager  │  │ Client  │ │
-│  └──────────┘  └──────────┘  └──────────┘  └─────────┘ │
-└─────────────────────────────────────────────────────────┘
-                    │         │         │
-                    └─────────┼─────────┘
-                              │
-                    WebRTC / libp2p / IPFS
-                              │
-┌─────────────────────────────────────────────────────────┐
-│                     Browser B                           │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐ │
-│  │   CAS    │  │   IPFS   │  │ Identity │  │   P2P   │ │
-│  │ Storage  │  │ (Phase 1)│  │ Manager  │  │ Client  │ │
-│  └──────────┘  └──────────┘  └──────────┘  └─────────┘ │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph "Browser A"
+        A1[CAS Storage]
+        A2[IPFS Phase 1]
+        A3[Identity Manager]
+        A4[P2P Client]
+    end
+    
+    subgraph "Browser B"
+        B1[CAS Storage]
+        B2[IPFS Phase 1]
+        B3[Identity Manager]
+        B4[P2P Client]
+    end
+    
+    subgraph "Network Layer"
+        NET[WebRTC / libp2p / IPFS]
+    end
+    
+    A1 -.-> NET
+    A2 -.-> NET
+    A3 -.-> NET
+    A4 -.-> NET
+    
+    NET -.-> B1
+    NET -.-> B2
+    NET -.-> B3
+    NET -.-> B4
 ```
 
 ## Implementation Priorities
