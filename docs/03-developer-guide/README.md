@@ -8,6 +8,13 @@ Everything you need to develop and contribute to CAS/DISOT.
 - [Browser Storage Options](./architecture/browser-storage.md) - Comprehensive analysis of browser storage technologies
 - [System Design](./architecture/system-design.md) - Overall system architecture and patterns
 - [API Design](./architecture/api-design.md) - API architecture and communication patterns
+- [Architecture Documentation](./architecture/) - Complete architecture documentation
+
+### Features 🚀
+- [IPFS Integration](./features/ipfs-integration.md) - Distributed storage with IPFS
+- [libp2p Integration](./features/libp2p-integration.md) - Peer-to-peer networking
+- [Hybrid Integration](./features/ipfs-libp2p-integration.md) - Combined IPFS and libp2p features
+- [All Features](./features/) - Complete feature documentation
 
 ### Security 🔒
 - [IndexedDB Security & Isolation](./security/indexeddb-security.md) - Detailed security analysis of IndexedDB

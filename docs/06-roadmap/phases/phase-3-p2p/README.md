@@ -90,7 +90,13 @@ graph TD
 - Leverage IPFS for redundancy and fallback
 - [Detailed IPFS Integration](./ipfs-p2p-integration.md)
 
-### 4. Offline Resilience
+### 4. Social Networking & Device Sync
+- Multi-device synchronization with OrbitDB
+- Secure device pairing with QR codes
+- Friend discovery via DHT and social graph
+- [Peer Discovery & Social Features](./peer-discovery-social.md)
+
+### 5. Offline Resilience
 - Local peer caching
 - Opportunistic synchronization
 - Conflict-free replicated data types (CRDTs)

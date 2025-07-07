@@ -18,8 +18,19 @@ Design patterns and principles for Angular services, dependency injection, and b
 ### [Component Design](./component-design.md)
 Component architecture, smart vs presentational components, and UI patterns.
 
+## Design Patterns
+
 ### [Design Patterns](./design-patterns.md)
-Catalog of Object-Oriented Design patterns used throughout the application including Factory, Singleton, Facade, Strategy, and more.
+Common design patterns used throughout the CAS/DISOT system.
+
+### [Content Discovery Chain](./content-discovery-chain.md)
+Chain of Responsibility pattern for flexible content retrieval strategies.
+
+### [Data Synchronization Alternatives](./data-sync-alternatives.md)
+Evaluation of OrbitDB alternatives for distributed data synchronization.
+
+### [Distributed Databases](./distributed-databases/)
+Comprehensive analysis of distributed database solutions for TypeScript/JavaScript browser applications.
 
 ## Storage & Persistence
 
