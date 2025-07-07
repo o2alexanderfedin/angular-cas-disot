@@ -20,7 +20,8 @@ export class DisotService implements IDisotService {
   async createEntry(
     content: ContentHash | any,
     type: DisotEntryType,
-    privateKey: string
+    privateKey: string,
+    additionalMetadata?: Record<string, any>
   ): Promise<DisotEntry> {
     const timestamp = new Date();
     
@@ -39,6 +40,11 @@ export class DisotService implements IDisotService {
         value: hashValue
       };
       metadata = content;
+    }
+    
+    // Merge additional metadata if provided
+    if (additionalMetadata) {
+      metadata = { ...metadata, ...additionalMetadata };
     }
     
     // Create entry data to sign
