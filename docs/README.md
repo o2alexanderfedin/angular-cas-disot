@@ -54,6 +54,7 @@ Future development plans.
 - [Phase 1: IPFS Integration](./06-roadmap/phases/phase-1-ipfs/)
 - [Phase 2: Blockchain](./06-roadmap/phases/phase-2-blockchain/)
 - [Phase 3: P2P Network](./06-roadmap/phases/phase-3-p2p/)
+- [Decentralized Identity](./decentralized-identity/) - Proposed DID integration
 
 ### [07. Resources](./07-resources/) 📎
 Additional resources and tools.
@@ -94,6 +95,9 @@ Version history and release notes.
 - ✅ Browser Storage Analysis
 - ✅ Security Documentation
 - ✅ Code Maintenance Guide
+- ✅ Technical Architecture (ARCHITECTURE.md)
+- ✅ API Documentation (API.md)
+- ✅ Decentralized Identity Architecture
 - 🚧 User Guide (In Progress)
 - 🚧 Deployment Guide (In Progress)
 - 📝 Phase 2 & 3 Planning
