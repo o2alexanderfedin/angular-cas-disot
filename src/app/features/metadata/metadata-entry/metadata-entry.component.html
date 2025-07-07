@@ -72,10 +72,17 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium mb-1">Author Hash *</label>
-              <input type="text" 
-                     formControlName="authorHash"
-                     placeholder="QmAuthor..."
-                     class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <div class="flex gap-2">
+                <input type="text" 
+                       formControlName="authorHash"
+                       placeholder="QmAuthor..."
+                       class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="button"
+                        (click)="openAuthorHashSelector(i)"
+                        class="px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">
+                  Browse
+                </button>
+              </div>
             </div>
             <div>
               <label class="block text-sm font-medium mb-1">Role *</label>
@@ -115,10 +122,17 @@
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Previous Version Hash</label>
-          <input type="text" 
-                 formControlName="previousVersion"
-                 placeholder="QmPrevious..."
-                 class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <div class="flex gap-2">
+            <input type="text" 
+                   formControlName="previousVersion"
+                   placeholder="QmPrevious..."
+                   class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="button"
+                    (click)="openPreviousVersionSelector()"
+                    class="px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm">
+              Browse
+            </button>
+          </div>
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Change Description</label>
@@ -179,5 +193,27 @@
     [simplePreview]="true"
     (contentSelected)="onHashSelected($event)"
     (closed)="closeHashSelector()">
+  </app-content-selection-modal>
+
+  <!-- Author Hash Selection Modal -->
+  <app-content-selection-modal 
+    *ngIf="showAuthorHashModal"
+    [title]="'Select Author Hash'"
+    [searchPlaceholder]="'Search for author content...'"
+    [selectButtonText]="'Select Author'"
+    [simplePreview]="true"
+    (contentSelected)="onAuthorHashSelected($event)"
+    (closed)="closeAuthorHashSelector()">
+  </app-content-selection-modal>
+
+  <!-- Previous Version Selection Modal -->
+  <app-content-selection-modal 
+    *ngIf="showPreviousVersionModal"
+    [title]="'Select Previous Version'"
+    [searchPlaceholder]="'Search for previous version...'"
+    [selectButtonText]="'Select Version'"
+    [simplePreview]="true"
+    (contentSelected)="onPreviousVersionSelected($event)"
+    (closed)="closePreviousVersionSelector()">
   </app-content-selection-modal>
 </div>

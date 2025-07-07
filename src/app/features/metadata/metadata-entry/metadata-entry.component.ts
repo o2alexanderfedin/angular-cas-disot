@@ -4,6 +4,8 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } fr
 import { Router } from '@angular/router';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
+import { CasService } from '../../../core/services/cas.service';
+import { ContentPreviewService } from '../../../core/services/content-preview.service';
 import { createMetadataContent, AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { ContentHash } from '../../../core/domain/interfaces/content.interface';
 import { ContentSelectionModalComponent } from '../../../shared/components/content-selection-modal/content-selection-modal.component';
@@ -20,7 +22,10 @@ export class MetadataEntryComponent implements OnInit {
   error: string = '';
   submitting = false;
   showHashSelectionModal = false;
+  showAuthorHashModal = false;
+  showPreviousVersionModal = false;
   currentReferenceIndex = -1;
+  currentAuthorIndex = -1;
 
   authorRoles = Object.values(AuthorRole);
 
@@ -28,6 +33,8 @@ export class MetadataEntryComponent implements OnInit {
     private fb: FormBuilder,
     private metadataService: MetadataService,
     private signatureService: SignatureService,
+    private casService: CasService,
+    private contentPreviewService: ContentPreviewService,
     private router: Router
   ) {}
 
@@ -105,12 +112,77 @@ export class MetadataEntryComponent implements OnInit {
     this.currentReferenceIndex = -1;
   }
 
-  onHashSelected(hash: ContentHash) {
+  openAuthorHashSelector(authorIndex: number) {
+    this.currentAuthorIndex = authorIndex;
+    this.showAuthorHashModal = true;
+  }
+
+  closeAuthorHashSelector() {
+    this.showAuthorHashModal = false;
+    this.currentAuthorIndex = -1;
+  }
+
+  onAuthorHashSelected(hash: ContentHash) {
+    if (this.currentAuthorIndex >= 0) {
+      const authorControl = this.authors.at(this.currentAuthorIndex);
+      authorControl.patchValue({
+        authorHash: hash.value
+      });
+    }
+    this.closeAuthorHashSelector();
+  }
+
+  openPreviousVersionSelector() {
+    this.showPreviousVersionModal = true;
+  }
+
+  closePreviousVersionSelector() {
+    this.showPreviousVersionModal = false;
+  }
+
+  onPreviousVersionSelected(hash: ContentHash) {
+    const versionControl = this.metadataForm.get('version');
+    if (versionControl) {
+      versionControl.patchValue({
+        previousVersion: hash.value
+      });
+    }
+    this.closePreviousVersionSelector();
+  }
+
+  async onHashSelected(hash: ContentHash) {
     if (this.currentReferenceIndex >= 0) {
       const referenceControl = this.references.at(this.currentReferenceIndex);
       referenceControl.patchValue({
         hash: hash.value
       });
+      
+      // Try to detect MIME type from the selected content
+      try {
+        const content = await this.casService.retrieve(hash);
+        const detectedType = this.contentPreviewService.detectContentType(content.data);
+        
+        // Map detected content types to standard MIME types
+        const mimeTypeMap: { [key: string]: string } = {
+          'image/png': 'image/png',
+          'image/jpeg': 'image/jpeg',
+          'image/gif': 'image/gif',
+          'application/pdf': 'application/pdf',
+          'application/json': 'application/json',
+          'text/plain': 'text/plain',
+          'application/octet-stream': 'application/octet-stream'
+        };
+        
+        const mimeType = mimeTypeMap[detectedType] || 'application/octet-stream';
+        
+        referenceControl.patchValue({
+          mimeType: mimeType,
+          mimeTypeSource: 'detected'
+        });
+      } catch (error) {
+        console.error('Failed to detect MIME type:', error);
+        // Keep manual entry if detection fails
+      }
     }
     this.closeHashSelector();
   }

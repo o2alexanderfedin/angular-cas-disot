@@ -6,9 +6,10 @@ import { MetadataEntryComponent } from './metadata-entry.component';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
 import { CasService } from '../../../core/services/cas.service';
+import { ContentPreviewService } from '../../../core/services/content-preview.service';
 import { AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
-import { ContentHash } from '../../../core/domain/interfaces/content.interface';
+import { ContentHash, Content } from '../../../core/domain/interfaces/content.interface';
 
 describe('MetadataEntryComponent Integration Tests', () => {
   let component: MetadataEntryComponent;
@@ -16,6 +17,7 @@ describe('MetadataEntryComponent Integration Tests', () => {
   let metadataService: jasmine.SpyObj<MetadataService>;
   let signatureService: jasmine.SpyObj<SignatureService>;
   let casService: jasmine.SpyObj<CasService>;
+  let contentPreviewService: jasmine.SpyObj<ContentPreviewService>;
   let router: Router;
 
   beforeEach(async () => {
@@ -26,6 +28,7 @@ describe('MetadataEntryComponent Integration Tests', () => {
       'getMetadata',
       'retrieve'
     ]);
+    const previewSpy = jasmine.createSpyObj('ContentPreviewService', ['detectContentType']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -36,7 +39,8 @@ describe('MetadataEntryComponent Integration Tests', () => {
       providers: [
         { provide: MetadataService, useValue: metadataSpy },
         { provide: SignatureService, useValue: signatureSpy },
-        { provide: CasService, useValue: casSpy }
+        { provide: CasService, useValue: casSpy },
+        { provide: ContentPreviewService, useValue: previewSpy }
       ]
     }).compileComponents();
 
@@ -45,6 +49,7 @@ describe('MetadataEntryComponent Integration Tests', () => {
     metadataService = TestBed.inject(MetadataService) as jasmine.SpyObj<MetadataService>;
     signatureService = TestBed.inject(SignatureService) as jasmine.SpyObj<SignatureService>;
     casService = TestBed.inject(CasService) as jasmine.SpyObj<CasService>;
+    contentPreviewService = TestBed.inject(ContentPreviewService) as jasmine.SpyObj<ContentPreviewService>;
     router = TestBed.inject(Router);
     
     // Setup default mock responses
@@ -91,7 +96,12 @@ describe('MetadataEntryComponent Integration Tests', () => {
     expect(component.showHashSelectionModal).toBe(true);
     expect(component.currentReferenceIndex).toBe(0);
 
-    component.onHashSelected(mockHash);
+    // Mock retrieve and detectContentType for MIME type detection
+    const mockContent: Content = { data: new Uint8Array([0x89, 0x50, 0x4e, 0x47]) }; // PNG header
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent));
+    contentPreviewService.detectContentType.and.returnValue('image/png');
+    
+    await component.onHashSelected(mockHash);
     expect(component.references.at(0).get('hash')?.value).toBe('QmTestHash123456789');
     expect(component.showHashSelectionModal).toBe(false);
 
@@ -131,11 +141,17 @@ describe('MetadataEntryComponent Integration Tests', () => {
 
     // Act 1: Select hash for first reference
     component.openHashSelector(0);
-    component.onHashSelected(mockHash1);
+    const mockContent1: Content = { data: new Uint8Array([0x89, 0x50, 0x4e, 0x47]) };
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent1));
+    contentPreviewService.detectContentType.and.returnValue('image/png');
+    await component.onHashSelected(mockHash1);
     
     // Act 2: Select hash for second reference
     component.openHashSelector(1);
-    component.onHashSelected(mockHash2);
+    const mockContent2: Content = { data: new Uint8Array([0xFF, 0xD8, 0xFF]) };
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent2));
+    contentPreviewService.detectContentType.and.returnValue('image/jpeg');
+    await component.onHashSelected(mockHash2);
 
     // Assert
     expect(component.references.at(0).get('hash')?.value).toBe('QmFirstHash123');
@@ -161,7 +177,10 @@ describe('MetadataEntryComponent Integration Tests', () => {
 
     // Act
     component.openHashSelector(0);
-    component.onHashSelected(mockHash);
+    const mockContent: Content = { data: new Uint8Array([0x7B, 0x22]) }; // JSON start
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent));
+    contentPreviewService.detectContentType.and.returnValue('application/json');
+    await component.onHashSelected(mockHash);
 
     // Assert - Hash should be updated, other fields preserved
     const referenceControl = component.references.at(0);
@@ -204,7 +223,10 @@ describe('MetadataEntryComponent Integration Tests', () => {
 
     // Act 2: Select hash
     component.openHashSelector(0);
-    component.onHashSelected(mockHash);
+    const mockContent: Content = { data: new Uint8Array([0x89, 0x50, 0x4e, 0x47]) };
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent));
+    contentPreviewService.detectContentType.and.returnValue('image/png');
+    await component.onHashSelected(mockHash);
 
     // Act 3: Form should still be invalid (missing MIME type)
     expect(component.metadataForm.valid).toBe(false);
@@ -249,11 +271,17 @@ describe('MetadataEntryComponent Integration Tests', () => {
 
     // Act - Rapid operations
     component.openHashSelector(0);
-    component.onHashSelected(mockHash1);
+    const mockContent1: Content = { data: new Uint8Array([0x25, 0x50, 0x44, 0x46]) }; // PDF header
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent1));
+    contentPreviewService.detectContentType.and.returnValue('application/pdf');
+    await component.onHashSelected(mockHash1);
     
     // Immediately open for same reference
     component.openHashSelector(0);
-    component.onHashSelected(mockHash2);
+    const mockContent2: Content = { data: new Uint8Array([0x47, 0x49, 0x46]) }; // GIF header
+    casService.retrieve.and.returnValue(Promise.resolve(mockContent2));
+    contentPreviewService.detectContentType.and.returnValue('image/gif');
+    await component.onHashSelected(mockHash2);
 
     // Assert - Latest selection should win
     expect(component.references.at(0).get('hash')?.value).toBe('QmHash2');
