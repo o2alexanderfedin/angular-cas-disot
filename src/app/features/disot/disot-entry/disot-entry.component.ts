@@ -23,6 +23,25 @@ import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/diso
         (closed)="showContentModal = false"
       ></app-content-selection-modal>
       
+      <!-- Author Selection Modal (Reusing content selection for authors) -->
+      <app-content-selection-modal 
+        *ngIf="showAuthorModal"
+        [title]="'Select Author Entry'"
+        [searchPlaceholder]="'Search by public key or entry ID...'"
+        [filterByContentType]="'author'"
+        (contentSelected)="onAuthorSelected($event)"
+        (closed)="showAuthorModal = false"
+      ></app-content-selection-modal>
+      
+      <!-- Previous Version Selection Modal -->
+      <app-content-selection-modal 
+        *ngIf="showPreviousVersionModal"
+        [title]="'Select Previous Version'"
+        [searchPlaceholder]="'Search by entry ID or content hash...'"
+        (contentSelected)="onPreviousVersionSelected($event)"
+        (closed)="showPreviousVersionModal = false"
+      ></app-content-selection-modal>
+      
       <div class="form-section">
         <h3>Content Information</h3>
         <div *ngIf="contentHash" class="content-info">
@@ -78,6 +97,30 @@ import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/diso
           class="blog-input"
           [disabled]="isCreating"
         ></textarea>
+      </div>
+
+      <div class="form-section">
+        <h3>Author (Optional)</h3>
+        <div *ngIf="selectedAuthor" class="content-info">
+          <p><strong>Author ID:</strong> <code>{{ selectedAuthor }}</code></p>
+          <button (click)="clearAuthor()" class="clear-button">Clear Selection</button>
+        </div>
+        <div *ngIf="!selectedAuthor" class="no-content">
+          <p>No author selected. Optionally select an author entry.</p>
+          <button (click)="selectAuthor()" class="select-button">Select Author</button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Previous Version (Optional)</h3>
+        <div *ngIf="selectedPreviousVersion" class="content-info">
+          <p><strong>Previous Version ID:</strong> <code>{{ selectedPreviousVersion }}</code></p>
+          <button (click)="clearPreviousVersion()" class="clear-button">Clear Selection</button>
+        </div>
+        <div *ngIf="!selectedPreviousVersion" class="no-content">
+          <p>No previous version selected. Optionally link to a previous version.</p>
+          <button (click)="selectPreviousVersion()" class="select-button">Select Previous Version</button>
+        </div>
       </div>
 
       <button 
@@ -495,6 +538,10 @@ export class DisotEntryComponent implements OnInit {
   createdEntry: DisotEntry | null = null;
   previousEntries: DisotEntry[] = [];
   showContentModal = false;
+  showAuthorModal = false;
+  showPreviousVersionModal = false;
+  selectedAuthor: string | null = null;
+  selectedPreviousVersion: string | null = null;
   entryPreviews = new Map<string, {
     previewData: string | null;
     previewType: 'text' | 'json' | 'hex' | 'base64' | 'image' | null;
@@ -573,10 +620,20 @@ export class DisotEntryComponent implements OnInit {
         throw new Error('No content hash available');
       }
 
+      // Build metadata with author and previous version if provided
+      const metadata: Record<string, any> = {};
+      if (this.selectedAuthor) {
+        metadata['author'] = this.selectedAuthor;
+      }
+      if (this.selectedPreviousVersion) {
+        metadata['previousVersion'] = this.selectedPreviousVersion;
+      }
+
       this.createdEntry = await this.disotService.createEntry(
         hashToUse,
         this.selectedType,
-        this.privateKey
+        this.privateKey,
+        metadata
       );
       this.entryCreated.emit(this.createdEntry);
       
@@ -606,6 +663,36 @@ export class DisotEntryComponent implements OnInit {
   onContentSelected(hash: ContentHash): void {
     this.contentHash = hash;
     this.showContentModal = false;
+  }
+
+  selectAuthor(): void {
+    this.showAuthorModal = true;
+  }
+
+  onAuthorSelected(hash: ContentHash): void {
+    // For now, we'll use the hash value as the author ID
+    // In a real implementation, you might want to look up the entry ID
+    this.selectedAuthor = hash.value;
+    this.showAuthorModal = false;
+  }
+
+  clearAuthor(): void {
+    this.selectedAuthor = null;
+  }
+
+  selectPreviousVersion(): void {
+    this.showPreviousVersionModal = true;
+  }
+
+  onPreviousVersionSelected(hash: ContentHash): void {
+    // For now, we'll use the hash value as the previous version ID
+    // In a real implementation, you might want to look up the entry ID
+    this.selectedPreviousVersion = hash.value;
+    this.showPreviousVersionModal = false;
+  }
+
+  clearPreviousVersion(): void {
+    this.selectedPreviousVersion = null;
   }
 
   async loadPreviousEntries(): Promise<void> {

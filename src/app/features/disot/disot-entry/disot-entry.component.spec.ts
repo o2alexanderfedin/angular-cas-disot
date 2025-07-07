@@ -18,7 +18,7 @@ describe('DisotEntryComponent', () => {
   beforeEach(async () => {
     const disotSpy = jasmine.createSpyObj('DisotService', ['createEntry', 'verifyEntry', 'listEntries']);
     const signatureSpy = jasmine.createSpyObj('SignatureService', ['generateKeyPair']);
-    const casSpy = jasmine.createSpyObj('CasService', ['store']);
+    const casSpy = jasmine.createSpyObj('CasService', ['store', 'retrieve']);
 
     await TestBed.configureTestingModule({
       imports: [DisotEntryComponent, SharedModule],
@@ -103,7 +103,8 @@ describe('DisotEntryComponent', () => {
     expect(disotService.createEntry).toHaveBeenCalledWith(
       mockHash,
       DisotEntryType.DOCUMENT,
-      'privkey123'
+      'privkey123',
+      {}
     );
     expect(component.createdEntry).toEqual(mockEntry);
     expect(component.isCreating).toBe(false);
@@ -237,7 +238,8 @@ describe('DisotEntryComponent', () => {
     expect(disotService.createEntry).toHaveBeenCalledWith(
       mockHash,
       DisotEntryType.BLOG_POST,
-      'privkey123'
+      'privkey123',
+      {}
     );
     expect(component.createdEntry).toEqual(mockEntry);
   });
@@ -267,5 +269,150 @@ describe('DisotEntryComponent', () => {
   it('should load previous entries on init', () => {
     fixture.detectChanges(); // Trigger ngOnInit
     expect(disotService.listEntries).toHaveBeenCalled();
+  });
+
+  describe('Author Selection', () => {
+    it('should show author selection modal', () => {
+      expect(component.showAuthorModal).toBe(false);
+      component.selectAuthor();
+      expect(component.showAuthorModal).toBe(true);
+    });
+
+    it('should handle author selection from modal', () => {
+      const mockHash: ContentHash = { algorithm: 'sha256', value: 'author123' };
+      component.showAuthorModal = true;
+      
+      component.onAuthorSelected(mockHash);
+      
+      expect(component.selectedAuthor).toBe('author123');
+      expect(component.showAuthorModal).toBe(false);
+    });
+
+    it('should clear author', () => {
+      component.selectedAuthor = 'author123';
+      component.clearAuthor();
+      expect(component.selectedAuthor).toBeNull();
+    });
+
+    it('should include author in metadata when creating entry', async () => {
+      const mockHash: ContentHash = { algorithm: 'sha256', value: 'content123' };
+      const mockEntry: DisotEntry = {
+        id: 'entry123',
+        contentHash: mockHash,
+        signature: {
+          value: 'sig123',
+          algorithm: 'secp256k1',
+          publicKey: 'pubkey123'
+        },
+        timestamp: new Date(),
+        type: DisotEntryType.DOCUMENT,
+        metadata: { author: 'author123' }
+      };
+      
+      component.contentHash = mockHash;
+      component.selectedType = DisotEntryType.DOCUMENT;
+      component.privateKey = 'privkey123';
+      component.selectedAuthor = 'author123';
+      
+      disotService.createEntry.and.returnValue(Promise.resolve(mockEntry));
+      
+      await component.createEntry();
+      
+      expect(disotService.createEntry).toHaveBeenCalledWith(
+        mockHash,
+        DisotEntryType.DOCUMENT,
+        'privkey123',
+        { author: 'author123' }
+      );
+    });
+  });
+
+  describe('Previous Version Selection', () => {
+    it('should show previous version selection modal', () => {
+      expect(component.showPreviousVersionModal).toBe(false);
+      component.selectPreviousVersion();
+      expect(component.showPreviousVersionModal).toBe(true);
+    });
+
+    it('should handle previous version selection from modal', () => {
+      const mockHash: ContentHash = { algorithm: 'sha256', value: 'prevversion123' };
+      component.showPreviousVersionModal = true;
+      
+      component.onPreviousVersionSelected(mockHash);
+      
+      expect(component.selectedPreviousVersion).toBe('prevversion123');
+      expect(component.showPreviousVersionModal).toBe(false);
+    });
+
+    it('should clear previous version', () => {
+      component.selectedPreviousVersion = 'prevversion123';
+      component.clearPreviousVersion();
+      expect(component.selectedPreviousVersion).toBeNull();
+    });
+
+    it('should include previous version in metadata when creating entry', async () => {
+      const mockHash: ContentHash = { algorithm: 'sha256', value: 'content123' };
+      const mockEntry: DisotEntry = {
+        id: 'entry123',
+        contentHash: mockHash,
+        signature: {
+          value: 'sig123',
+          algorithm: 'secp256k1',
+          publicKey: 'pubkey123'
+        },
+        timestamp: new Date(),
+        type: DisotEntryType.DOCUMENT,
+        metadata: { previousVersion: 'prevversion123' }
+      };
+      
+      component.contentHash = mockHash;
+      component.selectedType = DisotEntryType.DOCUMENT;
+      component.privateKey = 'privkey123';
+      component.selectedPreviousVersion = 'prevversion123';
+      
+      disotService.createEntry.and.returnValue(Promise.resolve(mockEntry));
+      
+      await component.createEntry();
+      
+      expect(disotService.createEntry).toHaveBeenCalledWith(
+        mockHash,
+        DisotEntryType.DOCUMENT,
+        'privkey123',
+        { previousVersion: 'prevversion123' }
+      );
+    });
+
+    it('should include both author and previous version in metadata', async () => {
+      const mockHash: ContentHash = { algorithm: 'sha256', value: 'content123' };
+      const mockEntry: DisotEntry = {
+        id: 'entry123',
+        contentHash: mockHash,
+        signature: {
+          value: 'sig123',
+          algorithm: 'secp256k1',
+          publicKey: 'pubkey123'
+        },
+        timestamp: new Date(),
+        type: DisotEntryType.DOCUMENT,
+        metadata: { author: 'author123', previousVersion: 'prevversion123' }
+      };
+      
+      component.contentHash = mockHash;
+      component.selectedType = DisotEntryType.DOCUMENT;
+      component.privateKey = 'privkey123';
+      component.selectedAuthor = 'author123';
+      component.selectedPreviousVersion = 'prevversion123';
+      
+      disotService.createEntry.and.returnValue(Promise.resolve(mockEntry));
+      
+      await component.createEntry();
+      
+      expect(disotService.createEntry).toHaveBeenCalledWith(
+        mockHash,
+        DisotEntryType.DOCUMENT,
+        'privkey123',
+        { author: 'author123', previousVersion: 'prevversion123' }
+      );
+    });
   });
 });

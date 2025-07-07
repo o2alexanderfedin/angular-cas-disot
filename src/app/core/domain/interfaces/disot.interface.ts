@@ -19,7 +19,7 @@ export enum DisotEntryType {
 }
 
 export interface IDisotService {
-  createEntry(content: ContentHash | any, type: DisotEntryType, privateKey: string): Promise<DisotEntry>;
+  createEntry(content: ContentHash | any, type: DisotEntryType, privateKey: string, metadata?: Record<string, any>): Promise<DisotEntry>;
   verifyEntry(entry: DisotEntry): Promise<boolean>;
   getEntry(id: string): Promise<DisotEntry>;
   listEntries(filter?: DisotFilter): Promise<DisotEntry[]>;
