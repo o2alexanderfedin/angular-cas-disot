@@ -3,11 +3,11 @@
 [![Angular](https://img.shields.io/badge/Angular-v20-red.svg)](https://angular.io/)
 [![Node.js](https://img.shields.io/badge/Node.js-v20.19%2B%20%7C%20v22.12%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.8-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-402%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
+[![Tests](https://img.shields.io/badge/Tests-492%20passing-brightgreen.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![Coverage](https://img.shields.io/badge/Coverage-78.08%25-yellow.svg)](https://o2alexanderfedin.github.io/angular-cas-disot/coverage/cas-app/)
 [![CI/CD](https://github.com/o2alexanderfedin/angular-cas-disot/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v3.0.1-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/3.0.1)
+[![Release](https://img.shields.io/badge/Release-v3.3.0-orange.svg)](https://github.com/o2alexanderfedin/angular-cas-disot/releases/tag/3.3.0)
 
 A decentralized content management system implementing Content Addressable Storage (CAS) and Decentralized Immutable Source of Truth (DISOT) with digital signatures.
 
@@ -36,6 +36,21 @@ A decentralized content management system implementing Content Addressable Stora
 - **Content Preview**: View content as Text, JSON, Hex, Base64, or Image
 - **Modal Selection**: Elegant content selection with preview capability
 - **Previous Entries**: View and preview historical DISOT entries
+
+### New in v3.3.0
+- **Automatic MIME Type Detection**: Content references now auto-detect MIME types
+- **Enhanced Metadata Entry**: Author and previous version hash selection via modal
+- **Improved UX**: Streamlined content selection across the application
+
+### New in v3.2.0
+- **Author Selection Modal**: Browse and select author hashes
+- **Previous Version Selection**: Visual selection for version tracking
+- **Metadata Improvements**: Enhanced metadata entry workflow
+
+### New in v3.1.0
+- **Hash Selection for Records**: Browse and select hashes from CAS
+- **Reusable Content Selection**: Unified modal component
+- **Code Refactoring**: Removed duplicate services, improved code reuse
 
 ### New in v3.0.1
 - **Fixed CI Test Failures**: Resolved race conditions and test mocking issues
@@ -151,7 +166,7 @@ src/app/
 - **Clean Architecture**: Clear separation between UI, business logic, and infrastructure
 - **Content Addressing**: SHA-256 based deduplication
 
-For detailed architecture documentation, see [docs/architecture](docs/architecture/overview.md).
+For detailed architecture documentation, see [Technical Architecture](docs/ARCHITECTURE.md) and [Architecture Diagrams](docs/architecture/overview.md).
 
 ## 💻 Development
 
@@ -220,11 +235,11 @@ npm test
 Executes unit tests via [Karma](https://karma-runner.github.io) in headless Chrome.
 
 ### Test Coverage
-The project maintains high test coverage with 402 tests across all components and services:
-- Statements: 78.08%
-- Functions: 82.23%
-- Branches: 65.28%
-- Lines: 78.42%
+The project maintains high test coverage with 492 tests across all components and services:
+- Statements: 86.48%
+- Functions: 86.88%
+- Branches: 75.67%
+- Lines: 87.6%
 - All tests passing ✅
 
 ### Test Structure
@@ -246,12 +261,14 @@ describe('CasService', () => {
 
 Comprehensive documentation is available in the [`docs/`](docs/) directory:
 
-- [Architecture Overview](docs/architecture/overview.md)
-- [API Reference](docs/api/README.md)
-- [Component Reference](docs/components/README.md)
-- [Service Reference](docs/services/README.md)
+- [Technical Architecture](docs/ARCHITECTURE.md) - Detailed system architecture and design
+- [API Documentation](docs/API.md) - Complete API reference for all services
+- [Developer Guide](docs/CLAUDE.md) - Development setup and guidelines
+- [Architecture Overview](docs/architecture/overview.md) - Visual architecture diagrams
+- [Component Reference](docs/components/README.md) - UI component documentation
+- [Service Reference](docs/services/README.md) - Service implementation details
 
-All documentation includes Mermaid diagrams for visual representation.
+All documentation includes code examples and visual diagrams.
 
 ## 🔀 GitFlow Workflow
 
