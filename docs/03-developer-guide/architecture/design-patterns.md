@@ -239,7 +239,7 @@ classDiagram
 
 ### Chain of Responsibility Pattern
 
-Content processing pipeline:
+#### Content Processing Pipeline
 
 ```mermaid
 flowchart LR
@@ -253,6 +253,114 @@ flowchart LR
     B -.->|invalid| X[Error Response]
     D -.->|duplicate| Y[Duplicate Response]
 ```
+
+#### P2P Content Discovery Chain
+
+The P2P content discovery implements a sophisticated Chain of Responsibility with parallel execution:
+
+```mermaid
+classDiagram
+    class ContentSource {
+        <<interface>>
+        +retrieve(hash: ContentHash) Promise~Result~
+        +setNext(source: ContentSource) void
+    }
+    
+    class Result {
+        <<type>>
+        succeeded: true, content: Content
+        OR
+        succeeded: false, error: any
+    }
+    
+    class P2PPeerSource {
+        -next: ContentSource
+        +retrieve(hash) Promise~Result~
+        -customRaceWithAllFailed() Promise~Content~
+        -requestFromPeer(peer, hash, signal) Promise~Content~
+    }
+    
+    ContentSource <|.. P2PPeerSource
+    P2PPeerSource --> Result
+```
+
+**Key Implementation Detail**: The P2P source uses a custom race implementation instead of `Promise.race()`:
+
+```typescript
+// ❌ Wrong: Promise.race() rejects on first failure
+const content = await Promise.race(peerPromises);
+
+// ✅ Correct: Custom race that only fails when ALL fail
+class P2PPeerSource implements ContentSource {
+  private next?: ContentSource;
+  
+  async retrieve(hash: ContentHash): Promise<
+    | { succeeded: true; content: Content }
+    | { succeeded: false; error: any }
+  > {
+    const peers = await this.p2pClient.getConnectedPeers();
+    
+    if (peers.length === 0) {
+      if (this.next) {
+        return this.next.retrieve(hash);
+      }
+      return { succeeded: false, error: 'No connected peers' };
+    }
+    
+    const abortController = new AbortController();
+    
+    // Custom race implementation
+    return new Promise(async (resolve) => {
+      let failedCount = 0;
+      const totalPeers = peers.length;
+      
+      const checkAllFailed = () => {
+        failedCount++;
+        if (failedCount === totalPeers) {
+          // All peers failed, continue chain or return error
+          if (this.next) {
+            resolve(this.next.retrieve(hash));
+          } else {
+            resolve({ succeeded: false, error: 'No peer has the content' });
+          }
+        }
+      };
+      
+      // Start all peer requests in parallel
+      peers.forEach(async (peer) => {
+        try {
+          const content = await this.requestFromPeer(
+            peer, 
+            hash, 
+            abortController.signal
+          );
+          
+          if (content && !abortController.signal.aborted) {
+            // First success wins! Cancel all other requests
+            abortController.abort();
+            resolve({ succeeded: true, content });
+          } else {
+            // Peer doesn't have content
+            checkAllFailed();
+          }
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            // Real failure (not cancellation)
+            checkAllFailed();
+          }
+          // Ignore AbortError - it means another peer already succeeded
+        }
+      });
+    });
+  }
+}
+```
+
+This ensures:
+- ✅ Parallel queries to all peers for maximum performance
+- ✅ Immediate return on first successful response
+- ✅ Cancellation of ongoing requests to save bandwidth
+- ✅ Chain continuation only when ALL peers fail
 
 ### State Pattern
 
