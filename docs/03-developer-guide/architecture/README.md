@@ -18,6 +18,9 @@ Design patterns and principles for Angular services, dependency injection, and b
 ### [Component Design](./component-design.md)
 Component architecture, smart vs presentational components, and UI patterns.
 
+### [Design Patterns](./design-patterns.md)
+Catalog of Object-Oriented Design patterns used throughout the application including Factory, Singleton, Facade, Strategy, and more.
+
 ## Storage & Persistence
 
 ### [Browser Storage Options](./browser-storage.md) 
