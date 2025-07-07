@@ -5,20 +5,26 @@ import { Router } from '@angular/router';
 import { MetadataEntryComponent } from './metadata-entry.component';
 import { MetadataService } from '../../../core/services/metadata/metadata.service';
 import { SignatureService } from '../../../core/services/signature.service';
+import { CasService } from '../../../core/services/cas.service';
+import { ContentPreviewService } from '../../../core/services/content-preview.service';
 import { AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
-import { ContentHash } from '../../../core/domain/interfaces/content.interface';
+import { ContentHash, Content } from '../../../core/domain/interfaces/content.interface';
 
 describe('MetadataEntryComponent', () => {
   let component: MetadataEntryComponent;
   let fixture: ComponentFixture<MetadataEntryComponent>;
   let metadataService: jasmine.SpyObj<MetadataService>;
   let signatureService: jasmine.SpyObj<SignatureService>;
+  let casService: jasmine.SpyObj<CasService>;
+  let contentPreviewService: jasmine.SpyObj<ContentPreviewService>;
   let router: Router;
 
   beforeEach(async () => {
     const metadataSpy = jasmine.createSpyObj('MetadataService', ['createMetadataEntry']);
     const signatureSpy = jasmine.createSpyObj('SignatureService', ['generateKeyPair']);
+    const casSpy = jasmine.createSpyObj('CasService', ['retrieve']);
+    const previewSpy = jasmine.createSpyObj('ContentPreviewService', ['detectContentType']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -28,7 +34,9 @@ describe('MetadataEntryComponent', () => {
       ],
       providers: [
         { provide: MetadataService, useValue: metadataSpy },
-        { provide: SignatureService, useValue: signatureSpy }
+        { provide: SignatureService, useValue: signatureSpy },
+        { provide: CasService, useValue: casSpy },
+        { provide: ContentPreviewService, useValue: previewSpy }
       ]
     }).compileComponents();
 
@@ -36,6 +44,8 @@ describe('MetadataEntryComponent', () => {
     component = fixture.componentInstance;
     metadataService = TestBed.inject(MetadataService) as jasmine.SpyObj<MetadataService>;
     signatureService = TestBed.inject(SignatureService) as jasmine.SpyObj<SignatureService>;
+    casService = TestBed.inject(CasService) as jasmine.SpyObj<CasService>;
+    contentPreviewService = TestBed.inject(ContentPreviewService) as jasmine.SpyObj<ContentPreviewService>;
     router = TestBed.inject(Router);
     
     fixture.detectChanges();
@@ -226,7 +236,7 @@ describe('MetadataEntryComponent', () => {
       expect(component.currentReferenceIndex).toBe(-1);
     });
 
-    it('should populate hash field when hash is selected', () => {
+    it('should populate hash field when hash is selected', async () => {
       // Arrange
       const mockHash: ContentHash = {
         algorithm: 'sha256',
@@ -235,7 +245,7 @@ describe('MetadataEntryComponent', () => {
       component.currentReferenceIndex = 0;
 
       // Act
-      component.onHashSelected(mockHash);
+      await component.onHashSelected(mockHash);
 
       // Assert
       const referenceControl = component.references.at(0);
@@ -244,7 +254,32 @@ describe('MetadataEntryComponent', () => {
       expect(component.currentReferenceIndex).toBe(-1);
     });
 
-    it('should not populate hash field if no reference index is set', () => {
+    it('should detect and set MIME type when hash is selected', async () => {
+      // Arrange
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'abc123def456'
+      };
+      const mockContent: Content = {
+        data: new Uint8Array([0x89, 0x50, 0x4e, 0x47]) // PNG header
+      };
+      component.currentReferenceIndex = 0;
+      
+      casService.retrieve.and.returnValue(Promise.resolve(mockContent));
+      contentPreviewService.detectContentType.and.returnValue('image/png');
+
+      // Act
+      await component.onHashSelected(mockHash);
+
+      // Assert
+      const referenceControl = component.references.at(0);
+      expect(referenceControl.get('mimeType')?.value).toBe('image/png');
+      expect(referenceControl.get('mimeTypeSource')?.value).toBe('detected');
+      expect(casService.retrieve).toHaveBeenCalledWith(mockHash);
+      expect(contentPreviewService.detectContentType).toHaveBeenCalledWith(mockContent.data);
+    });
+
+    it('should not populate hash field if no reference index is set', async () => {
       // Arrange
       const mockHash: ContentHash = {
         algorithm: 'sha256',
@@ -254,11 +289,73 @@ describe('MetadataEntryComponent', () => {
       const originalValue = component.references.at(0).get('hash')?.value;
 
       // Act
-      component.onHashSelected(mockHash);
+      await component.onHashSelected(mockHash);
 
       // Assert
       const referenceControl = component.references.at(0);
       expect(referenceControl.get('hash')?.value).toBe(originalValue);
+    });
+  });
+
+  describe('Author Hash Selection', () => {
+    it('should open author hash selection modal', () => {
+      component.openAuthorHashSelector(0);
+      
+      expect(component.showAuthorHashModal).toBe(true);
+      expect(component.currentAuthorIndex).toBe(0);
+    });
+
+    it('should close author hash selection modal', () => {
+      component.showAuthorHashModal = true;
+      component.currentAuthorIndex = 0;
+
+      component.closeAuthorHashSelector();
+
+      expect(component.showAuthorHashModal).toBe(false);
+      expect(component.currentAuthorIndex).toBe(-1);
+    });
+
+    it('should populate author hash field when selected', () => {
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'author123hash'
+      };
+      component.currentAuthorIndex = 0;
+
+      component.onAuthorHashSelected(mockHash);
+
+      const authorControl = component.authors.at(0);
+      expect(authorControl.get('authorHash')?.value).toBe('author123hash');
+      expect(component.showAuthorHashModal).toBe(false);
+    });
+  });
+
+  describe('Previous Version Selection', () => {
+    it('should open previous version selection modal', () => {
+      component.openPreviousVersionSelector();
+      
+      expect(component.showPreviousVersionModal).toBe(true);
+    });
+
+    it('should close previous version selection modal', () => {
+      component.showPreviousVersionModal = true;
+
+      component.closePreviousVersionSelector();
+
+      expect(component.showPreviousVersionModal).toBe(false);
+    });
+
+    it('should populate previous version field when selected', () => {
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'prevversion123'
+      };
+
+      component.onPreviousVersionSelected(mockHash);
+
+      const versionControl = component.metadataForm.get('version');
+      expect(versionControl?.get('previousVersion')?.value).toBe('prevversion123');
+      expect(component.showPreviousVersionModal).toBe(false);
     });
   });
 });
