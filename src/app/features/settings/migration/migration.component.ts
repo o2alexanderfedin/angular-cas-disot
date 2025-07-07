@@ -461,6 +461,7 @@ export class MigrationComponent implements OnInit, OnDestroy {
       this.estimate = await this.migrationService.estimateMigrationSize();
     } catch (error) {
       console.error('Failed to estimate migration:', error);
+      this.estimate = undefined;
     } finally {
       this.isEstimating = false;
     }

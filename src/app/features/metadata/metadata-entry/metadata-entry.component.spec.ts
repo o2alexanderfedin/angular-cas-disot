@@ -7,6 +7,7 @@ import { MetadataService } from '../../../core/services/metadata/metadata.servic
 import { SignatureService } from '../../../core/services/signature.service';
 import { AuthorRole } from '../../../core/domain/interfaces/metadata-entry';
 import { DisotEntry, DisotEntryType } from '../../../core/domain/interfaces/disot.interface';
+import { ContentHash } from '../../../core/domain/interfaces/content.interface';
 
 describe('MetadataEntryComponent', () => {
   let component: MetadataEntryComponent;
@@ -200,5 +201,64 @@ describe('MetadataEntryComponent', () => {
     await component.onSubmit();
 
     expect(component.error).toBe('Creation failed');
+  });
+
+  describe('Hash Selection', () => {
+    it('should open hash selection modal', () => {
+      // Act
+      component.openHashSelector(0);
+
+      // Assert
+      expect(component.showHashSelectionModal).toBe(true);
+      expect(component.currentReferenceIndex).toBe(0);
+    });
+
+    it('should close hash selection modal', () => {
+      // Arrange
+      component.showHashSelectionModal = true;
+      component.currentReferenceIndex = 0;
+
+      // Act
+      component.closeHashSelector();
+
+      // Assert
+      expect(component.showHashSelectionModal).toBe(false);
+      expect(component.currentReferenceIndex).toBe(-1);
+    });
+
+    it('should populate hash field when hash is selected', () => {
+      // Arrange
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'abc123def456'
+      };
+      component.currentReferenceIndex = 0;
+
+      // Act
+      component.onHashSelected(mockHash);
+
+      // Assert
+      const referenceControl = component.references.at(0);
+      expect(referenceControl.get('hash')?.value).toBe('abc123def456');
+      expect(component.showHashSelectionModal).toBe(false);
+      expect(component.currentReferenceIndex).toBe(-1);
+    });
+
+    it('should not populate hash field if no reference index is set', () => {
+      // Arrange
+      const mockHash: ContentHash = {
+        algorithm: 'sha256',
+        value: 'abc123def456'
+      };
+      component.currentReferenceIndex = -1;
+      const originalValue = component.references.at(0).get('hash')?.value;
+
+      // Act
+      component.onHashSelected(mockHash);
+
+      // Assert
+      const referenceControl = component.references.at(0);
+      expect(referenceControl.get('hash')?.value).toBe(originalValue);
+    });
   });
 });

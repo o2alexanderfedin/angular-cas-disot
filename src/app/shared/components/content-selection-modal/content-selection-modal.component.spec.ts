@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentSelectionModalComponent } from './content-selection-modal.component';
 import { CasService } from '../../../core/services/cas.service';
+import { ContentPreviewService } from '../../../core/services/content-preview.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ContentHash, Content, ContentMetadata } from '../../../core/domain/interfaces/content.interface';
@@ -9,6 +10,7 @@ describe('ContentSelectionModalComponent', () => {
   let component: ContentSelectionModalComponent;
   let fixture: ComponentFixture<ContentSelectionModalComponent>;
   let mockCasService: jasmine.SpyObj<CasService>;
+  let mockPreviewService: jasmine.SpyObj<ContentPreviewService>;
 
   const mockContentHash1: ContentHash = {
     algorithm: 'SHA-256',
@@ -49,13 +51,24 @@ describe('ContentSelectionModalComponent', () => {
       'retrieve'
     ]);
 
-    // Setup default mock to prevent errors during component creation
+    mockPreviewService = jasmine.createSpyObj('ContentPreviewService', [
+      'detectContentType',
+      'formatFileSize',
+      'formatHashForDisplay',
+      'generatePreview'
+    ]);
+
+    // Setup default mocks to prevent errors during component creation
     mockCasService.getAllContent.and.returnValue(Promise.resolve([]));
+    mockPreviewService.formatFileSize.and.returnValue('0 Bytes');
+    mockPreviewService.detectContentType.and.returnValue('text/plain');
+    mockPreviewService.generatePreview.and.returnValue('Preview text');
 
     await TestBed.configureTestingModule({
       imports: [ContentSelectionModalComponent, FormsModule, CommonModule],
       providers: [
-        { provide: CasService, useValue: mockCasService }
+        { provide: CasService, useValue: mockCasService },
+        { provide: ContentPreviewService, useValue: mockPreviewService }
       ]
     }).compileComponents();
 
@@ -229,6 +242,8 @@ describe('ContentSelectionModalComponent', () => {
 
     it('should load text preview', async () => {
       mockCasService.retrieve.and.returnValue(Promise.resolve(mockContent1));
+      mockPreviewService.detectContentType.and.returnValue('text/plain');
+      mockPreviewService.generatePreview.and.returnValue('Test content 1');
 
       await component.loadPreview(item);
 
@@ -236,10 +251,15 @@ describe('ContentSelectionModalComponent', () => {
       expect(item.detectedType).toBe('text/plain');
       expect(item.previewType).toBe('text');
       expect(item.previewData).toBe('Test content 1');
+      expect(mockPreviewService.detectContentType).toHaveBeenCalledWith(mockContent1.data);
+      expect(mockPreviewService.generatePreview).toHaveBeenCalledWith(mockContent1.data, 'text');
     });
 
     it('should load JSON preview', async () => {
       mockCasService.retrieve.and.returnValue(Promise.resolve(mockContent2));
+      mockPreviewService.detectContentType.and.returnValue('application/json');
+      mockPreviewService.generatePreview.and.returnValue('{\n  "test": "data"\n}');
+      
       item.hash = mockContentHash2;
       item.metadata = mockMetadata2;
 
@@ -247,6 +267,8 @@ describe('ContentSelectionModalComponent', () => {
 
       expect(item.previewType).toBe('json');
       expect(item.previewData).toContain('"test"');
+      expect(mockPreviewService.detectContentType).toHaveBeenCalledWith(mockContent2.data);
+      expect(mockPreviewService.generatePreview).toHaveBeenCalledWith(mockContent2.data, 'json');
     });
 
     it('should not load preview if already loading', async () => {
@@ -331,13 +353,15 @@ describe('ContentSelectionModalComponent', () => {
     });
   });
 
-  describe('formatFileSize', () => {
-    it('should format file sizes correctly', () => {
-      expect(component.formatFileSize(0)).toBe('0 Bytes');
-      expect(component.formatFileSize(512)).toBe('512 Bytes');
-      expect(component.formatFileSize(1024)).toBe('1 KB');
-      expect(component.formatFileSize(1536)).toBe('1.5 KB');
-      expect(component.formatFileSize(1048576)).toBe('1 MB');
+  describe('preview service integration', () => {
+    it('should use preview service for file size formatting', () => {
+      mockPreviewService.formatFileSize.and.returnValue('1 KB');
+      
+      // Access preview service through component
+      const result = component.previewService.formatFileSize(1024);
+      
+      expect(result).toBe('1 KB');
+      expect(mockPreviewService.formatFileSize).toHaveBeenCalledWith(1024);
     });
   });
 
