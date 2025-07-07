@@ -1,4 +1,6 @@
-# Phase 3: P2P Network
+# Phase 3: P2P Network 🌐
+
+[⬅️ Roadmap](../../) | [🏠 Documentation Home](../../../) | [IPFS-P2P Integration ➡️](./ipfs-p2p-integration.md)
 
 ## Overview
 
@@ -39,24 +41,35 @@ Phase 3 introduces true peer-to-peer capabilities to the CAS/DISOT system, enabl
 
 ## Architecture Components
 
-```
-┌─────────────────────────────────────────────────────┐
-│                  Browser A                          │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────────┐ │
-│  │     CAS     │  │   Identity   │  │    P2P     │ │
-│  │   Storage   │  │   Manager    │  │   Client   │ │
-│  └─────────────┘  └──────────────┘  └────────────┘ │
-└─────────────────────────────────────────────────────┘
-                            │
-                    WebRTC / libp2p
-                            │
-┌─────────────────────────────────────────────────────┐
-│                  Browser B                          │
-│  ┌─────────────┐  ┌──────────────┐  ┌────────────┐ │
-│  │     CAS     │  │   Identity   │  │    P2P     │ │
-│  │   Storage   │  │   Manager    │  │   Client   │ │
-│  └─────────────┘  └──────────────┘  └────────────┘ │
-└─────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph "Browser A"
+        A1[CAS Storage]
+        A2[IPFS Phase 1]
+        A3[Identity Manager]
+        A4[P2P Client]
+    end
+    
+    subgraph "Browser B"
+        B1[CAS Storage]
+        B2[IPFS Phase 1]
+        B3[Identity Manager]
+        B4[P2P Client]
+    end
+    
+    subgraph "Network Layer"
+        NET[WebRTC / libp2p / IPFS]
+    end
+    
+    A1 -.-> NET
+    A2 -.-> NET
+    A3 -.-> NET
+    A4 -.-> NET
+    
+    NET -.-> B1
+    NET -.-> B2
+    NET -.-> B3
+    NET -.-> B4
 ```
 
 ## Implementation Priorities
@@ -71,10 +84,11 @@ Phase 3 introduces true peer-to-peer capabilities to the CAS/DISOT system, enabl
 - Encrypted peer channels
 - Trust-based access control
 
-### 3. Content Exchange Protocol
-- Request/response for CAS content
-- Streaming for large files
-- Metadata synchronization
+### 3. IPFS-Enhanced Content Exchange Protocol
+- Hybrid P2P/IPFS content discovery
+- Smart routing based on availability
+- Leverage IPFS for redundancy and fallback
+- [Detailed IPFS Integration](./ipfs-p2p-integration.md)
 
 ### 4. Offline Resilience
 - Local peer caching
@@ -83,18 +97,33 @@ Phase 3 introduces true peer-to-peer capabilities to the CAS/DISOT system, enabl
 
 ## Benefits
 
+### Core P2P Benefits
 - **True Decentralization**: No single point of failure
 - **Enhanced Privacy**: Direct peer communication
 - **Offline Capability**: Work without internet connection
 - **Reduced Costs**: No server infrastructure needed
 - **Censorship Resistance**: Content persists across peer network
 
+### IPFS Integration Benefits
+- **Content Redundancy**: Multiple retrieval paths (P2P, IPFS, Gateway)
+- **Global Availability**: Leverage worldwide IPFS network when needed
+- **Bandwidth Efficiency**: IPFS chunking and deduplication
+- **Proven Infrastructure**: Build on battle-tested IPFS protocols
+- **Graceful Degradation**: Fallback options ensure content availability
+
 ## Integration Points
 
-### With Phase 1 (IPFS)
-- Use IPFS as fallback when peers unavailable
-- Leverage content addressing for deduplication
-- Share IPFS gateway links for public content
+### With Phase 1 (IPFS) - Deep Integration
+- **Content Discovery**: Unified hash-based addressing across P2P and IPFS
+- **Hybrid Routing**: Smart selection between P2P and IPFS based on:
+  - Content availability
+  - Network conditions  
+  - Trust levels
+  - Privacy requirements
+- **Redundancy**: Automatic IPFS pinning for important content
+- **Bandwidth Optimization**: Use IPFS chunking for parallel transfers
+- **Private Networks**: Swarm keys for trusted peer groups
+- See: [IPFS-P2P Integration Guide](./ipfs-p2p-integration.md)
 
 ### With Decentralized Identity
 - DIDs as peer identifiers
@@ -129,4 +158,4 @@ Phase 3 introduces true peer-to-peer capabilities to the CAS/DISOT system, enabl
 
 ---
 
-**Note**: This phase builds upon the foundation of Phase 1 (IPFS) and the Decentralized Identity system. Blockchain integration has been removed from the roadmap in favor of a pure P2P approach.
+[⬅️ Roadmap](../../) | [⬆️ Top](#phase-3-p2p-network-) | [🏠 Documentation Home](../../../) | [IPFS-P2P Integration ➡️](./ipfs-p2p-integration.md)
