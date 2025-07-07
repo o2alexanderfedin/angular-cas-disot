@@ -46,39 +46,42 @@ flowchart TD
 classDiagram
     class ContentSource {
         <<interface>>
-        +canHandle(request: P2PContentRequest) boolean
-        +retrieve(hash: ContentHash) Promise~Content~
+        +retrieve(hash: ContentHash) Promise~Result~
         +setNext(source: ContentSource) void
+    }
+    
+    class Result {
+        <<type>>
+        succeeded: true, content: Content
+        OR
+        succeeded: false, error: any
     }
     
     class LocalCASSource {
         -casService: CasService
         -next: ContentSource
-        +canHandle(request) boolean
-        +retrieve(hash) Promise~Content~
+        +retrieve(hash) Promise~Result~
         +setNext(source) void
     }
     
     class P2PPeerSource {
         -p2pClient: P2PClient
         -next: ContentSource
-        +canHandle(request) boolean
-        +retrieve(hash) Promise~Content~
+        +retrieve(hash) Promise~Result~
         +setNext(source) void
+        -parallelPeerQuery(peers, hash) Promise~Result~
     }
     
     class IPFSNetworkSource {
         -ipfsService: IPFSService
         -next: ContentSource
-        +canHandle(request) boolean
-        +retrieve(hash) Promise~Content~
+        +retrieve(hash) Promise~Result~
         +setNext(source) void
     }
     
     class IPFSGatewaySource {
         -gatewayUrl: string
-        +canHandle(request) boolean
-        +retrieve(hash) Promise~Content~
+        +retrieve(hash) Promise~Result~
         +setNext(source) void
     }
     
@@ -97,6 +100,175 @@ This pattern provides:
 - **Easy extensibility** - new sources can be added without modifying existing code
 - **Configurable priority** - chain order can be adjusted based on preferences
 - **Graceful degradation** - automatic fallback through the chain
+
+#### Key Implementation: Parallel Peer Queries
+
+The P2PPeerSource implements a sophisticated parallel query mechanism:
+
+```mermaid
+sequenceDiagram
+    participant P2P as P2PPeerSource
+    participant P1 as Peer 1
+    participant P2 as Peer 2
+    participant P3 as Peer 3
+    participant AC as AbortController
+    
+    P2P->>P2P: retrieve(hash)
+    P2P->>AC: new AbortController()
+    
+    par Query all peers in parallel
+        P2P->>P1: requestFromPeer(hash, signal)
+        and
+        P2P->>P2: requestFromPeer(hash, signal)
+        and
+        P2P->>P3: requestFromPeer(hash, signal)
+    end
+    
+    alt Peer 2 responds first with content
+        P2-->>P2P: content
+        P2P->>AC: abort()
+        Note over P1,P3: Requests cancelled
+        P2P-->>P2P: return {succeeded: true, content}
+    else All peers fail
+        P1--x P2P: error/no content
+        P2--x P2P: error/no content
+        P3--x P2P: error/no content
+        P2P->>P2P: failedCount === totalPeers
+        P2P-->>P2P: continue chain or return error
+    end
+```
+
+**Critical Design Decision**: We don't use `Promise.race()` because it rejects on first failure. Instead, we implement a custom race that:
+- Returns immediately on first success
+- Only fails when ALL peers fail
+- Cancels ongoing requests to save bandwidth
+
+```typescript
+import { pipe } from 'it-pipe';
+import type { Connection, Stream } from '@libp2p/interface';
+
+class P2PPeerSource implements ContentSource {
+  private next?: ContentSource;
+  private libp2p: Libp2p;
+  
+  async retrieve(hash: ContentHash): Promise<
+    | { succeeded: true; content: Content }
+    | { succeeded: false; error: any }
+  > {
+    // Get active connections from libp2p
+    const connections = this.libp2p.getConnections();
+    
+    if (connections.length === 0) {
+      if (this.next) {
+        return this.next.retrieve(hash);
+      }
+      return { succeeded: false, error: 'No connected peers' };
+    }
+    
+    const abortController = new AbortController();
+    
+    // Custom race implementation that only fails when ALL fail
+    return new Promise(async (resolve) => {
+      let failedCount = 0;
+      const totalConnections = connections.length;
+      
+      const checkAllFailed = () => {
+        failedCount++;
+        if (failedCount === totalConnections) {
+          // All peers failed, continue chain or return error
+          if (this.next) {
+            resolve(this.next.retrieve(hash));
+          } else {
+            resolve({ succeeded: false, error: 'No peer has the content' });
+          }
+        }
+      };
+      
+      // Start all peer requests in parallel
+      connections.forEach(async (connection) => {
+        try {
+          const content = await this.requestFromPeer(
+            connection, 
+            hash, 
+            abortController.signal
+          );
+          
+          if (content && !abortController.signal.aborted) {
+            // First success wins! Cancel all other requests
+            abortController.abort();
+            resolve({ succeeded: true, content });
+          } else {
+            // Peer doesn't have content
+            checkAllFailed();
+          }
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            // Real failure (not cancellation)
+            checkAllFailed();
+          }
+          // Ignore AbortError - it means another peer already succeeded
+        }
+      });
+    });
+  }
+  
+  private async requestFromPeer(
+    connection: Connection,
+    hash: ContentHash,
+    signal: AbortSignal
+  ): Promise<Content | null> {
+    try {
+      // Open a stream with our custom protocol
+      // Modern libp2p (0.27+) supports abort signals natively
+      const stream = await connection.newStream(
+        ['/cas/1.0.0'],
+        { signal }
+      );
+      
+      // Use libp2p's pipe utility for stream handling
+      const response = await pipe(
+        // Send request
+        [new TextEncoder().encode(JSON.stringify({ 
+          type: 'GET_CONTENT', 
+          hash 
+        }))],
+        stream,
+        // Receive response
+        async (source) => {
+          for await (const chunk of source) {
+            const data = JSON.parse(new TextDecoder().decode(chunk));
+            if (data.content) {
+              return new Content(data.content);
+            }
+          }
+          return null;
+        }
+      );
+      
+      return response;
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        throw error; // Re-throw to be handled by parallel query
+      }
+      // Peer might not have content or protocol error
+      return null;
+    }
+    // Note: No manual cleanup needed - libp2p handles stream cleanup
+  }
+  
+  setNext(source: ContentSource): void {
+    this.next = source;
+  }
+}
+```
+
+This implementation ensures content-addressable integrity while maximizing performance through parallel queries.
+
+**Key libp2p API Notes**:
+- Modern libp2p (0.27+) has native AbortSignal support in `newStream()` options
+- No manual cleanup needed - libp2p automatically handles stream and connection cleanup
+- Uses standard `it-pipe` for stream handling (standard in libp2p ecosystem)
+- The `/cas/1.0.0` protocol would be registered with `libp2p.handle()` on the receiving side
 
 ## Implementation Strategy
 

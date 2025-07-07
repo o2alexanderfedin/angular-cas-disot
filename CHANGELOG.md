@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.1] - 2025-07-07
+
+### Changed
+- Improved Chain of Responsibility pattern implementation in P2P documentation
+- Removed redundant `canHandle()` method from ContentSource interface
+- Updated `retrieve()` method to return discriminated union Result type
+- Enhanced P2PPeerSource with custom race implementation for parallel queries
+- Updated to accurate libp2p API usage with native AbortSignal support
+
+### Documentation
+- Added full implementation code for parallel peer queries
+- Documented why `Promise.race()` doesn't work for content discovery
+- Added libp2p API notes about automatic cleanup and modern patterns
+- Enhanced design patterns documentation with implementation details
+
 ## [3.6.0] - 2025-07-07
 
 ### Added
