@@ -5,6 +5,90 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2025-07-07
+
+### Added
+- Comprehensive Design Patterns documentation cataloging all OOD patterns used in the application
+- Enhanced P2P documentation with detailed OOD pattern explanations
+- Chain of Responsibility pattern documentation for content discovery
+- Strategy Pattern documentation for routing algorithms
+- Complete catalog of Factory, Singleton, Facade, Adapter, Observer, and State patterns
+
+### Changed
+- Converted ASCII diagrams to Mermaid format in P2P documentation
+- Fixed Mermaid syntax issues with numbered lists in node labels
+- Removed color styling from diagrams for consistency
+- Updated architecture README with link to design patterns documentation
+
+### Documentation
+- Created `/docs/03-developer-guide/architecture/design-patterns.md`
+- Enhanced `/docs/06-roadmap/phases/phase-3-p2p/ipfs-p2p-integration.md` with pattern details
+- Updated `/docs/06-roadmap/phases/phase-3-p2p/README.md` with Mermaid diagrams
+
+## [3.5.0] - 2025-07-07
+
+### Added
+- Comprehensive Decentralized Identity (DID) documentation structure
+- P2P networking documentation for Phase 3
+- IPFS-P2P integration documentation
+- Phase roadmap updates (P2P replacing blockchain)
+
+### Changed
+- Deprecated Phase 2 blockchain in favor of P2P approach
+- Enhanced navigation headers/footers across documentation
+
+### Documentation
+- Created `/docs/decentralized-identity/` directory structure
+- Created `/docs/06-roadmap/phases/phase-3-p2p/` documentation
+- Added IPFS-P2P hybrid protocol design
+
+## [3.4.0] - 2025-07-05
+
+### Documentation
+- Created comprehensive technical architecture documentation
+- Added ARCHITECTURE.md with complete system design overview
+- Added API.md with detailed service API documentation
+- Updated README with architecture references
+
+## [3.3.0] - 2025-07-05
+
+### Added
+- Automatic MIME type detection for metadata entry content references
+- Content hash selection for author field in metadata entries
+- Content hash selection for previous version field in metadata entries
+- Enhanced user experience with smart content type detection
+
+### Changed
+- Metadata entry form now auto-populates MIME type when content is selected
+- Author and previous version fields now use ContentSelectionModal for consistency
+
+## [3.2.0] - 2025-07-05
+
+### Added
+- Author selection modal for metadata entries using ContentSelectionModal
+- Previous version selection modal for metadata entries
+- Enhanced DisotService to accept metadata parameter
+
+### Changed
+- Improved metadata entry workflow with consistent hash selection UI
+- Updated all metadata-related components to use unified selection approach
+
+## [3.1.0] - 2025-07-05
+
+### Added
+- Hash selection functionality for DISOT entries using ContentSelectionModal
+- ContentPreviewService for reusable content preview logic
+
+### Changed
+- Refactored to reuse existing ContentSelectionModal component
+- Removed duplicate HashSelectionService and modal component
+- Achieved 70% code reduction through component reuse
+
+### Fixed
+- All migration component tests
+- ContentPreviewService test coverage
+- Integration test compatibility
+
 ## [3.0.4] - 2025-01-06
 
 ### Added
