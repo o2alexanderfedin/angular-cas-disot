@@ -35,6 +35,8 @@ The application follows Clean Architecture principles with clear separation of c
 8. **HeliaStorageService** - Browser-native IPFS using Helia
 9. **IPFSShareLinkService** - Generate shareable IPFS gateway URLs
 10. **IPFSMigrationService** - Migrate existing content to IPFS/Helia
+11. **MetadataService** - Manages metadata entries with content relationships
+12. **ContentPreviewService** - Content type detection and preview generation
 
 ## Storage Providers
 - **InMemoryStorageService** - Default, data lost on refresh
@@ -48,8 +50,8 @@ The application follows Clean Architecture principles with clear separation of c
 - Run tests with `npm test`
 - Run tests with coverage: `npm test:coverage`
 - All tests run in ChromeHeadless mode
-- Current status: 402/402 tests passing (all tests fixed)
-- Code coverage: 78.08% statements, 82.23% functions, 65.28% branches
+- Current status: 492/492 tests passing (all tests fixed)
+- Code coverage: 86.48% statements, 86.88% functions, 75.67% branches, 87.6% lines
 
 ## Features
 ### Content Management
@@ -61,10 +63,17 @@ The application follows Clean Architecture principles with clear separation of c
 
 ### DISOT Entries
 - Create signed entries for content
-- Support for BLOG_POST, DOCUMENT, IMAGE, SIGNATURE types
+- Support for BLOG_POST, DOCUMENT, IMAGE, SIGNATURE, METADATA types
 - Generate key pairs
 - View previous entries with preview
 - Verify entry signatures
+
+### Metadata Management
+- Create metadata entries with content relationships
+- Author tracking with hash selection
+- Version control with previous version selection
+- Automatic MIME type detection from content
+- Multiple content references support
 
 ### User Interface
 - Modal content selection
@@ -83,7 +92,25 @@ The application follows Clean Architecture principles with clear separation of c
 6. **Migration**: Content can be migrated from local storage to IPFS/Helia via the migration UI
 
 ## Recent Updates
-### v3.0.1 - CI Fixes and Budget Adjustment (Latest)
+### v3.3.0 - Metadata Entry Enhancements (Latest)
+1. ✅ Automatic MIME type detection when selecting content references
+2. ✅ Author hash selection using ContentSelectionModal
+3. ✅ Previous version hash selection using ContentSelectionModal
+4. ✅ Improved metadata entry user experience
+
+### v3.2.0 - Author and Version Selection
+1. ✅ Added author selection modal for metadata entries
+2. ✅ Added previous version selection modal
+3. ✅ Updated DisotService to accept metadata parameter
+4. ✅ Enhanced metadata entry workflow
+
+### v3.1.0 - Hash Selection from CAS
+1. ✅ Implemented hash selection for DISOT entries
+2. ✅ Refactored to reuse ContentSelectionModal
+3. ✅ Removed duplicate HashSelectionService and modal
+4. ✅ Extracted ContentPreviewService for code reuse
+
+### v3.0.1 - CI Fixes and Budget Adjustment
 1. ✅ Fixed race condition in IPFSMigrationService progress tracking
 2. ✅ Resolved Helia storage service test mocking issues
 3. ✅ Fixed IPFS storage service test expectations
@@ -103,19 +130,3 @@ The application follows Clean Architecture principles with clear separation of c
 8. ✅ Enhanced settings UI with storage health indicators
 9. ✅ Added migration UI for bulk content transfer
 10. ✅ Comprehensive test coverage for all new features
-
-### v2.5.0
-1. ✅ Fixed staging deployment conflicts
-2. ✅ Corrected base-href path for staging environment
-3. ✅ Enabled TypeScript strict unused code detection
-4. ✅ Cleaned up unused dependencies and code
-5. ✅ Added dynamic code coverage display
-6. ✅ Improved CI/CD pipeline with sequential deployments
-
-### v1.1.0
-1. ✅ IndexedDB storage implementation
-2. ✅ Enhanced content preview with type detection
-3. ✅ Modal content selection with preview
-4. ✅ Blog post creation in DISOT entries
-5. ✅ Previous entry preview functionality
-6. ✅ Storage provider selection at runtime
